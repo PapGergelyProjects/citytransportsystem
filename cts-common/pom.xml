@@ -13,6 +13,7 @@
   <name>cts-common</name>
   <url>http://maven.apache.org</url>
   <properties>
+  	<start-class>prv.pgergely.cts.common.ApplicationCommon</start-class>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
@@ -26,6 +27,11 @@
 	    <groupId>org.apache.kafka</groupId>
 	    <artifactId>kafka_2.12</artifactId>
 	    <version>2.2.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter</artifactId>
+	    <version>2.1.6.RELEASE</version>
 	</dependency>
   </dependencies>
   <build>
