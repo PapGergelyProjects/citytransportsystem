@@ -9,9 +9,51 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=<api_key>&libraries=places&callback=initMap" async defer></script>
+		<link rel="stylesheet" href="./css/all.css">
+		<!-- <script src="https://maps.googleapis.com/maps/api/js?key=<api_key>&libraries=places&callback=initMap" async defer></script> -->
+		<style>
+			body{
+				background-image: url('./img/background_bus.jpg');
+				background-repeat: no-repeat;
+				background-size: 1920px 980px;
+			}
+			.main-title-part{
+				border: 1px solid #8585ad;
+				margin-top: 15px;
+				background-color: #8585ad;
+				position: relative;
+			}
+			.page-title{
+				text-align: left; 
+				font-size: 24px; 
+				font-weight: bold;
+				color: white;
+				margin-left: 10px;
+			}
+			.menu-item{
+				text-align: center; 
+				font-size: 24px;
+				color: white;
+				padding: 5px;
+			}
+			.menu-table{
+				margin-top: 5px;
+			}
+			.title-component{
+				display: inline-block;
+			}
+		</style>
 	</head>
 	<body>
-
+		<div class="container-fluid">
+			<div class="row main-title-part">
+				<div class="col-sm-2 page-title">
+					<i class="fas fa-bezier-curve title-component"></i>
+					<div class="title-component">CTS map</div>
+				</div>
+				<div class="col-sm-2 menu-item">Options</div>
+				<div class="col-sm-2 menu-item">Options1</div>
+			</div>
+		</div>
 	</body>
 </html>

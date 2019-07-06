@@ -1,25 +1,40 @@
 package prv.pgergely.cts.webservices;
 
+import java.io.IOException;
+
 import javax.servlet.ServletContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import prv.pgergely.cts.common.commsystem.HttpCommSystem;
 
 
-@Path("/")
+@RestController
+@RequestMapping(path="/")
 public class MainPage {
 	
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getMessage(@Context ServletContext ctx) {
-		return "Hello "+ctx.getContextPath();
+	@Autowired
+	private HttpCommSystem comm;
+	
+	@Autowired
+	private ServletContext context;
+	
+	@GetMapping(path="/hello")
+	public String getMessage() {
+		return "Hello Servlet "+context.getContextPath();
 	}
 	
-	@GET
-	@Path("/some")
-	public String getSome() {
+	@GetMapping("/stop_location")
+	public String getLocationWithStop() {
+		try {
+			comm.getRequest("");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return "Some more";
 	}
 }
