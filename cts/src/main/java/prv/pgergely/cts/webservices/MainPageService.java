@@ -6,15 +6,18 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import prv.pgergely.cts.common.commsystem.HttpCommSystem;
+import prv.pgergely.cts.domain.SearchValues;
 
 
 @RestController
 @RequestMapping(path="/")
-public class MainPage {
+public class MainPageService {
 	
 	@Autowired
 	private HttpCommSystem comm;
@@ -22,13 +25,14 @@ public class MainPage {
 	@Autowired
 	private ServletContext context;
 	
-	@GetMapping(path="/hello")
-	public String getMessage() {
-		return "Hello Servlet "+context.getContextPath();
+	@GetMapping(path="/hello/{yourName}")
+	public String getMessage(@PathVariable String yourName) {
+		return "Hello Servlet "+yourName;
 	}
 	
-	@GetMapping("/stop_location")
-	public String getLocationWithStop() {
+	
+	@GetMapping(path="/stop_location", consumes = "application/json")
+	public String getLocationWithStop(@RequestBody SearchValues vals) {
 		try {
 			comm.getRequest("");
 		} catch (IOException e) {

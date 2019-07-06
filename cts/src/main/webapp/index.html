@@ -17,6 +17,13 @@
 				background-repeat: no-repeat;
 				background-size: 1920px 980px;
 			}
+			a{
+				color: white;
+			}
+			a:hover{
+				color: #ffff00;
+				text-decoration: none;
+			}
 			.main-title-part{
 				border: 1px solid #8585ad;
 				margin-top: 15px;
@@ -42,17 +49,58 @@
 			.title-component{
 				display: inline-block;
 			}
+			.menu-link{
+				margin-right: 30px;
+			}
+			.dropdown-toggle:hover{
+				color: #ffff00;
+				cursor: pointer;
+			}
+			.dropdown-toggle:after{
+				display: none;
+			}
+			.search-item{
+				font-size: 18px;
+				color: #8585ad;
+			}
+			.drop-item-icon{
+				color: #ff8080;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="container-fluid">
 			<div class="row main-title-part">
-				<div class="col-sm-2 page-title">
+				<div class="col-lg-9 page-title">
 					<i class="fas fa-bezier-curve title-component"></i>
 					<div class="title-component">CTS map</div>
 				</div>
-				<div class="col-sm-2 menu-item">Options</div>
-				<div class="col-sm-2 menu-item">Options1</div>
+				<div class="col-lg-2">
+					<div class="col-lg-12 menu-item">
+						<div class="fas fa-search dropdown-toggle menu-link" href="#" data-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item search-item" href="#">
+									<i class="fas fa-map-pin drop-item-icon" style="margin-right: 10px;"></i>
+									<span>Search by coordinates</span>
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item search-item" href="#">
+									<i class="fas fa-map-marked-alt drop-item-icon" style="margin-right: 10px;"></i>
+									<span>Search by place name</span>
+								</a>
+							</div>
+						</div>
+						<a class="menu-link" href="#">
+							<i class="fas fa-sync-alt"></i>
+						</a>
+						<a class="menu-link" href="#">
+							<i class="far fa-times-circle"></i>
+						</a>
+						<a href="#">
+							<i class="fab fa-elementor"></i>
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
