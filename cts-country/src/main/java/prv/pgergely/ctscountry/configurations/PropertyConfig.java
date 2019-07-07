@@ -1,4 +1,4 @@
-package prv.pgergely.cts.common.resourcemanager;
+package prv.pgergely.ctscountry.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

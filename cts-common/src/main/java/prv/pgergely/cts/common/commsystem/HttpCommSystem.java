@@ -21,7 +21,7 @@ public class HttpCommSystem {
 	
 	public String getRequest(String urlAddress) throws IOException{
 		StringBuilder sb = new StringBuilder();
-		HttpsURLConnection connSec = (HttpsURLConnection)establishConnection(urlAddress);
+		HttpURLConnection connSec = establishConnection(urlAddress);
 		try(BufferedReader bfr = new BufferedReader(new InputStreamReader(connSec.getInputStream()))){
 			while(bfr.ready()){
 				sb.append(bfr.readLine());
@@ -39,7 +39,7 @@ public class HttpCommSystem {
     		HttpsURLConnection conn = (HttpsURLConnection)packUrl.openConnection();
     		conn.getResponseCode();
     		return conn;
-    	}catch(ConnectException | MalformedURLException e){
+    	}catch(ConnectException | MalformedURLException | ClassCastException e){
     		try{
     			LOGGER.warn("HTTPS connection cannot be established!");
     			LOGGER.warn("Try to establish HTTP connection...");
