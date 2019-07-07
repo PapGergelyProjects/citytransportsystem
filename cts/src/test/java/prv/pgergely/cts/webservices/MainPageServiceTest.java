@@ -26,4 +26,4 @@ public class MainPageServiceTest {
 		ResponseEntity<String> resp = template.getForEntity(new URI("http://localhost:"+port+"/hello/SpringTest"), String.class);
 		assertEquals("Hello Servlet SpringTest", resp.getBody());
 	}
-}		
+}

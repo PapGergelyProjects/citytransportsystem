@@ -49,6 +49,9 @@
 			.title-component{
 				display: inline-block;
 			}
+			.title-icon-margin{
+				width: 30px;
+			}
 			.menu-link{
 				margin-right: 30px;
 			}
@@ -80,13 +83,24 @@
 						<div class="fas fa-search dropdown-toggle menu-link" href="#" data-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 								<a class="dropdown-item search-item" href="#">
-									<i class="fas fa-map-pin drop-item-icon" style="margin-right: 10px;"></i>
-									<span>Search by coordinates</span>
+									<div class="title-component title-icon-margin">
+										<i class="fas fa-map-pin drop-item-icon" style="margin-right: 10px;"></i>
+									</div>
+									<div class="title-component">Search by coordinates</div>
 								</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item search-item" href="#">
-									<i class="fas fa-map-marked-alt drop-item-icon" style="margin-right: 10px;"></i>
-									<span>Search by place name</span>
+									<div class="title-component title-icon-margin">
+										<i class="fas fa-map-marked-alt drop-item-icon" style="margin-right: 10px;"></i>
+									</div>
+									<div class="title-component">Search by place name</div>
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item search-item" href="#">
+									<div class="title-component title-icon-margin">
+										<i class="fas fa-map-marker-alt drop-item-icon"></i>
+									</div>
+									<div class="title-component">Marker search</div>
 								</a>
 							</div>
 						</div>
