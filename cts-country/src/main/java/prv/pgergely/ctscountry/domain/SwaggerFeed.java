@@ -54,7 +54,7 @@ public class SwaggerFeed {
     public long ts;
     public Results results;
 
-    public class Results{
+    public static class Results{
         public int total;
         public int limit;
         public int page;
@@ -67,7 +67,7 @@ public class SwaggerFeed {
         }
     }
 
-    public class Feeds{
+    public static class Feeds{
         public String id;
         public String ty;
         public String t;
@@ -81,7 +81,7 @@ public class SwaggerFeed {
         }
     }
 
-    public class Location{
+    public static class Location{
         public long id;
         public long pid;
         public String t;
@@ -95,7 +95,7 @@ public class SwaggerFeed {
         }
     }
 
-    public class FeedURL{
+    public static class FeedURL{
     	public String i;
         public String d;
 		
@@ -105,7 +105,7 @@ public class SwaggerFeed {
 		}
     }
 
-    public class Latest{
+    public static class Latest{
         public long ts;
 
         @Override

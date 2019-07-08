@@ -10,6 +10,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.ctscountry.services.DatabaseInit;
@@ -28,6 +29,11 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ApplicationCtsCountry.class, args);
+	}
+	
+	@Bean
+	public RestTemplate getTemplate() {
+		return new RestTemplate();
 	}
 	
 	@PostConstruct

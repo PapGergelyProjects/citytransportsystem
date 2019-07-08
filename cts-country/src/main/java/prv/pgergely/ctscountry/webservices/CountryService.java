@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +32,15 @@ public class CountryService {
 			return src.getFeeds(transitApiKey);
 		} catch (IOException e) {
 			return new ArrayList<Feeds>();
+		}
+	}
+	
+	@GetMapping(path="/get_feed/{feedId}")
+	public Feeds getFeed(@PathVariable Long feedId) {
+		try {
+			return src.getFeeds(transitApiKey, feedId);
+		} catch (Exception e) {
+			return new ResponseEntity<Feeds>(HttpStatus.BAD_REQUEST).getBody();
 		}
 	}
 
