@@ -20,16 +20,13 @@ import prv.pgergely.ctscountry.services.FeedSource;
 @RequestMapping(path="/")
 public class CountryService {
 	
-	@Value("${transit_feed_key}")
-	private String transitApiKey;
-	
 	@Autowired
 	private FeedSource src;
 	
 	@GetMapping(path="/get_feeds", produces = "application/json")
 	public List<Feeds> getFeeds(){
 		try {
-			return src.getFeeds(transitApiKey);
+			return src.getFeeds();
 		} catch (IOException e) {
 			return new ArrayList<Feeds>();
 		}
@@ -38,7 +35,7 @@ public class CountryService {
 	@GetMapping(path="/get_feed/{feedId}")
 	public Feeds getFeed(@PathVariable Long feedId) {
 		try {
-			return src.getFeeds(transitApiKey, feedId);
+			return src.getFeeds(feedId);
 		} catch (Exception e) {
 			return new ResponseEntity<Feeds>(HttpStatus.BAD_REQUEST).getBody();
 		}

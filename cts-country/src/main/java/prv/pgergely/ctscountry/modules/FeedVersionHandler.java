@@ -37,9 +37,6 @@ import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 @Component
 public class FeedVersionHandler implements VersionHandlerThread {
 	
-	@Value("${transit_feed_key}")
-	private String transitApiKey;
-	
 	@Value("${temp_directory}")
 	private String tempFolder;
 	
@@ -75,7 +72,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		List<FeedVersion> feedVers = feedVsSrv.getFeedVersions();
 		logger.info("Check feed versions...");
 		for (FeedVersion feedVersion : feedVers) {
-			Feeds allFeed = feed.getFeeds(transitApiKey, feedVersion.getFeedId());
+			Feeds allFeed = feed.getFeeds(feedVersion.getFeedId());
 			Location location = allFeed.l;
 			FeedURL feedLink = allFeed.u;
 			Latest latest = allFeed.latest;
