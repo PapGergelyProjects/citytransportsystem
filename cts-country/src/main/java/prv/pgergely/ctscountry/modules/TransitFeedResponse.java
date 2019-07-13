@@ -19,8 +19,8 @@ import prv.pgergely.ctscountry.domain.SwaggerFeed;
 @Component
 public class TransitFeedResponse {
 	
-	@Qualifier(TransitFeedsTemplate.TRANSITFEED_TEMPLATE)
 	@Autowired
+	@Qualifier(TransitFeedsTemplate.TRANSITFEED_TEMPLATE)
 	private RestTemplate template;
 	
 	@Value("${transit_feed_key}")
@@ -28,8 +28,8 @@ public class TransitFeedResponse {
 	
 	public ResponseEntity<SwaggerFeed> getFeed(int page) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
 		HttpEntity<SwaggerFeed> entity = new HttpEntity<>(headers);
 		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&page=%d&limit=100&type=gtfs", transitApiKey, page);
 		
@@ -38,8 +38,8 @@ public class TransitFeedResponse {
 	
 	public ResponseEntity<SwaggerFeed> getFeeds(long feedId){
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
 		HttpEntity<SwaggerFeed> entity = new HttpEntity<>(headers);
 		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&location=%d&limit=100&type=gtfs", transitApiKey, feedId);
 		

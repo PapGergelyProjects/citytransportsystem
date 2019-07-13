@@ -24,7 +24,7 @@ public class FeedSource {
 	public List<Feeds> getFeeds() throws IOException{
 		List<Feeds> feedList = new ArrayList<>();
 		SwaggerFeed allFeed = transitResp.getFeed(100).getBody();
-		for (int i = 1; i <= allFeed.results.numPages; i++) {// Because I need all GTFS type feed, but swagger supports querying by page only.
+		for (int i = 1; i <= allFeed.results.numPages; i++) {// Because I need all the GTFS type feed, but swagger supports querying by page only.
 			SwaggerFeed actualPage = transitResp.getFeed(i).getBody();
 			List<Feeds> tempFeed =  Arrays.asList(actualPage.results.feeds);
 			feedList.addAll(tempFeed);
@@ -33,7 +33,7 @@ public class FeedSource {
 		return feedList;
 	}
 	
-	public Feeds getFeeds(long feedId) throws IOException{//
+	public Feeds getFeed(long feedId) throws IOException{
 		SwaggerFeed actualPage = transitResp.getFeeds(feedId).getBody();
 		return actualPage.results.feeds.length==0 ? new Feeds[]{}[0] : actualPage.results.feeds[0];
 	}

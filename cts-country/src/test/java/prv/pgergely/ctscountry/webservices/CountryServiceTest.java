@@ -10,13 +10,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 
+import prv.pgergely.ctscountry.ApplicationCountryComponents;
+import prv.pgergely.ctscountry.ApplicationCtsCountry;
 import prv.pgergely.ctscountry.domain.SwaggerFeed;
 import prv.pgergely.ctscountry.domain.SwaggerFeed.Feeds;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class TestCountryService {
+public class CountryServiceTest {
 	
 	@LocalServerPort
 	private int port;
@@ -24,13 +28,14 @@ public class TestCountryService {
 	@Autowired
 	private TestRestTemplate temp;
 	
-	private Feeds testFeed;
+	private static Feeds testFeed;
 	
 	@BeforeAll
-	public void setJson() {
+	public static void setJson() {
 		testFeed = new Feeds();
 		testFeed.id = "vermont-translines/566";
 		testFeed.ty = "gtfs";
+		testFeed.t = "Vermont Translines GTFS";
 		testFeed.l = new SwaggerFeed.Location();
 		testFeed.l.id=415;
 		testFeed.l.pid=35;
@@ -46,11 +51,19 @@ public class TestCountryService {
 	}
 	
 	@Test
+	@DisplayName("Greet test")
+	public void testGreet() {
+		ResponseEntity<String> ent = temp.getForEntity("http://localhost:"+port+"/greet",String.class);
+		assertEquals("Test Works", ent.getBody());
+	}
+	
+	@Test
 	@DisplayName("GetFeed test with id 415")
 	public void testGetFeed() throws Exception {
-		ResponseEntity<SwaggerFeed> resp = temp.getForEntity("https://localhost:"+port+"/get_feed/415", SwaggerFeed.class);
-		SwaggerFeed feed = resp.getBody();
-		feed.results.feeds[0].latest.ts=0;
+		String url = "http://localhost:"+port+"/get_feed/"+415;
+		ResponseEntity<Feeds> resp = temp.getForEntity(url, Feeds.class);
+		Feeds feed = resp.getBody();
+		feed.latest.ts=0;
 		
 		assertEquals(testFeed, feed);
 	}

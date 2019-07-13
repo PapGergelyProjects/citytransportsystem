@@ -72,7 +72,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		List<FeedVersion> feedVers = feedVsSrv.getFeedVersions();
 		logger.info("Check feed versions...");
 		for (FeedVersion feedVersion : feedVers) {
-			Feeds allFeed = feed.getFeeds(feedVersion.getFeedId());
+			Feeds allFeed = feed.getFeed(feedVersion.getFeedId());
 			Location location = allFeed.l;
 			FeedURL feedLink = allFeed.u;
 			Latest latest = allFeed.latest;
