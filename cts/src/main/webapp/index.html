@@ -8,168 +8,164 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-		<link rel="stylesheet" href="./css/all.css">
-		<!-- <script src="https://maps.googleapis.com/maps/api/js?key=<api_key>&libraries=places&callback=initMap" async defer></script> -->
-		<style>
-			body{
-				background-image: url('./img/background_bus.jpg');
-				background-repeat: no-repeat;
-				background-size: 1920px 980px;
-			}
-			a{
-				color: white;
-			}
-			a:hover{
-				color: #ffff00;
-				text-decoration: none;
-			}
-			.main-title-part{
-				border: 1px solid #8585ad;
-				margin-top: 15px;
-				background-color: #8585ad;
-				position: relative;
-			}
-			.page-title{
-				text-align: left; 
-				font-size: 24px; 
-				font-weight: bold;
-				color: white;
-				margin-left: 10px;
-			}
-			.menu-item{
-				text-align: center; 
-				font-size: 24px;
-				color: white;
-				padding: 5px;
-			}
-			.menu-table{
-				margin-top: 5px;
-			}
-			.title-component{
-				display: inline-block;
-			}
-			.title-icon-margin{
-				width: 30px;
-			}
-			.menu-link{
-				margin-right: 30px;
-			}
-			.dropdown-toggle:hover{
-				color: #ffff00;
-				cursor: pointer;
-			}
-			.dropdown-toggle:after{
-				display: none;
-			}
-			.search-item{
-				font-size: 18px;
-				color: #8585ad;
-			}
-			.drop-item-icon{
-				color: #ff8080;
-			}
-			.sidenav {
-			  height: 100%;
-			  width: 0;
-			  position: fixed;
-			  z-index: 1;
-			  top: 0;
-			  right: 0;
-			  background-color: #8585ad;
-			  overflow-x: hidden;
-			  transition: 0.5s;
-			  padding-top: 60px;
-			}
-
-			.sidenav a {
-			  padding: 8px 8px 8px 32px;
-			  text-decoration: none;
-			  font-size: 25px;
-			  color: #818181;
-			  display: block;
-			  transition: 0.3s;
-			}
-
-			.sidenav a:hover {
-			  color: #f1f1f1;
-			}
-
-			.sidenav .closebtn {
-			  position: absolute;
-			  top: 0;
-			  right: 80%;
-			  font-size: 36px;
-			  margin-left: 50px;
-			}
-
-		</style>
-		<script>
-			function openNav() {
-			  document.getElementById("mySidenav").style.width = "250px";
-			}
-
-			function closeNav() {
-			  document.getElementById("mySidenav").style.width = "0";
-			}
-		</script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=<api_key>&libraries=places&callback=initMap" async defer></script> -->
+        <link rel="stylesheet" href="./css/all.css">
+        <link rel="stylesheet" href="./css/cts_style.css">
+        <script src="js/cts_app.js"></script>
+        <script src="js/cts_controller.js"></script>
+        <script src="js/cts_service.js"></script>
 	</head>
-	<body>
-		<div class="container-fluid">
-			<div class="row main-title-part">
-				<div class="col-lg-9 page-title">
-					<i class="fas fa-bezier-curve title-component"></i>
-					<div class="title-component">CTS map</div>
-				</div>
-				<div class="col-lg-2">
-					<div class="col-lg-12 menu-item">
-						<div class="fas fa-search dropdown-toggle menu-link" href="#" data-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item search-item" href="#" onclick="openNav()">
-									<div class="title-component title-icon-margin">
-										<i class="fas fa-map-pin drop-item-icon" style="margin-right: 10px;"></i>
-									</div>
-									<div class="title-component">Search by coordinates</div>
-								</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item search-item" href="#">
-									<div class="title-component title-icon-margin">
-										<i class="fas fa-map-marked-alt drop-item-icon" style="margin-right: 10px;"></i>
-									</div>
-									<div class="title-component">Search by place name</div>
-								</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item search-item" href="#">
-									<div class="title-component title-icon-margin">
-										<i class="fas fa-map-marker-alt drop-item-icon"></i>
-									</div>
-									<div class="title-component">Marker search</div>
-								</a>
-							</div>
-						</div>
-						<a class="menu-link" href="#">
-							<i class="fas fa-sync-alt"></i>
-						</a>
-						<a class="menu-link" href="#">
-							<i class="far fa-times-circle"></i>
-						</a>
-						<a href="#">
-							<i class="fab fa-elementor"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="container-fluid map-part">
-			<div class="row">
-				<div class="col-lg-12">
-					<div style="height: 800px; width: 100%; border: 1px solid #ffff00; border-radius: 25px;">
-					</div>
-				</div>
-				<div id="mySidenav" class="sidenav">
-					<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-				</div>
-			</div>
-		</div>
+	<body ng-app="ctsApp">
+        <div class="container-fluid">
+            <div class="row main-title-part">
+                <div class="col-lg-9 page-title">
+                    <i class="fas fa-bezier-curve title-component"></i>
+                    <div class="title-component">CTS map</div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="col-lg-12 menu-item" >
+                        <span ng-controller="search_options">
+                            <div class="fas fa-search dropdown-toggle menu-link" href="#" data-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" ng-click="openCoordSearch()">
+                                        <div class="title-component title-icon-margin">
+                                            <i class="fas fa-map-pin drop-item-icon" style="margin-right: 10px;"></i>
+                                        </div>
+                                        <div class="title-component">Search by coordinates</div>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" ng-click="openPlaceSearch()">
+                                        <div class="title-component title-icon-margin">
+                                            <i class="fas fa-map-marked-alt drop-item-icon" style="margin-right: 10px;"></i>
+                                        </div>
+                                        <div class="title-component">Search by place name</div>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" ng-click="openMarkerSearch()">
+                                        <div class="title-component title-icon-margin">
+                                            <i class="fas fa-map-marker-alt drop-item-icon"></i>
+                                        </div>
+                                        <div class="title-component">Marker search</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="control_panel" class="sidenav">
+                                <a href="javascript:void(0)" class="closebtn" ng-click="closePanel()">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                                <div id="coordinate_search" class="container-fluid controlPanel">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Search&nbsp;by coordinate</h5>
+                                                <p>
+                                                    <label for="lat">Latitude</label>
+                                                    <input id="lat" class="form-control" type="text" name="lat" value=""/>
+                                                </p>
+                                                <p>
+                                                    <label for="lon">Longitude</label>
+                                                    <input id="lon" class="form-control" type="text" name="lon" value=""/>
+                                                </p>
+                                                <p>
+                                                    <input id="coord_search_btn" class="btn btn-outline-primary" type="button" value="Set Coordinate">
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="place_search" class="container-fluid controlPanel">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Search&nbsp;by location&nbsp;name</h5>
+                                                <p>
+                                                    <label for="place">Search</label>
+                                                    <input id="place" class="form-control" type="text">
+                                                </p>
+                                                <p>
+                                                    <input class="btn btn-outline-primary" type="button" value="Search Location" />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="marker_search" class="container-fluid controlPanel">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Search&nbsp;by marker</h5>
+                                                <p>
+                                                    <div class="">
+                                                        <label for="radius">Radius(m):</label>
+                                                    </div>
+                                                    <div class="">
+                                                        <input id="radius" class="form-control" type="text"/>
+                                                    </div>
+                                                </p>
+                                                <p>
+                                                    <label class="form-check-label">
+                                                        <input type="checkbox" checked data-toggle="toggle">Departure times
+                                                    </label>
+                                                </p>
+                                                    <label for="marker" class="form-check-label">
+                                                        <input id="marker" type="checkbox" checked data-toggle="toggle">Point selection
+                                                    </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                        <span ng-controller="countries">
+                            <div class="fas fa-globe dropdown-toggle menu-link" data-toggle="dropdown" id="dropdownCountryLink" aria-haspopup="true" aria-expanded="false">
+                                <div class="dropdown-menu country-menu" aria-labelledby="dropdownCountryLink">
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" >
+                                        <div class="title-component">Budapest</div>
+                                    </a>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" >
+                                        <div class="title-component">Wien</div>
+                                    </a>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" >
+                                        <div class="title-component">Arlington</div>
+                                    </a>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" >
+                                        <div class="title-component">Arlington</div>
+                                    </a>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" >
+                                        <div class="title-component">Arlington</div>
+                                    </a>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" >
+                                        <div class="title-component">Arlington</div>
+                                    </a>
+                                    <a class="dropdown-item search-item" href="javascript:void(0)" >
+                                        <div class="title-component">Arlington</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </span>
+                        <a class="menu-link" href="#">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
+                        <a class="menu-link" href="#">
+                            <i class="far fa-times-circle"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-elementor"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid map-part">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div style="height: 800px; width: 100%; border: 1px solid #ffff00; border-radius: 25px;">
+                    </div>
+                </div>
+            </div>
+        </div>
 	</body>
 </html>

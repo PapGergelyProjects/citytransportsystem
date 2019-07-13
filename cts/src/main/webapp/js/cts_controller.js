@@ -1,3 +1,7 @@
+function getById(elemName){
+	return document.getElementById(elemName);
+}
+
 
 ctsApp.controller('mapInit', function($rootScope, $scope, $window, click_radius){
 	$window.initMap = function(){
@@ -21,4 +25,40 @@ ctsApp.controller('mapInit', function($rootScope, $scope, $window, click_radius)
 		$window.map = map;
 		$window.searchBox = searchBox;
 	}
+});
+
+ctsApp.controller('search_options', function($scope){
+
+    var controPanel = getById("control_panel");
+
+    $scope.openCoordSearch = function(){
+        controPanel.style.width = "350px";
+        controPanel.style.height = "40%";
+        getById('coordinate_search').style.display="block";
+    }
+
+    $scope.openPlaceSearch = function(){
+        controPanel.style.width = "350px";
+        controPanel.style.height = "30%";
+        getById('place_search').style.display="block";
+    }
+
+    $scope.openMarkerSearch = function(){
+        controPanel.style.width = "350px";
+        controPanel.style.height = "40%";
+        getById('marker_search').style.display="block";
+    }
+
+    $scope.closePanel = function(){
+        controPanel.style.width = "0";
+        var controlPanels = document.getElementsByClassName('controlPanel');
+        for(var i=0; i<controlPanels.length; i++){
+            controlPanels[i].style.display="none";
+        }
+    }
+
+});
+
+ctsApp.controller('countries', function($scope){
+
 });
