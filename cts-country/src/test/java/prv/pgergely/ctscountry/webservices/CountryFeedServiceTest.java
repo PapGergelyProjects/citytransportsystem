@@ -20,7 +20,7 @@ import prv.pgergely.ctscountry.domain.SwaggerFeed;
 import prv.pgergely.ctscountry.domain.SwaggerFeed.Feeds;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CountryServiceTest {
+public class CountryFeedServiceTest {
 	
 	@LocalServerPort
 	private int port;
@@ -53,14 +53,14 @@ public class CountryServiceTest {
 	@Test
 	@DisplayName("Greet test")
 	public void testGreet() {
-		ResponseEntity<String> ent = temp.getForEntity("http://localhost:"+port+"/greet",String.class);
+		ResponseEntity<String> ent = temp.getForEntity("http://localhost:"+port+"/transit-feed/greet",String.class);
 		assertEquals("Test Works", ent.getBody());
 	}
 	
 	@Test
 	@DisplayName("GetFeed test with id 415")
 	public void testGetFeed() throws Exception {
-		String url = "http://localhost:"+port+"/get_feed/"+415;
+		String url = "http://localhost:"+port+"/transit-feed/get_feed/"+415;
 		ResponseEntity<Feeds> resp = temp.getForEntity(url, Feeds.class);
 		Feeds feed = resp.getBody();
 		feed.latest.ts=0;
