@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import prv.pgergely.cts.common.CommonComponents;
 
 @SpringBootApplication
-@ComponentScan(basePackageClasses=CommonComponents.class)
+@ComponentScan(basePackageClasses= {CommonComponents.class, ApplicationComponents.class})
 public class ApplicationCts extends SpringBootServletInitializer {
 	
     @Override
