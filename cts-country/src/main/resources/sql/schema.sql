@@ -1,1 +1,1 @@
-SET SEARCH_PATH TO nuts_transit_feed;
+SET SEARCH_PATH TO cts_transit_feed;

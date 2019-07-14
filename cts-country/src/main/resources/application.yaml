@@ -2,7 +2,7 @@ spring:
   primary-datasource:
     driver-class-name: org.postgresql.Driver 
     jdbcUrl: jdbc:postgresql://localhost:5432/sandbox
-    schema: classpath:sql/schema.sql
+    schema: cts_transit_feed #classpath:sql/schema.sql
     username: postgres
     password: home
     separator: ^;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import prv.pgergely.ctscountry.domain.SwaggerFeed.Feeds;
+import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.services.FeedSource;
 
 @RestController

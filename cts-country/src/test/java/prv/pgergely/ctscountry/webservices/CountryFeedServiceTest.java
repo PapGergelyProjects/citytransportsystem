@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 
 import prv.pgergely.ctscountry.ApplicationCountryComponents;
 import prv.pgergely.ctscountry.ApplicationCtsCountry;
-import prv.pgergely.ctscountry.domain.SwaggerFeed;
-import prv.pgergely.ctscountry.domain.SwaggerFeed.Feeds;
+import prv.pgergely.ctscountry.domain.TransitFeedJson;
+import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CountryFeedServiceTest {
@@ -36,17 +36,17 @@ public class CountryFeedServiceTest {
 		testFeed.id = "vermont-translines/566";
 		testFeed.ty = "gtfs";
 		testFeed.t = "Vermont Translines GTFS";
-		testFeed.l = new SwaggerFeed.Location();
+		testFeed.l = new TransitFeedJson.Location();
 		testFeed.l.id=415;
 		testFeed.l.pid=35;
 		testFeed.l.t="Vermont, USA";
 		testFeed.l.n="Vermont";
 		testFeed.l.lat=44.558803;
 		testFeed.l.lng=-72.577841;
-		testFeed.u= new SwaggerFeed.FeedURL();
+		testFeed.u= new TransitFeedJson.FeedURL();
 		testFeed.u.i="http://vermont-gtfs.org/";
 		testFeed.u.d="http://data.trilliumtransit.com/gtfs/vttranslines-vt-us/vttranslines-vt-us.zip";
-		testFeed.latest = new SwaggerFeed.Latest();
+		testFeed.latest = new TransitFeedJson.Latest();
 		testFeed.latest.ts=0;
 	}
 	

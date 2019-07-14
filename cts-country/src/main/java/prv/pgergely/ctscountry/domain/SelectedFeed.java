@@ -1,7 +1,5 @@
 package prv.pgergely.ctscountry.domain;
 
-
-
 /**
  * 
  * @author Pap Gergely

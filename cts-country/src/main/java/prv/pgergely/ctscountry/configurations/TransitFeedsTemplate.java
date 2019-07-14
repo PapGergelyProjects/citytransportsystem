@@ -12,18 +12,21 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
-import prv.pgergely.ctscountry.domain.SwaggerFeed;
+import prv.pgergely.ctscountry.domain.TransitFeedJson;
 import prv.pgergely.ctscountry.utils.TransitFeedTemplateInterceptor;
+import prv.pgergely.ctscountry.utils.TransitFeedZipFileInterceptor;
 
 @Configuration
 public class TransitFeedsTemplate {
 	
-	public static final String TRANSITFEED_TEMPLATE = "TRANSITFEED_TEMPLATE"; 
+	public static final String TRANSITFEED_TEMPLATE = "TRANSITFEED_TEMPLATE";
+	public static final String TRANSITFEED_ZIFILE_TEMPLATE = "TRANSITFEED_ZIFILE_TEMPLATE";
 	
 	@Bean(TRANSITFEED_TEMPLATE)
 	public RestTemplate transitTemplate() {
@@ -32,5 +35,14 @@ public class TransitFeedsTemplate {
 		
 		return template;
 	}
-
+	
+	@Bean(TRANSITFEED_ZIFILE_TEMPLATE)
+	public RestTemplate getFileTemplate() {
+		RestTemplate template = new RestTemplate();
+		template.setInterceptors(Arrays.asList(new TransitFeedZipFileInterceptor()));
+		template.getMessageConverters().add(new ByteArrayHttpMessageConverter());
+		
+		return template;
+	}
+	
 }

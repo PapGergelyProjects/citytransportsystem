@@ -31,7 +31,7 @@ INVALIDINPUT - A request parameter was invalid.
  * @author Pap Gergely
  *
  */
-public class SwaggerLocation {
+public class TransitFeedLocationJson {
 	
 	public String status;
 	public long ts;

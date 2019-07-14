@@ -48,7 +48,7 @@ INVALIDINPUT - A request parameter was invalid.
  * @author Pap Gergely
  *
  */
-public class SwaggerFeed {
+public class TransitFeedJson {
 
     public String status;
     public long ts;
