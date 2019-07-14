@@ -2,8 +2,7 @@ function getById(elemName){
 	return document.getElementById(elemName);
 }
 
-
-ctsApp.controller('mapInit', function($rootScope, $scope, $window, click_radius){
+ctsApp.controller('mapInit', function($rootScope, $scope, $window){ //click_radius
 	$window.initMap = function(){
 		var map = new google.maps.Map(document.getElementById('google_map'), {
 			center:new google.maps.LatLng(47.497912, 19.040235),
@@ -18,9 +17,9 @@ ctsApp.controller('mapInit', function($rootScope, $scope, $window, click_radius)
 		
 		var searchBox = new google.maps.places.SearchBox(getById('place'));
 		
-		var mapEventLst = google.maps.event.addListener(map, 'click', function(event){
-			click_radius.addClickLst(event, $rootScope);
-		});
+		// var mapEventLst = google.maps.event.addListener(map, 'click', function(event){
+		// 	click_radius.addClickLst(event, $rootScope);
+		// });
 		
 		$window.map = map;
 		$window.searchBox = searchBox;

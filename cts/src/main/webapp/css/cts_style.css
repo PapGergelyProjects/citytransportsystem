@@ -58,6 +58,12 @@ a:hover{
 .map-part{
     margin-top: 20px;
 }
+.google-map{
+    height: 800px; 
+    width: 100%; 
+    border: 2px solid #ffff00; 
+    border-radius: 15px;
+}
 .controlPanel{
     display: none;
     text-align: left;
