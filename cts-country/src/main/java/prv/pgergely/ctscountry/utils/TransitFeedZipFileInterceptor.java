@@ -14,19 +14,20 @@ public class TransitFeedZipFileInterceptor implements ClientHttpRequestIntercept
 
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-		request.getHeaders().set("X-Alternate-FileName", "");
-		List<String> contents = request.getHeaders().get("Content-Disposition");
+		ClientHttpResponse response = execution.execute(request, body);
+		response.getHeaders().set("X-Alternate-FileName", "");
+		List<String> contents = response.getHeaders().get("Content-Disposition");
     	if(contents != null && !contents.isEmpty()){
     		String dispos = contents.get(0);
     		Matcher match = Pattern.compile("(?<filename>filename\\=\\\".*\\\")").matcher(dispos);
     		while(match.find()){
     			String[] fileWithExtension = match.group("filename").split("\\=");
     			String fileName = fileWithExtension[1].replaceAll("\"", "");
-    			request.getHeaders().set("X-Alternate-FileName", fileName);
+    			response.getHeaders().set("X-Alternate-FileName", fileName);
     			break;
     		}
     	}
 		
-		return execution.execute(request, body);
+		return response;
 	}
 }
