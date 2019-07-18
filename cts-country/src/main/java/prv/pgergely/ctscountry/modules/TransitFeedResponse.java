@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
 
@@ -23,15 +24,15 @@ public class TransitFeedResponse {
 	@Qualifier(TransitFeedsTemplate.TRANSITFEED_TEMPLATE)
 	private RestTemplate template;
 	
-	@Value("${transit_feed_key}")
-	private String transitApiKey;
+	@Autowired
+	private CtsConfig config;
 	
 	public ResponseEntity<TransitFeedJson> getFeed(int page) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
-		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&page=%d&limit=100&type=gtfs", transitApiKey, page);
+		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&page=%d&limit=100&type=gtfs", config.getTransitFeedKey(), page);
 		
 		return template.exchange(url, HttpMethod.GET, entity, TransitFeedJson.class);
 	}
@@ -41,7 +42,7 @@ public class TransitFeedResponse {
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
-		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&location=%d&limit=100&type=gtfs", transitApiKey, feedId);
+		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&location=%d&limit=100&type=gtfs", config.getTransitFeedKey(), feedId);
 		
 		return template.exchange(url, HttpMethod.GET, entity, TransitFeedJson.class);
 	}

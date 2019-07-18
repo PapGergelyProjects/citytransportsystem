@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.commsystem.HttpCommSystem;
+import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.FeedURL;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
@@ -42,8 +43,8 @@ import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 @Component
 public class FeedVersionHandler implements VersionHandlerThread {
 	
-	@Value("${temp_directory}")
-	private String tempFolder;
+	@Autowired
+	private CtsConfig config;
 	
 	@Autowired
 	private HttpCommSystem http;
@@ -111,7 +112,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
         logger.info("Download file from: "+urlAddress);
         try(InputStream in = new ByteArrayInputStream(zipFile)){
         	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
-        	String uri = tempFolder+"/"+(fileName.isEmpty() ? archiveName : fileName);
+        	String uri = config.getTempDirectory()+"/"+(fileName.isEmpty() ? archiveName : fileName);
             Files.copy(in, Paths.get(uri+".tmp"), StandardCopyOption.REPLACE_EXISTING);
             renameFile(uri+".tmp", uri);
         }catch(MalformedURLException m){

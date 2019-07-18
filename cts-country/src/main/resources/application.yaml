@@ -6,3 +6,7 @@ spring:
     username: postgres
     password: home
     separator: ^;
+---
+config:
+  transitFeedKey: 
+  tempDirectory:  E:/Development/temp_downloads/
