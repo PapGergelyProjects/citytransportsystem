@@ -19,6 +19,8 @@ public class HttpCommSystem {
 	
 	private final Logger LOGGER = LogManager.getLogger(HttpCommSystem.class);
 	
+	public HttpCommSystem() {}
+	
 	public String getRequest(String urlAddress) throws IOException{
 		StringBuilder sb = new StringBuilder();
 		HttpURLConnection connSec = establishConnection(urlAddress);

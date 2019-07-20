@@ -1,0 +1,1 @@
+var ctsApp = angular.module("ctsApp", []);
