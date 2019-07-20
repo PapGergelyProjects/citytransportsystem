@@ -47,9 +47,6 @@ public class FeedVersionHandler implements VersionHandlerThread {
 	private CtsConfig config;
 	
 	@Autowired
-	private HttpCommSystem http;
-	
-	@Autowired
 	private FeedVersionServiceImpl feedVsSrv;
 	
 	@Autowired
