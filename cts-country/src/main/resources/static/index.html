@@ -7,10 +7,10 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
 		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-        <link rel="stylesheet" href="./css/all.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+        <!-- <link rel="stylesheet" href="./css/all.css"/> -->
         <link rel="stylesheet" href="./css/style.css"/>
         <script src="./js/country_app.js"></script>
         <script src="./js/country_controller.js"></script>
@@ -31,127 +31,40 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-lg-10">
-                                    <input class="form-control" type="text" placeholder="Search feed"/>
+                                    <input class="form-control" type="text" ng-model="search" placeholder="Search feed"/>
                                 </div>
                                 <div class="col-lg-2">
                                     <label>
                                         Only registered
-                                        <input type="checkbox"/>
+                                        <input type="checkbox" checked data-toggle="toggle">
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <ul class="list-group list-shape">
-                            <li class="list-group-item list-element-shape" ng-repeat="feeds in getAllFeeds | filter:search">
+                            <li class="list-group-item list-element-shape" ng-repeat="feeds in getAllFeeds() | filter:search">
                                 <div class="row list-col-shape">
                                     <div class="col-lg-1">
-                                        <input type="checkbox" data-toggle="toggle">
+                                        <input id="feed_{{feeds.id}}" class="feed_class" type="checkbox" data-toggle="toggle">
                                     </div>
                                     <div class="col-lg-4">
-                                        <div class="list-text-format">{{feed.}}</div>
+                                        <div class="list-text-format">{{feeds.title}}</div>
                                     </div>
                                     <div class="col-lg-2">
-                                        <div class="list-text-format">2019-07-19</div>
+                                        <div class="list-text-format">{{feeds.feed.latest}}</div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="row">
-                                            <div id="noreg_" class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
+                                            <div id="noreg_{{feeds.id}}" class="col-lg-3 list-text-format list-cell-format status-noreg">
                                                 Not registered
                                             </div>
-                                            <div id="" class="col-lg-3 list-text-format list-cell-format status-inactive-error">
+                                            <div id="error_{{feeds.id}}" class="col-lg-3 list-text-format list-cell-format status-inactive-error">
                                                 Out of order
                                             </div>
-                                            <div id="" class="col-lg-3 list-text-format list-cell-format status-inprogress">
+                                            <div id="inprog_{{feeds.id}}" class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
                                                 Update in progress
                                             </div>
-                                            <div id="" class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
-                                                Ready to use
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item list-element-shape">
-                                <div class="row list-col-shape">
-                                    <div class="col-lg-1">
-                                        <input type="checkbox" data-toggle="toggle">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="list-text-format">First col about country name, etc.</div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <div class="list-text-format">2019-07-19</div>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <div class="row">
-                                            <div class="col-lg-3 list-text-format list-cell-format status-noreg">
-                                                Not registered
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-error">
-                                                Out of order
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
-                                                Update in progress
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
-                                                Ready to use
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item list-element-shape">
-                                <div class="row list-col-shape">
-                                    <div class="col-lg-1">
-                                        <input type="checkbox" data-toggle="toggle">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="list-text-format">First col about country name, etc.</div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <div class="list-text-format">2019-07-19</div>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <div class="row">
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
-                                                Not registered
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-error">
-                                                Out of order
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
-                                                Update in progress
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-ready">
-                                                Ready to use
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item list-element-shape">
-                                <div class="row list-col-shape">
-                                    <div class="col-lg-1">
-                                        <input type="checkbox" data-toggle="toggle">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="list-text-format">First col about country name, etc.</div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <div class="list-text-format">2019-07-19</div>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <div class="row">
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
-                                                Not registered
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-error">
-                                                Out of order
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
-                                                Update in progress
-                                            </div>
-                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
+                                            <div id="inact_{{feeds.id}}" class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
                                                 Ready to use
                                             </div>
                                         </div>

@@ -39,13 +39,14 @@ public class TransitFeedLocationJson {
 	
 	@JsonProperty("ts")
 	public long timestamp;
+	
 	public Results results;
 	
-	public class Results{
+	public static class Results{
 		public Locations[] locations;
 	}
 	
-	public class Locations{
+	public static class Locations{
 		public long id;
 		
 		@JsonProperty("pid")

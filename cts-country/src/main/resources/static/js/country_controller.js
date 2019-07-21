@@ -8,5 +8,7 @@ countryApp.controller('feed_list', function($scope, $http, feeds){
         });
     }
 
-    $scope.getAllFeeds = feeds;
+    $scope.getAllFeeds = function(){
+        return feeds;
+    };
 });

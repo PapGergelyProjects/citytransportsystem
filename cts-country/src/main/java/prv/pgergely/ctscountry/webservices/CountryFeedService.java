@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import prv.pgergely.ctscountry.domain.FeedLocationsJson;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.services.FeedSource;
+import prv.pgergely.ctscountry.services.TransitFeedLocationSource;
 
 @RestController
 @RequestMapping(path="/transit-feed")
@@ -22,17 +24,20 @@ public class CountryFeedService {
 	@Autowired
 	private FeedSource src;
 	
+	@Autowired
+	private TransitFeedLocationSource locationSrc;
+	
 	@GetMapping(path="/greet")
 	public String greet() {
 		return "Test Works";
 	}
 	
 	@GetMapping(path="/getFeeds", produces = "application/json")
-	public List<Feeds> getFeeds(){
+	public List<FeedLocationsJson> getFeeds(){
 		try {
-			return src.getFeeds();
+			return locationSrc.getLocations();
 		} catch (IOException e) {
-			return new ArrayList<Feeds>();
+			return new ArrayList<FeedLocationsJson>();
 		}
 	}
 	
