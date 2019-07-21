@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -14,12 +15,15 @@ import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.interfaces.FixedThreadEngine;
+import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 import prv.pgergely.ctscountry.modules.FeedVersionHandler;
 import prv.pgergely.ctscountry.services.DatabaseInit;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, ApplicationCountryComponents.class})
 public class ApplicationCtsCountry extends SpringBootServletInitializer {
+	
+	
 	
 	@Autowired
 	private DatabaseInit initDb;
@@ -40,6 +44,7 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer {
 	}
 	
 	@Bean
+	@Qualifier(TemplateQualifier.DEFAULT_TEMPLATE)
 	public RestTemplate getTemplate() {
 		return new RestTemplate();
 	}

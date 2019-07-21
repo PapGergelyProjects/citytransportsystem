@@ -14,12 +14,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
+import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
 @Component
 public class TransitFeedZipFileContent {
 	
 	@Autowired
-	@Qualifier(TransitFeedsTemplate.TRANSITFEED_ZIFILE_TEMPLATE)
+	@Qualifier(TemplateQualifier.TRANSITFEED_ZIFILE_TEMPLATE)
 	private RestTemplate template;
 	
 	@Value("${temp_directory}")

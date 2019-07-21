@@ -16,13 +16,19 @@ import org.springframework.web.client.RestTemplate;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
+import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
+import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
 @Component
 public class TransitFeedResponse {
 	
 	@Autowired
-	@Qualifier(TransitFeedsTemplate.TRANSITFEED_TEMPLATE)
+	@Qualifier(TemplateQualifier.TRANSITFEED_TEMPLATE)
 	private RestTemplate template;
+	
+	@Autowired
+	@Qualifier(TemplateQualifier.DEFAULT_TEMPLATE)
+	private RestTemplate defaultTemplate;
 	
 	@Autowired
 	private CtsConfig config;
@@ -46,5 +52,15 @@ public class TransitFeedResponse {
 		
 		return template.exchange(url, HttpMethod.GET, entity, TransitFeedJson.class);
 	}
+	
+	public ResponseEntity<TransitFeedLocationJson> getLocations(){
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
+		String url = String.format("http://api.transitfeeds.com/v1/getLocations?key=%s", config.getTransitFeedKey());
+		
+		return defaultTemplate.exchange(url, HttpMethod.GET, entity, TransitFeedLocationJson.class);
+	} 
 	
 }

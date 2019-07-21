@@ -27,7 +27,7 @@ public class CountryFeedService {
 		return "Test Works";
 	}
 	
-	@GetMapping(path="/get_feeds", produces = "application/json")
+	@GetMapping(path="/getFeeds", produces = "application/json")
 	public List<Feeds> getFeeds(){
 		try {
 			return src.getFeeds();
@@ -36,7 +36,7 @@ public class CountryFeedService {
 		}
 	}
 	
-	@GetMapping(path="/get_feed/{feedId}", produces = "application/json")
+	@GetMapping(path="/getFeed/{feedId}", produces = "application/json")
 	public Feeds getFeed(@PathVariable Long feedId) {
 		try {
 			return src.getFeed(feedId);

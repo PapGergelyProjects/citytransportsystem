@@ -19,16 +19,14 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
+import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 import prv.pgergely.ctscountry.utils.TransitFeedTemplateInterceptor;
 import prv.pgergely.ctscountry.utils.TransitFeedZipFileInterceptor;
 
 @Configuration
 public class TransitFeedsTemplate {
 	
-	public static final String TRANSITFEED_TEMPLATE = "TRANSITFEED_TEMPLATE";
-	public static final String TRANSITFEED_ZIFILE_TEMPLATE = "TRANSITFEED_ZIFILE_TEMPLATE";
-	
-	@Bean(TRANSITFEED_TEMPLATE)
+	@Bean(TemplateQualifier.TRANSITFEED_TEMPLATE)
 	public RestTemplate transitTemplate() {
 		RestTemplate template = new RestTemplate();
 		template.setInterceptors(Arrays.asList(new TransitFeedTemplateInterceptor()));
@@ -36,7 +34,7 @@ public class TransitFeedsTemplate {
 		return template;
 	}
 	
-	@Bean(TRANSITFEED_ZIFILE_TEMPLATE)
+	@Bean(TemplateQualifier.TRANSITFEED_ZIFILE_TEMPLATE)
 	public RestTemplate getFileTemplate() {
 		RestTemplate template = new RestTemplate();
 		template.setInterceptors(Arrays.asList(new TransitFeedZipFileInterceptor()));

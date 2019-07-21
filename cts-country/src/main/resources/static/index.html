@@ -10,76 +10,13 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
 		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-        <link rel="stylesheet" href="./css/all.css">
-        <style>
-			.main-title-part{
-				border: 1px solid #8585ad;
-				margin-top: 15px;
-				background-color: #8585ad;
-				position: relative;
-			}
-			.page-title{
-				text-align: left; 
-				font-size: 24px; 
-				font-weight: bold;
-				color: white;
-				margin-left: 10px;
-			}
-            .list-shape{
-                margin-top: 20px;
-                border: 2px solid black;
-                border-radius: 10px;
-                height: 600px;
-                overflow: hidden;
-                overflow-y: scroll;
-            }
-            .list-element-shape{
-                margin-top: 15px;
-                text-align: center;
-                padding: 0px;
-            }
-            .list-col-shape{
-                height: 100%;
-            }
-            .list-text-format{
-                padding: 15px;
-            }
-            .list-cell-format{
-                border: 1px solid #cccccc;
-                box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-                cursor:pointer;
-                font-weight: bold;
-            }
-            .status-inactive{
-                background-color: #a6a6a6;
-            }
-            .status-inactive-noreg{
-                background-color: #0047b3;
-            }
-            .status-inactive-inprogress{
-                background-color: #995c00;
-            }
-            .status-inactive-ready{
-                background-color: #196619;
-            }
-            .status-inactive-error{
-                background-color: #991f00;
-            }
-            .status-inprogress{
-                background-color: #ffcc00;
-            }
-            .status-noreg{
-                background-color: #1a75ff;
-            }
-            .status-ready{
-                background-color: #33cc33;
-            }
-            .status-error{
-                background-color: #ff3300;
-            }
-        </style>
+        <link rel="stylesheet" href="./css/all.css"/>
+        <link rel="stylesheet" href="./css/style.css"/>
+        <script src="./js/country_app.js"></script>
+        <script src="./js/country_controller.js"></script>
+        <script src="./js/country_service.js"></script>
     </head>
-    <body>
+    <body ng-app="countryApp">
         <div class="container-fluid">
             <div class="row main-title-part">
                 <div class="col-lg-7">
@@ -89,87 +26,140 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-group list-shape">
-                        <li class="list-group-item list-element-shape">
-                            <div class="row list-col-shape">
-                                <div class="col-lg-4">
-                                    <div class="list-text-format">First col about country name, etc.</div>
+                <div class="col-lg-7" ng-controller="feed_list" ng-init="getFeeds()">
+                    <div class="card card-shape">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="text" placeholder="Search feed"/>
                                 </div>
-                                <div class="col-lg-3">
-                                    <div class="list-text-format">2019-07-19</div>
+                                <div class="col-lg-2">
+                                    <label>
+                                        Only registered
+                                        <input type="checkbox"/>
+                                    </label>
                                 </div>
-                                <div class="col-lg-5">
-                                    <div class="row">
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
-                                            Not registered
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-error">
-                                            Out of order
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inprogress">
-                                            Update in progress
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
-                                            Ready to use
+                            </div>
+                        </div>
+                        <ul class="list-group list-shape">
+                            <li class="list-group-item list-element-shape" ng-repeat="feeds in getAllFeeds | filter:search">
+                                <div class="row list-col-shape">
+                                    <div class="col-lg-1">
+                                        <input type="checkbox" data-toggle="toggle">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="list-text-format">{{feed.}}</div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="list-text-format">2019-07-19</div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div id="noreg_" class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
+                                                Not registered
+                                            </div>
+                                            <div id="" class="col-lg-3 list-text-format list-cell-format status-inactive-error">
+                                                Out of order
+                                            </div>
+                                            <div id="" class="col-lg-3 list-text-format list-cell-format status-inprogress">
+                                                Update in progress
+                                            </div>
+                                            <div id="" class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
+                                                Ready to use
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item list-element-shape">
-                            <div class="row list-col-shape">
-                                <div class="col-lg-4">
-                                    <div class="list-text-format">First col about country name, etc.</div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="list-text-format">2019-07-19</div>
-                                </div>
-                                <div class="col-lg-5">
-                                    <div class="row">
-                                        <div class="col-lg-3 list-text-format list-cell-format status-noreg">
-                                            Not registered
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-error">
-                                            Out of order
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
-                                            Update in progress
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
-                                            Ready to use
+                            </li>
+                            <li class="list-group-item list-element-shape">
+                                <div class="row list-col-shape">
+                                    <div class="col-lg-1">
+                                        <input type="checkbox" data-toggle="toggle">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="list-text-format">First col about country name, etc.</div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="list-text-format">2019-07-19</div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-3 list-text-format list-cell-format status-noreg">
+                                                Not registered
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-error">
+                                                Out of order
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
+                                                Update in progress
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
+                                                Ready to use
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item list-element-shape">
-                            <div class="row list-col-shape">
-                                <div class="col-lg-4">
-                                    <div class="list-text-format">First col about country name, etc.</div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="list-text-format">2019-07-19</div>
-                                </div>
-                                <div class="col-lg-5">
-                                    <div class="row">
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
-                                            Not registered
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-error">
-                                            Out of order
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
-                                            Update in progress
-                                        </div>
-                                        <div class="col-lg-3 list-text-format list-cell-format status-ready">
-                                            Ready to use
+                            </li>
+                            <li class="list-group-item list-element-shape">
+                                <div class="row list-col-shape">
+                                    <div class="col-lg-1">
+                                        <input type="checkbox" data-toggle="toggle">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="list-text-format">First col about country name, etc.</div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="list-text-format">2019-07-19</div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
+                                                Not registered
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-error">
+                                                Out of order
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
+                                                Update in progress
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-ready">
+                                                Ready to use
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                            <li class="list-group-item list-element-shape">
+                                <div class="row list-col-shape">
+                                    <div class="col-lg-1">
+                                        <input type="checkbox" data-toggle="toggle">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="list-text-format">First col about country name, etc.</div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="list-text-format">2019-07-19</div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-noreg">
+                                                Not registered
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-error">
+                                                Out of order
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-inprogress">
+                                                Update in progress
+                                            </div>
+                                            <div class="col-lg-3 list-text-format list-cell-format status-inactive-ready">
+                                                Ready to use
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

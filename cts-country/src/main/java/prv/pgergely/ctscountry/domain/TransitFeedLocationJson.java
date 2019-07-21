@@ -1,5 +1,7 @@
 package prv.pgergely.ctscountry.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /*
 GetLocationsResponse {
 status (string, optional): Indicates the success status of this request. The following values are possible:
@@ -34,7 +36,9 @@ INVALIDINPUT - A request parameter was invalid.
 public class TransitFeedLocationJson {
 	
 	public String status;
-	public long ts;
+	
+	@JsonProperty("ts")
+	public long timestamp;
 	public Results results;
 	
 	public class Results{
@@ -43,9 +47,16 @@ public class TransitFeedLocationJson {
 	
 	public class Locations{
 		public long id;
-		public long pid;
-		public String t;
-		public String n;
+		
+		@JsonProperty("pid")
+		public long parentId;
+		
+		@JsonProperty("t")
+		public String rawLocationName;
+		
+		@JsonProperty("n")
+		public String locationName;
+		
 		public double lat;
 		public double lng;
 	}
