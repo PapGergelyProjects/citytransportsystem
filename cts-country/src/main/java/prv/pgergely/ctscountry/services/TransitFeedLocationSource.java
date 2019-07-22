@@ -1,6 +1,8 @@
 package prv.pgergely.ctscountry.services;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,9 +43,9 @@ public class TransitFeedLocationSource {
 			json.id = loc.id;
 			json.title = loc.rawLocationName;
 			json.feed = new Feed();
-			Feeds feed = feeds.stream().filter(p -> (p.l.id == loc.id && p.u.d != null)).findFirst().orElse(new Feeds());
-			json.feed.title = feed.t;
-			json.feed.latest = feed.latest == null ? null : feed.latest.ts;
+			Feeds feed = feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null)).findFirst().orElse(new Feeds());
+			json.feed.title = feed.feedTitle;
+			json.feed.latest = feed.latest == null ? null : Instant.ofEpochMilli(feed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
 			locationList.add(json);
 		}
 		

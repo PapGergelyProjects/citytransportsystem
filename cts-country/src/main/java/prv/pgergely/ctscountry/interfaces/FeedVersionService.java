@@ -9,5 +9,5 @@ public interface FeedVersionService {
 	public void update(FeedVersion value);
 	public FeedVersion getFeedVersionById(long id);
 	public List<FeedVersion> getFeedVersions();
-	public void deletegetFeedVersion(FeedVersion value);
+	public void deleteFeedVersion(FeedVersion value);
 }

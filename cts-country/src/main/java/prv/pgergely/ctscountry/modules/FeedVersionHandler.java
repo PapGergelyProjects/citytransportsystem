@@ -80,14 +80,14 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		logger.info("Check feed versions...");
 		for (FeedVersion feedVersion : feedVers) {
 			Feeds allFeed = feed.getFeed(feedVersion.getFeedId());
-			Location location = allFeed.l;
-			FeedURL feedLink = allFeed.u;
+			Location location = allFeed.location;
+			FeedURL feedLink = allFeed.feedUrl;
 			Latest latest = allFeed.latest;
-			LocalDate verDate = Instant.ofEpochMilli(latest.ts*1000).atZone(ZoneId.systemDefault()).toLocalDate();
-			if(feedVersion.getFeedId() == allFeed.l.id && (feedVersion.getLatestVersion().isBefore(verDate) || feedVersion.isRecent())){
+			LocalDate verDate = Instant.ofEpochMilli(latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+			if(feedVersion.getFeedId() == allFeed.location.id && (feedVersion.getLatestVersion().isBefore(verDate) || feedVersion.isRecent())){
 				long feedId = location.id;
-				String title = allFeed.t;
-				String link = feedLink.d;
+				String title = allFeed.feedTitle;
+				String link = feedLink.urlDirectLink;
 				downloadLinks.put(link, feedVersion);
 				
 				FeedVersion newVersion = new FeedVersion();

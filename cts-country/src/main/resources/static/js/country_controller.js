@@ -1,5 +1,3 @@
-
-
 countryApp.controller('feed_list', function($scope, $http, feeds){
     
     $scope.getFeeds = function(){
@@ -11,4 +9,12 @@ countryApp.controller('feed_list', function($scope, $http, feeds){
     $scope.getAllFeeds = function(){
         return feeds;
     };
+    
+    $scope.checkTick = function(clickData){
+    	if(clickData.status){
+    		
+    	}else{
+    		
+    	}
+    }
 });

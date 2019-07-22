@@ -36,7 +36,7 @@ public class FeedVersionServiceImpl implements FeedVersionService {
 	}
 
 	@Override
-	public void deletegetFeedVersion(FeedVersion value) {
+	public void deleteFeedVersion(FeedVersion value) {
 		feedVsDao.deletegetFeedVersion(value);
 	}
 

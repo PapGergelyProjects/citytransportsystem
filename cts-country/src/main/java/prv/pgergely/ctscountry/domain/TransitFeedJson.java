@@ -1,5 +1,7 @@
 package prv.pgergely.ctscountry.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /*
  GetFeedsResponse {
 status (string, optional): Indicates the success status of this request. The following values are possible:
@@ -69,48 +71,68 @@ public class TransitFeedJson {
 
     public static class Feeds{
         public String id;
-        public String ty;
-        public String t;
-        public Location l;
-        public FeedURL u;
+        
+        @JsonProperty("ty")
+        public String typeOfFeed;
+        
+        @JsonProperty("t")
+        public String feedTitle;
+        
+        @JsonProperty("l")
+        public Location location;
+        
+        @JsonProperty("u")
+        public FeedURL feedUrl;
+        
         public Latest latest;
 
-        @Override
-        public String toString() {
-            return "{" + "id=" + id + ", ty=" + ty + ", t=" + t + ", l=" + l + ", u=" + u + ", latest=" + latest + '}';
-        }
+		@Override
+		public String toString() {
+			return "Feeds [id=" + id + ", typeOfFeed=" + typeOfFeed + ", feedTitle=" + feedTitle + ", location="+ location + ", feedUrl=" + feedUrl + ", latest=" + latest + "]";
+		}
     }
 
     public static class Location{
         public long id;
         public long pid;
-        public String t;
-        public String n;
+        
+        @JsonProperty("t")
+        public String rawLocationTitle;
+        
+        @JsonProperty("n")
+        public String locationTitle;
+        
         public double lat;
         public double lng;
-
-        @Override
-        public String toString() {
-            return "{id=" + id + ", pid=" + pid + ", t=" + t + ", n=" + n + ", lat=" + lat + ", lon=" + lng + '}';
-        }
-    }
-
-    public static class FeedURL{
-    	public String i;
-        public String d;
 		
         @Override
 		public String toString() {
-			return "{i=" + i + ", d=" + d + "}";
+			return "Location [id=" + id + ", pid=" + pid + ", rawLocationTitle=" + rawLocationTitle + ", locationTitle="+ locationTitle + ", lat=" + lat + ", lng=" + lng + "]";
+		}
+    }
+
+    public static class FeedURL{
+    	
+    	@JsonProperty("i")
+    	public String urlInfo;
+    	
+    	@JsonProperty("d")
+    	public String urlDirectLink;
+
+		@Override
+		public String toString() {
+			return "FeedURL [urlInfo=" + urlInfo + ", urlDirectLink=" + urlDirectLink + "]";
 		}
     }
 
     public static class Latest{
-        public long ts;
+    	
+    	@JsonProperty("ts")
+        public long timestamp;
 
         @Override
         public String toString() {
-            return "{" + "ts=" + ts + '}';
+            return "{" + "timestamp=" + timestamp + '}';
         }
         
     }

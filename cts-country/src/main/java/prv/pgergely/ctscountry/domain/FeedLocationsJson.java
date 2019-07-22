@@ -1,5 +1,7 @@
 package prv.pgergely.ctscountry.domain;
 
+import java.time.LocalDate;
+
 public class FeedLocationsJson {
 	
 	public Long id;
@@ -8,6 +10,6 @@ public class FeedLocationsJson {
 	
 	public static class Feed{
 		public String title;
-		public Long latest;
+		public LocalDate latest;
 	}
 }

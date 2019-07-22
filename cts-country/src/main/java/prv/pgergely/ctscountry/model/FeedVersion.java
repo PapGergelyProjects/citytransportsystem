@@ -1,7 +1,11 @@
 package prv.pgergely.ctscountry.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+
+import prv.pgergely.ctscountry.domain.SelectedFeed;
 
 public class FeedVersion implements Serializable{
 	
@@ -11,6 +15,16 @@ public class FeedVersion implements Serializable{
 	private LocalDate latestVersion;
 	private boolean recent;
 	private boolean newVersion;
+	
+	public FeedVersion() {}
+	
+	public FeedVersion(SelectedFeed feed, boolean isNewVersion) {
+		this.feedId = feed.id;
+		this.title = feed.title;
+		this.latestVersion = Instant.ofEpochMilli(feed.latest*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+		this.recent = isNewVersion;
+		this.newVersion = isNewVersion;
+	}
 	
 	public long getId() {
 		return id;
