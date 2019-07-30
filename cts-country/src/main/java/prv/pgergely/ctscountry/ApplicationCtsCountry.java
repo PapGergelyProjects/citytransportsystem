@@ -16,23 +16,12 @@ import org.springframework.web.client.RestTemplate;
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.interfaces.FixedThreadEngine;
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
+import prv.pgergely.ctscountry.modules.DatabaseInit;
 import prv.pgergely.ctscountry.modules.FeedVersionHandler;
-import prv.pgergely.ctscountry.services.DatabaseInit;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, ApplicationCountryComponents.class})
 public class ApplicationCtsCountry extends SpringBootServletInitializer {
-	
-	
-	
-	@Autowired
-	private DatabaseInit initDb;
-	
-	@Autowired
-	private FixedThreadEngine threadEng;
-	
-	@Autowired
-	private FeedVersionHandler versionHandler;
 	
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -49,9 +38,4 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer {
 		return new RestTemplate();
 	}
 	
-	@PostConstruct
-	public void initDatabase() {
-		initDb.init();
-		threadEng.process("VersionHandler", versionHandler);
-	}
 }
