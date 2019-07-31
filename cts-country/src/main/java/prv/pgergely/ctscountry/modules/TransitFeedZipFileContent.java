@@ -20,7 +20,7 @@ import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 public class TransitFeedZipFileContent {
 	
 	@Autowired
-	@Qualifier(TemplateQualifier.TRANSITFEED_ZIFILE_TEMPLATE)
+	@Qualifier(TemplateQualifier.TRANSITFEED_ZIPFILE_TEMPLATE)
 	private RestTemplate template;
 	
 	@Value("${temp_directory}")

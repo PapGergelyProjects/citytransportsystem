@@ -14,7 +14,7 @@
   <name>cts-country Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <properties>
-	<start-class>prv.pgergely.ctscountry.ApplicationCtsCountry</start-class>
+	<start-class>prv.pgergely.ctscountry.configuration.ApplicationCtsCountry</start-class>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>

@@ -1,4 +1,4 @@
-package prv.pgergely.ctscountry;
+package prv.pgergely.ctscountry.configurations;
 
 import javax.annotation.PostConstruct;
 
@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.interfaces.FixedThreadEngine;
+import prv.pgergely.ctscountry.ApplicationCountryComponents;
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 import prv.pgergely.ctscountry.modules.DatabaseInit;
 import prv.pgergely.ctscountry.modules.FeedVersionHandler;

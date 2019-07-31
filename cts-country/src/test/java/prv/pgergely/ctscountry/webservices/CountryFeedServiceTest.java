@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 
 import prv.pgergely.ctscountry.ApplicationCountryComponents;
-import prv.pgergely.ctscountry.ApplicationCtsCountry;
+import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 

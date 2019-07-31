@@ -34,7 +34,7 @@ public class TransitFeedsTemplate {
 		return template;
 	}
 	
-	@Bean(TemplateQualifier.TRANSITFEED_ZIFILE_TEMPLATE)
+	@Bean(TemplateQualifier.TRANSITFEED_ZIPFILE_TEMPLATE)
 	public RestTemplate getFileTemplate() {
 		RestTemplate template = new RestTemplate();
 		template.setInterceptors(Arrays.asList(new TransitFeedZipFileInterceptor()));
