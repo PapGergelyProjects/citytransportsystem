@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,11 +28,11 @@ public class CountryService {
 		return feedVersion.getFeedVersions();
 	}
 	
-	@PostMapping(path="/register_feed", consumes = "application/json;charset=UTF-8")
+	@PostMapping(path="/register_feed", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
 	public String insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
 		feedVersion.insert(version);
-		return "OK";
+		return "{'status': 'ok'}";
 	}
 	
 	@PutMapping(path="/update_feed", consumes = "application/json;charset=UTF-8")
@@ -40,9 +41,10 @@ public class CountryService {
 		feedVersion.update(version);
 	}
 	
-	@DeleteMapping(path="/delete_feed", consumes = "application/json;charset=UTF-8")
-	public void deleteVersion(@RequestBody SelectedFeed vers) {
-		FeedVersion version = new FeedVersion(vers, false);
+	@DeleteMapping(path="/delete_feed/{feedId}")
+	public String deleteVersion(@PathVariable long feedId) {
+		FeedVersion version = new FeedVersion(feedId);
 		feedVersion.deleteFeedVersion(version);
+		return "OK";
 	}
 }

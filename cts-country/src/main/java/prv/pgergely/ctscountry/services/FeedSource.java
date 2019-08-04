@@ -29,7 +29,6 @@ public class FeedSource {
 			List<Feeds> tempFeed =  Arrays.asList(actualPage.results.feeds);
 			feedList.addAll(tempFeed);
 		}
-		
 		return feedList;
 	}
 	

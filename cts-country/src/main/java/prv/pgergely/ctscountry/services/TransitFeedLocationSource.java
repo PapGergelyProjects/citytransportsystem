@@ -20,6 +20,8 @@ import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Locations;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Results;
+import prv.pgergely.ctscountry.interfaces.FeedVersionService;
+import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.modules.TransitFeedResponse;
 
 @Service
@@ -31,9 +33,13 @@ public class TransitFeedLocationSource {
 	@Autowired
 	private FeedSource feedSrc;
 	
+	@Autowired
+	private FeedVersionService feedVersion;
+	
 	public List<FeedLocationsJson> getLocations() throws IOException {
 		List<FeedLocationsJson> locationList = new ArrayList<>();
 		TransitFeedLocationJson location = feed.getLocations().getBody();
+		List<Long> versions = feedVersion.getFeedVersions().stream().map(m -> m.getFeedId()).collect(Collectors.toList());
 		List<Feeds> feeds = feedSrc.getFeeds();
 		Locations[] locations = Optional.of(location.results).orElse(new Results()).locations;
 		Set<Long> parentIds = Arrays.asList(locations).stream().map(m -> m.parentId).collect(Collectors.toSet());
@@ -43,6 +49,7 @@ public class TransitFeedLocationSource {
 			json.id = loc.id;
 			json.title = loc.rawLocationName;
 			json.feed = new Feed();
+			json.isEnabled = versions.contains(json.id);
 			Feeds feed = feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null)).findFirst().orElse(new Feeds());
 			json.feed.title = feed.feedTitle;
 			json.feed.latest = feed.latest == null ? null : Instant.ofEpochMilli(feed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();

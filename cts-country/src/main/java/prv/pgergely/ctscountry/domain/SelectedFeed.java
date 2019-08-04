@@ -1,5 +1,7 @@
 package prv.pgergely.ctscountry.domain;
 
+import java.time.LocalDate;
+
 /**
  * 
  * @author Pap Gergely
@@ -9,7 +11,7 @@ public class SelectedFeed{
 	
 	public long id;
 	public String title;
-	public long latest;
+	public LocalDate latest;
 
 	@Override
 	public String toString() {

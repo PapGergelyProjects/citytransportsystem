@@ -21,9 +21,13 @@ public class FeedVersion implements Serializable{
 	public FeedVersion(SelectedFeed feed, boolean isNewVersion) {
 		this.feedId = feed.id;
 		this.title = feed.title;
-		this.latestVersion = Instant.ofEpochMilli(feed.latest*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+		this.latestVersion = feed.latest;
 		this.recent = isNewVersion;
 		this.newVersion = isNewVersion;
+	}
+	
+	public FeedVersion(long feedId) {
+		this.feedId = feedId;
 	}
 	
 	public long getId() {

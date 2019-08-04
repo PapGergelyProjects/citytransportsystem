@@ -78,7 +78,7 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 
 	@Override
 	public void deletegetFeedVersion(FeedVersion value) {
-		this.getJdbcTemplate().execute("DELETE FROM feed_version WHERE id="+value.getId());
+		this.getJdbcTemplate().execute("DELETE FROM feed_version WHERE feed_id="+value.getFeedId());
 	}
 
 }
