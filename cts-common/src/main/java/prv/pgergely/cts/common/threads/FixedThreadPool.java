@@ -35,4 +35,8 @@ public class FixedThreadPool implements FixedThreadEngine{
 			logger.debug("Thread pool has been shutdown");
 		}
 	}
+	
+	public ExecutorService getExecutor() {
+		return cachedThreadPool;
+	}
 }

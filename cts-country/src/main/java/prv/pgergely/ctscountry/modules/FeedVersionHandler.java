@@ -1,10 +1,16 @@
 package prv.pgergely.ctscountry.modules;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,14 +22,20 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -55,7 +67,12 @@ public class FeedVersionHandler implements VersionHandlerThread {
 	@Autowired
 	private TransitFeedZipFileContent zipContent;
 	
+	@Autowired
+	private HttpCommSystem comm;
+	
 	private Logger logger = LogManager.getLogger(FeedVersionHandler.class);
+	
+	private AtomicInteger counter = new AtomicInteger(0);
 	
 	@Override
 	public void run() {
@@ -103,13 +120,57 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		return downloadLinks;
 	}
 	
+//    private void downloadFile(String urlAddress, String archiveName) throws IOException{
+//    	HttpURLConnection conn = comm.establishConnection(urlAddress);
+//    	System.out.println(conn.getHeaderFields());
+//        logger.info("Download file from: "+urlAddress);
+//        try(InputStream in = conn.getInputStream()){
+//        	String fileName = getFileName(conn);
+//        	String uri = config.getTempDirectory()+"/"+(fileName.isEmpty() ? archiveName : fileName);
+//            Files.copy(in, Paths.get(uri+".tmp"), StandardCopyOption.REPLACE_EXISTING);
+//            renameFile(uri+".tmp", uri);
+//        }catch(MalformedURLException m){
+//        	logger.error(m);
+//        }
+//        logger.info("Download finished!");
+//    }
+//    
+//    
+//    private String getFileName(HttpURLConnection conn){
+//    	List<String> contents = conn.getHeaderFields().get("Content-Disposition");
+//    	if(contents != null && !contents.isEmpty()){
+//    		String dispos = contents.get(0);
+//    		Matcher match = Pattern.compile("(?<filename>filename\\=\\\".*\\\")").matcher(dispos);
+//    		while(match.find()){
+//    			String[] fileWithExtension = match.group("filename").split("\\=");
+//    			return fileWithExtension[1].replaceAll("\"", "");
+//    		}
+//    		
+//    	}
+//    	return "";
+//    }
+//    
+//    private void renameFile(String path, String newName) throws IOException{
+//    	Path source = Paths.get(path);
+//    	Files.move(source, source.resolveSibling(newName), new CopyOption[]{StandardCopyOption.REPLACE_EXISTING});
+//    }
+	
+//	private void downloadFile(String urlAddress, String archiveName) throws MalformedURLException, IOException {
+//		ReadableByteChannel readChannel = Channels.newChannel(new URL(urlAddress).openStream());
+//		try(FileOutputStream fileOut = new FileOutputStream(config.getTempDirectory()+"/"+archiveName)){
+//			fileOut.getChannel().transferFrom(readChannel, 0, Long.MAX_VALUE);
+//		}
+//	}
+	
     private void downloadFile(String urlAddress, String archiveName) throws IOException{
-    	ResponseEntity<byte[]> entity = zipContent.getZipFile(urlAddress); 
+    	URI getZipUrl = zipContent.getLinkFromHeader(urlAddress).getBody();
+    	ResponseEntity<byte[]> entity = zipContent.getZipFile(getZipUrl.toString());
+    	System.out.println(entity.getHeaders());
     	byte[] zipFile = entity.getBody();
         logger.info("Download file from: "+urlAddress);
         try(InputStream in = new ByteArrayInputStream(zipFile)){
         	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
-        	String uri = config.getTempDirectory()+"/"+(fileName.isEmpty() ? archiveName : fileName);
+        	String uri = config.getTempDirectory()+"/"+(fileName.isEmpty() ? archiveName : fileName)+counter.getAndIncrement();
             Files.copy(in, Paths.get(uri+".tmp"), StandardCopyOption.REPLACE_EXISTING);
             renameFile(uri+".tmp", uri);
         }catch(MalformedURLException m){

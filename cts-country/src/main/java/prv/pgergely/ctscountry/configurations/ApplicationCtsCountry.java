@@ -33,8 +33,7 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer {
 		SpringApplication.run(ApplicationCtsCountry.class, args);
 	}
 	
-	@Bean
-	@Qualifier(TemplateQualifier.DEFAULT_TEMPLATE)
+	@Bean(TemplateQualifier.DEFAULT_TEMPLATE)
 	public RestTemplate getTemplate() {
 		return new RestTemplate();
 	}

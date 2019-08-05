@@ -39,6 +39,7 @@ public class HttpCommSystem {
     	URL packUrl = new URL(urlAddress);
     	try{
     		HttpsURLConnection conn = (HttpsURLConnection)packUrl.openConnection();
+    		conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
     		conn.getResponseCode();
     		return conn;
     	}catch(ConnectException | MalformedURLException | ClassCastException e){
@@ -46,6 +47,7 @@ public class HttpCommSystem {
     			LOGGER.warn("HTTPS connection cannot be established!");
     			LOGGER.warn("Try to establish HTTP connection...");
     			HttpURLConnection conn = (HttpURLConnection)packUrl.openConnection();
+        		conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
     			conn.getResponseCode();
     			LOGGER.warn("HTTP connection established.");
     			return conn;
