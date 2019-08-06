@@ -19,6 +19,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,20 +72,20 @@ public class FeedVersionHandler implements VersionHandlerThread {
 	private HttpCommSystem comm;
 	
 	private Logger logger = LogManager.getLogger(FeedVersionHandler.class);
+	private AtomicInteger counter = new AtomicInteger(1);
+	private List<String> fileNames;
 	
-	private AtomicInteger counter = new AtomicInteger(0);
 	
 	@Override
 	public void run() {
 		logger.info("Starting version handler process...");
 		try {
+			fileNames = new ArrayList<>();
 			Map<String, FeedVersion> links = checkSelectedFeed();
 			for (Map.Entry<String, FeedVersion> pair : links.entrySet()) {
 				String[] fileUrl = pair.getKey().split("/");
-				downloadFile(pair.getKey(),fileUrl[fileUrl.length-1]);
-				FeedVersion vers = pair.getValue();
-				vers.setNewVersion(true);
-				feedVsSrv.update(vers);
+				String fileName = fileUrl[fileUrl.length-1];
+				downloadFile(pair.getKey(),fileName);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -120,57 +121,24 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		return downloadLinks;
 	}
 	
-//    private void downloadFile(String urlAddress, String archiveName) throws IOException{
-//    	HttpURLConnection conn = comm.establishConnection(urlAddress);
-//    	System.out.println(conn.getHeaderFields());
-//        logger.info("Download file from: "+urlAddress);
-//        try(InputStream in = conn.getInputStream()){
-//        	String fileName = getFileName(conn);
-//        	String uri = config.getTempDirectory()+"/"+(fileName.isEmpty() ? archiveName : fileName);
-//            Files.copy(in, Paths.get(uri+".tmp"), StandardCopyOption.REPLACE_EXISTING);
-//            renameFile(uri+".tmp", uri);
-//        }catch(MalformedURLException m){
-//        	logger.error(m);
-//        }
-//        logger.info("Download finished!");
-//    }
-//    
-//    
-//    private String getFileName(HttpURLConnection conn){
-//    	List<String> contents = conn.getHeaderFields().get("Content-Disposition");
-//    	if(contents != null && !contents.isEmpty()){
-//    		String dispos = contents.get(0);
-//    		Matcher match = Pattern.compile("(?<filename>filename\\=\\\".*\\\")").matcher(dispos);
-//    		while(match.find()){
-//    			String[] fileWithExtension = match.group("filename").split("\\=");
-//    			return fileWithExtension[1].replaceAll("\"", "");
-//    		}
-//    		
-//    	}
-//    	return "";
-//    }
-//    
-//    private void renameFile(String path, String newName) throws IOException{
-//    	Path source = Paths.get(path);
-//    	Files.move(source, source.resolveSibling(newName), new CopyOption[]{StandardCopyOption.REPLACE_EXISTING});
-//    }
-	
-//	private void downloadFile(String urlAddress, String archiveName) throws MalformedURLException, IOException {
-//		ReadableByteChannel readChannel = Channels.newChannel(new URL(urlAddress).openStream());
-//		try(FileOutputStream fileOut = new FileOutputStream(config.getTempDirectory()+"/"+archiveName)){
-//			fileOut.getChannel().transferFrom(readChannel, 0, Long.MAX_VALUE);
-//		}
-//	}
+	private String checkNameCollosion(String rawFileName) {
+		String[] fileName = rawFileName.split("\\.");
+		if(fileNames.contains(fileName[0])) {
+			return fileName[0]+counter.getAndIncrement()+"."+fileName[1];
+		}else {
+			fileNames.add(fileName[0]);
+			return rawFileName;
+		}
+	}
 	
     private void downloadFile(String urlAddress, String archiveName) throws IOException{
-    	URI getZipUrl = zipContent.getLinkFromHeader(urlAddress).getBody();
+    	URI getZipUrl = zipContent.getLinkFromLocation(urlAddress);
     	ResponseEntity<byte[]> entity = zipContent.getZipFile(getZipUrl.toString());
-    	System.out.println(entity.getHeaders());
     	byte[] zipFile = entity.getBody();
         logger.info("Download file from: "+urlAddress);
         try(InputStream in = new ByteArrayInputStream(zipFile)){
         	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
-        	String uri = config.getTempDirectory()+"/"+(fileName.isEmpty() ? archiveName : fileName)+counter.getAndIncrement();
+        	String uri = config.getTempDirectory()+"/"+checkNameCollosion(fileName.isEmpty() ? archiveName : fileName);
             Files.copy(in, Paths.get(uri+".tmp"), StandardCopyOption.REPLACE_EXISTING);
             renameFile(uri+".tmp", uri);
         }catch(MalformedURLException m){

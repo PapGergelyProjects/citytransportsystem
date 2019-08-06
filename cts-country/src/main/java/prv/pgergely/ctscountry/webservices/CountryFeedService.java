@@ -33,20 +33,20 @@ public class CountryFeedService {
 	}
 	
 	@GetMapping(path="/getFeeds", produces = "application/json")
-	public List<FeedLocationsJson> getFeeds(){
+	public ResponseEntity<List<FeedLocationsJson>> getFeeds(){
 		try {
-			return locationSrc.getLocations();
+			return new ResponseEntity<List<FeedLocationsJson>>(locationSrc.getLocations(), HttpStatus.OK);
 		} catch (IOException e) {
-			return new ArrayList<FeedLocationsJson>();
+			return new ResponseEntity<List<FeedLocationsJson>>(new ArrayList<FeedLocationsJson>(), HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@GetMapping(path="/getFeed/{feedId}", produces = "application/json")
-	public Feeds getFeed(@PathVariable Long feedId) {
+	public ResponseEntity<Feeds> getFeed(@PathVariable Long feedId) {
 		try {
-			return src.getFeed(feedId);
+			return new ResponseEntity<Feeds>(src.getFeed(feedId), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<Feeds>(HttpStatus.BAD_REQUEST).getBody();
+			return new ResponseEntity<Feeds>(HttpStatus.NOT_FOUND);
 		}
 	}
 }

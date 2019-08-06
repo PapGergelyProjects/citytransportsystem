@@ -2,6 +2,7 @@ package prv.pgergely.ctscountry.webservices;
 
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class CountryService {
 	@Qualifier(TemplateQualifier.RESPONSE_ACCEPTED)
 	private ResponseData response;
 	
-	@RequestMapping(path="/versions", method= {RequestMethod.GET,RequestMethod.HEAD})
+	@RequestMapping(path="/versions", method= {RequestMethod.GET, RequestMethod.HEAD})
 	public ResponseEntity<List<FeedVersion>> getVersion() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -48,20 +49,12 @@ public class CountryService {
 		return new ResponseEntity<List<FeedVersion>>(feedVersion.getFeedVersions(), headers, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(path="/version", method= {RequestMethod.GET,RequestMethod.HEAD})
-	public ResponseEntity<String> getHead(){
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		headers.setAcceptCharset(Arrays.asList(Charset.forName("UTF-8")));
-		
-		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-	}
-	
 	@PostMapping(path="/register_feed", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
-	public ResponseData insertVersion(@RequestBody SelectedFeed vers) {
+	public ResponseEntity<ResponseData> insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
 		feedVersion.insert(version);
-		return new ResponseEntity<ResponseData>(response, HttpStatus.ACCEPTED).getBody();
+		
+		return new ResponseEntity<ResponseData>(response, HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping(path="/update_feed", consumes = "application/json;charset=UTF-8")
@@ -71,9 +64,14 @@ public class CountryService {
 	}
 	
 	@DeleteMapping(path="/delete_feed/{feedId}")
-	public ResponseData deleteVersion(@PathVariable long feedId) {
+	public ResponseEntity<ResponseData> deleteVersion(@PathVariable long feedId) {
+		HttpHeaders head = new HttpHeaders();
+		head.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		head.setDate(LocalDate.now().toEpochDay());
+		
 		FeedVersion version = new FeedVersion(feedId);
 		feedVersion.deleteFeedVersion(version);
-		return new ResponseEntity<ResponseData>(response, HttpStatus.ACCEPTED).getBody();
+		
+		return new ResponseEntity<ResponseData>(response, head, HttpStatus.NO_CONTENT);
 	}
 }

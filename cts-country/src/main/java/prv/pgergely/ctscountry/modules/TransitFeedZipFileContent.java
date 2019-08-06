@@ -48,12 +48,13 @@ public class TransitFeedZipFileContent {
 		return template.exchange(urlAddress, HttpMethod.GET, entity, byte[].class);
 	}
 	
-	public ResponseEntity<URI> getLinkFromHeader(String urlAddress){
+	public URI getLinkFromLocation(String urlAddress){
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.TEXT_HTML);
+		headers.setContentType(MediaType.TEXT_PLAIN);
+		headers.set("Content-Encoding", "UTF-8");
 		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36");
-		HttpHeaders heads = defTemplate.headForHeaders(urlAddress);
+		HttpEntity<String> entity = new HttpEntity<>(headers);
 		
-		return new ResponseEntity<URI>(heads.getLocation(), headers, HttpStatus.ACCEPTED);
+		return defTemplate.postForLocation(urlAddress, entity);
 	}
 }
