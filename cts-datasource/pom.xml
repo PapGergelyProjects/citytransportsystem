@@ -14,7 +14,7 @@
   <name>cts-datasource Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <properties>
-	<start-class>prv.pgergely.ctsdata.ApplicationCtsDatasource</start-class>
+	<start-class>prv.pgergely.ctsdata.config.ApplicationCtsDatasource</start-class>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
