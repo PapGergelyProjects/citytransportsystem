@@ -9,8 +9,8 @@ spring:
 ---
 configs:
    threadParams:
-      delay: 1
-      timeQty: 2
+      initDelayed: 30
+      delayBetween: 40
    tempDirectory: E:/Development/temp_downloads/
    tables:
       - agency

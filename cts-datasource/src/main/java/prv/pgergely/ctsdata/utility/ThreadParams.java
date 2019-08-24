@@ -2,24 +2,24 @@ package prv.pgergely.ctsdata.utility;
 
 public class ThreadParams {
 	
-	private long delay;
-	private long timeQty;
+	private long initDelayed;
+	private long delayBetween;
 	
-	public long getDelay() {
-		return delay;
+	public long getInitDelayed() {
+		return initDelayed;
 	}
-	public void setDelay(long delay) {
-		this.delay = delay;
+	public void setInitDelayed(long initDelayed) {
+		this.initDelayed = initDelayed;
 	}
-	public long getTimeQty() {
-		return timeQty;
+	public long getDelayBetween() {
+		return delayBetween;
 	}
-	public void setTimeQty(long timeQty) {
-		this.timeQty = timeQty;
+	public void setDelayBetween(long delayBetween) {
+		this.delayBetween = delayBetween;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "ThreadParams [delay=" + delay + ", timeQty=" + timeQty + "]";
+		return "ThreadParams [initDelayed=" + initDelayed + ", delayBetween=" + delayBetween + "]";
 	}
 }

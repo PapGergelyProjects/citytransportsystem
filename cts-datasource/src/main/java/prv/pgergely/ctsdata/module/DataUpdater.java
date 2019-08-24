@@ -51,13 +51,13 @@ public class DataUpdater implements ApplicationRunner {
 						Files.delete(Paths.get(file.getPath()));
 					}
 				}else {
-					logger.info("File was not found in folder.");
+					logger.info("File was not found in the folder.");
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage());
 			}
 		};
-		thEngine.process(config.getThreadParams().getDelay(), config.getThreadParams().getTimeQty(), (TimeUnit)null, "data_updater", logic);
+		thEngine.process(config.getThreadParams().getInitDelayed(), config.getThreadParams().getDelayBetween(), TimeUnit.SECONDS, "data_updater", logic);
 	}
 
 }
