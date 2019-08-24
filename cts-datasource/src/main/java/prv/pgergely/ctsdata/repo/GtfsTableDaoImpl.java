@@ -20,14 +20,24 @@ public class GtfsTableDaoImpl extends JdbcDaoSupport implements GtfsTableDao {
 	
 	@PostConstruct
 	public void init() {
-		PGSimpleDataSource dataSource = (PGSimpleDataSource)source;
-		super.setDataSource(dataSource);
+		super.setDataSource(source);
 	}
 	
 	@Override
 	public void insert(String insertValues) {
 		int[] array = this.getJdbcTemplate().batchUpdate(insertValues);
 		System.out.println(Arrays.toString(array));//DELETE
+	}
+
+	@Override
+	public void refreshMateralizedView() {
+		this.getJdbcTemplate().execute("REFRESH MATERIALIZED VIEW static_stops;");
+		this.getJdbcTemplate().execute("REFRESH MATERIALIZED VIEW static_stops_with_times;");
+	}
+
+	@Override
+	public void clearTables() {
+		this.getJdbcTemplate().execute("SELECT clear_tables();");
 	}
 
 }

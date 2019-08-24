@@ -25,10 +25,16 @@
 		<scope>compile</scope>
 	</dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>5.5.0</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.5.0</version>
+        <scope>test</scope>
     </dependency>
 	<dependency>
 	    <groupId>javax.servlet</groupId>
@@ -46,11 +52,11 @@
 	    <artifactId>log4j-api</artifactId>
 	    <version>2.11.2</version>
 	</dependency>
-	<dependency>
-	    <groupId>postgresql</groupId>
-	    <artifactId>postgresql</artifactId>
-	    <version>9.1-901-1.jdbc4</version>
-	</dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.2.6</version>
+    </dependency>
 	<dependency>
 	    <groupId>com.google.code.gson</groupId>
 	    <artifactId>gson</artifactId>
@@ -67,6 +73,12 @@
 	    <artifactId>spring-boot-starter-jdbc</artifactId>
 	    <version>2.1.6.RELEASE</version>
 	</dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <version>2.1.6.RELEASE</version>
+        <scope>test</scope>
+    </dependency>
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-databind</artifactId>
@@ -86,37 +98,6 @@
 	    <groupId>javax.validation</groupId>
 	    <artifactId>validation-api</artifactId>
 	    <version>2.0.0.Final</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>org.springframework.boot</groupId>
-	    <artifactId>spring-boot-starter-jdbc</artifactId>
-	    <version>2.1.6.RELEASE</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.glassfish.jersey.core</groupId>
-	    <artifactId>jersey-server</artifactId>
-	    <version>2.26</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.glassfish.jersey.containers</groupId>
-	    <artifactId>jersey-container-servlet-core</artifactId>
-	    <version>2.26</version>
-	</dependency>
-	<dependency>
-		<groupId>org.glassfish.jersey.core</groupId>
-		<artifactId>jersey-common</artifactId>
-		<version>2.26</version>
-	</dependency>
-	<dependency>
-		<groupId>org.glassfish.jersey.inject</groupId>
-		<artifactId>jersey-hk2</artifactId>
-		<version>2.26</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.glassfish.jersey.media</groupId>
-	    <artifactId>jersey-media-json-jackson</artifactId>
-	    <version>2.26</version>
 	</dependency>
   </dependencies>
   <build>

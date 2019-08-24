@@ -14,4 +14,12 @@ public class GtfsTablesService {
 	public void insertValues(String inserts) {
 		tablesSrv.insert(inserts);
 	}
+	
+	public void refreshMateralizedViews() {
+		tablesSrv.refreshMateralizedView();
+	}
+	
+	public void clearTables() {
+		tablesSrv.clearTables();
+	}
 }

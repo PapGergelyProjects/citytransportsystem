@@ -32,7 +32,7 @@ public class ScheduledThreadPook implements ScheduledThreadEngine {
 	@Override
 	public void process(long delayed, long timeQty, TimeUnit unit, String name, Runnable process) {
 		manufactorum.setThreadName(name);
-		scheduledService.scheduleAtFixedRate(process, delayed, timeQty, unit);
+		scheduledService.scheduleAtFixedRate(process, delayed, timeQty, TimeUnit.MINUTES);
 		logger.info("Thread "+name+" has been started.");
 	}
 

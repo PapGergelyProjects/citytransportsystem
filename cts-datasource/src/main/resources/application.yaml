@@ -1,13 +1,17 @@
 spring: 
   datasource-primary:
     driver-class-name: org.postgresql.Driver 
-    jdbcUrl: jdbc:postgresql://localhost:5432/sandbox?reWriteBatchedInserts=true
-    schema: cts_transit_feed #classpath:sql/schema.sql
+    jdbcUrl: jdbc:postgresql://localhost:5433/datasource?reWriteBatchedInserts=true
+    schema: cts_dataset
     username: postgres
     password: home
     separator: ^;
 ---
 configs:
+   threadParams:
+      delay: 1
+      timeQty: 2
+   tempDirectory: E:/Development/temp_downloads/
    tables:
       - agency
       - feed_info
@@ -15,4 +19,4 @@ configs:
       - calendar_dates
       - routes
       - stop_times
-      - stopss
+      - stops

@@ -100,7 +100,6 @@
 	    <version>2.1.6.RELEASE</version>
 	    <scope>test</scope>
 	</dependency>
-
   </dependencies>
   <build>
     <finalName>cts-country</finalName>

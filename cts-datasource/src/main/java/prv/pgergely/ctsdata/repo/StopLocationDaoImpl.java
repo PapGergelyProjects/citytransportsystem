@@ -56,10 +56,10 @@ public class StopLocationDaoImpl extends JdbcDaoSupport implements StopLocationD
 	@Override
 	public List<StopLocation> getAllStopWithinRadiusWithTime(double centerLat, double centerLon, double radius) {
 		final String sql = "SELECT route_name, stop_names, stop_latitude, stop_longitude, "
-				+ "stop_color, text_color, stop_distance, depart_time "
-				+ "FROM stop_and_times_within_range(?, ?, ?) "
-				+ "GROUP BY route_name, stop_names, stop_latitude, stop_longitude, stop_color, text_color, stop_distance, depart_time "
-				+ "ORDER BY route_name ";
+							+ "stop_color, text_color, stop_distance, depart_time "
+							+ "FROM stop_and_times_within_range(?, ?, ?) "
+							+ "GROUP BY route_name, stop_names, stop_latitude, stop_longitude, stop_color, text_color, stop_distance, depart_time "
+							+ "ORDER BY route_name ";
 		
 		RowMapper<StopLocation> mapLocation = (rs, rows) -> {
 			StopLocation location = new StopLocation();
