@@ -13,13 +13,13 @@ import com.google.gson.Gson;
 import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
-import prv.pgergely.ctscountry.modules.TransitFeedResponse;
+import prv.pgergely.ctscountry.modules.TransitFeedApi;
 
 @Service
 public class FeedSource {
 	
 	@Autowired
-	private TransitFeedResponse transitResp;
+	private TransitFeedApi transitResp;
 	
 	public List<Feeds> getFeeds() throws IOException{
 		List<Feeds> feedList = new ArrayList<>();

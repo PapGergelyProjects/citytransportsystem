@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,13 +13,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.ctscountry.configurations.CtsConfig;
-import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
 @Component
-public class TransitFeedResponse {
+public class TransitFeedApi {
 	
 	@Autowired
 	@Qualifier(TemplateQualifier.TRANSITFEED_TEMPLATE)
