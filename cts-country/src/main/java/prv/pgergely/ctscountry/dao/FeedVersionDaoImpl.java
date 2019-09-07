@@ -38,25 +38,29 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 
 	@Override
 	public void update(FeedVersion value) {
-		final String update="UPDATE feed_version SET feed_id=?, title=?, latest_version=?, recent=?, new_version=? WHERE id="+value.getId();
+		final String update="UPDATE feed_version SET feed_id=?, title=?, latest_version=?, recent=?, new_version=? WHERE feed_id="+value.getId();
 		this.getJdbcTemplate().update(update, new Object[]{value.getFeedId(), value.getTitle(), Date.from(value.getLatestVersion().atStartOfDay(ZoneId.systemDefault()).toInstant()), value.isRecent(), value.isNewVersion()});
 	}
 
 	@Override
 	public FeedVersion getFeedVersionById(long id) {
 		final String select = "SELECT id, feed_id, title, latest_version, recent, new_version FROM feed_version WHERE feed_id="+id;
-		RowMapper<FeedVersion> mapper = (rs, rows) -> {
-			FeedVersion row = new FeedVersion();
-			row.setId(rs.getLong("id"));
-			row.setFeedId(rs.getLong("feed_id"));
-			row.setTitle(rs.getString("title"));
-			row.setLatestVersion(LocalDate.parse(rs.getString("latest_version"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			row.setRecent(rs.getBoolean("recent"));
-			row.setNewVersion(rs.getBoolean("new_version"));
-			return row;
-		};
-		
-		return this.getJdbcTemplate().queryForObject(select, mapper);
+		List<Map<String, Object>> allFeed = this.getJdbcTemplate().queryForList(select);
+		List<FeedVersion> res = new ArrayList<>();
+		allFeed.forEach(feed -> {
+			FeedVersion vers = new FeedVersion();
+			vers.setId(Long.valueOf(feed.get("id").toString()));
+			vers.setFeedId(Long.valueOf(feed.get("feed_id").toString()));
+			vers.setTitle(feed.get("title").toString());
+			vers.setLatestVersion(LocalDate.parse(feed.get("latest_version").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			vers.setRecent((boolean)feed.get("recent"));
+			vers.setNewVersion((boolean)feed.get("new_version"));
+			res.add(vers);
+		});
+		if(res.isEmpty()) {
+			return null;
+		}
+		return res.get(0);
 	}
 
 	@Override
