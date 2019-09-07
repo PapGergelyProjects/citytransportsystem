@@ -22,13 +22,13 @@ import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Locations;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Results;
 import prv.pgergely.ctscountry.interfaces.FeedVersionService;
 import prv.pgergely.ctscountry.model.FeedVersion;
-import prv.pgergely.ctscountry.modules.TransitFeedResponse;
+import prv.pgergely.ctscountry.modules.TransitFeedApi;
 
 @Service
 public class TransitFeedLocationSource {
 	
 	@Autowired
-	private TransitFeedResponse feed;
+	private TransitFeedApi feed;
 	
 	@Autowired
 	private FeedSource feedSrc;

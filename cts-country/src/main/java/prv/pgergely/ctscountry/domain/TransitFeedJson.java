@@ -65,7 +65,7 @@ public class TransitFeedJson {
 
         @Override
         public String toString() {
-            return "{" + "total=" + total + ", limit=" + limit + ", page=" + page + ", numPages=" + numPages + ", feeds=" + feeds + '}';
+            return "{" + "total:" + total + ", limit:" + limit + ", page:" + page + ", numPages:" + numPages + ", feeds:" + feeds + '}';
         }
     }
 
@@ -88,7 +88,7 @@ public class TransitFeedJson {
 
 		@Override
 		public String toString() {
-			return "Feeds [id=" + id + ", typeOfFeed=" + typeOfFeed + ", feedTitle=" + feedTitle + ", location="+ location + ", feedUrl=" + feedUrl + ", latest=" + latest + "]";
+			return "{id=" + id + ", typeOfFeed=" + typeOfFeed + ", feedTitle=" + feedTitle + ", location="+ location + ", feedUrl=" + feedUrl + ", latest=" + latest + "}";
 		}
     }
 
@@ -107,7 +107,7 @@ public class TransitFeedJson {
 		
         @Override
 		public String toString() {
-			return "Location [id=" + id + ", pid=" + pid + ", rawLocationTitle=" + rawLocationTitle + ", locationTitle="+ locationTitle + ", lat=" + lat + ", lng=" + lng + "]";
+			return "{id=" + id + ", pid=" + pid + ", rawLocationTitle=" + rawLocationTitle + ", locationTitle="+ locationTitle + ", lat=" + lat + ", lng=" + lng + "}";
 		}
     }
 
