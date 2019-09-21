@@ -12,8 +12,11 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpClientErrorException.NotFound;
 
 import prv.pgergely.ctscountry.interfaces.FeedVersionDao;
 import prv.pgergely.ctscountry.model.FeedVersion;
@@ -80,8 +83,11 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 	}
 
 	@Override
-	public void deletegetFeedVersion(FeedVersion value) {
-		this.getJdbcTemplate().execute("DELETE FROM feed_version WHERE feed_id="+value.getFeedId());
+	public void deletegetFeedVersion(FeedVersion value) throws HttpClientErrorException {
+		int rows = this.getJdbcTemplate().update("DELETE FROM feed_version WHERE feed_id=?", new Object[]{value.getFeedId()});
+		if(rows == 0) {
+			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

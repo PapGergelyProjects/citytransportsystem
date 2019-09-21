@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import prv.pgergely.ctscountry.interfaces.FeedVersionDao;
 import prv.pgergely.ctscountry.interfaces.FeedVersionService;
@@ -36,7 +37,7 @@ public class FeedVersionServiceImpl implements FeedVersionService {
 	}
 
 	@Override
-	public void deleteFeedVersion(FeedVersion value) {
+	public void deleteFeedVersion(FeedVersion value) throws HttpClientErrorException {
 		feedVsDao.deletegetFeedVersion(value);
 	}
 

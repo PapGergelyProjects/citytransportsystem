@@ -15,7 +15,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
-import prv.pgergely.cts.domain.DefaultResponse;
+import prv.pgergely.cts.common.domain.DefaultResponse;
 	
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class MainPageServiceTest {
