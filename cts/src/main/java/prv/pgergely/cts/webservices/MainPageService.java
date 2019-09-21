@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import prv.pgergely.cts.domain.DefaultResponse;
+import prv.pgergely.cts.common.domain.DefaultResponse;
 import prv.pgergely.cts.domain.SearchValues;
 
 

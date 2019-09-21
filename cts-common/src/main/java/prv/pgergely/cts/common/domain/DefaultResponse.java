@@ -1,4 +1,4 @@
-package prv.pgergely.cts.domain;
+package prv.pgergely.cts.common.domain;
 
 import java.time.LocalDateTime;
 

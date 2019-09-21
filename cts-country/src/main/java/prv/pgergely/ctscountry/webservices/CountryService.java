@@ -1,12 +1,12 @@
 package prv.pgergely.ctscountry.webservices;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,11 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
+import prv.pgergely.cts.common.domain.DefaultResponse;
 import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
 import prv.pgergely.ctscountry.interfaces.FeedVersionService;
-import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
 @RestController
@@ -68,9 +69,23 @@ public class CountryService {
 	
 	@DeleteMapping(path="/delete_feed/{feedId}")
 	public ResponseEntity<Void> deleteVersion(@PathVariable long feedId) {
-		FeedVersion version = new FeedVersion(feedId);
-		feedVersion.deleteFeedVersion(version);
+		try {
+			FeedVersion version = new FeedVersion(feedId);
+			feedVersion.deleteFeedVersion(version);
+			return ResponseEntity.noContent().build();
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<Void>(e.getStatusCode());
+		}
 		
-		return ResponseEntity.noContent().build();
 	}
+	
+//	@RequestMapping(path="**/{urlPart}", method= {RequestMethod.GET, RequestMethod.POST})
+//	public ResponseEntity<DefaultResponse> getForAnyReqest(@PathVariable String urlPart) {
+//		DefaultResponse resp = new DefaultResponse();
+//		resp.message = "This service currently is not available.";
+//		resp.urlPart = urlPart;
+//		resp.statusCode = HttpStatus.FORBIDDEN.value();
+//		
+//		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.FORBIDDEN);
+//	}
 }
