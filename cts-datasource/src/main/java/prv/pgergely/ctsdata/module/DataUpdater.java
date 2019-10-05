@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +17,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
 import prv.pgergely.ctsdata.config.CtsDataConfig;
 import prv.pgergely.ctsdata.service.DataPreparation;
@@ -32,6 +34,9 @@ public class DataUpdater implements ApplicationRunner {
 	
 	@Autowired
 	private ScheduledThreadEngine thEngine;
+	
+	@Autowired
+	private Queue<TransitFeedZipFile> internalStore;
 	
 	private Logger logger = LogManager.getLogger(DataUpdater.class);
 	

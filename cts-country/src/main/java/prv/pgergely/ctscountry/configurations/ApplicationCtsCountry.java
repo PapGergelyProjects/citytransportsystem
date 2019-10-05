@@ -1,6 +1,9 @@
 package prv.pgergely.ctscountry.configurations;
 
 
+import java.util.Queue;
+import java.util.concurrent.SynchronousQueue;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.CommonComponents;
+import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.ctscountry.ApplicationCountryComponents;
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
@@ -29,6 +33,11 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer {
 	@Bean(TemplateQualifier.DEFAULT_TEMPLATE)
 	public RestTemplate getTemplate() {
 		return new RestTemplate();
+	}
+	
+	@Bean
+	public Queue<TransitFeedZipFile> getInternalQueue() {
+		return new SynchronousQueue<TransitFeedZipFile>();
 	}
 	
 }

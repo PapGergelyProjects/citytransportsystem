@@ -26,14 +26,14 @@ public class MainPageServiceTest {
 	@Autowired
 	private TestRestTemplate template;
 	
-	@Test
+	//@Test
 	@DisplayName("Initial test")
 	public void testApp() throws Exception {
 		ResponseEntity<String> resp = template.getForEntity("/api/hello/SpringTest", String.class);
 		assertEquals("Hello Servlet SpringTest", resp.getBody());
 	}
 	
-	@Test
+	//@Test
 	@DisplayName("Test catch everything web service with undefined service.")
 	public void testCatchEverything() throws Exception {
 		ResponseEntity<DefaultResponse> resp = template.getForEntity("/api/items", DefaultResponse.class);

@@ -1,16 +1,7 @@
 package prv.pgergely.ctscountry.modules;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,27 +14,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
-import prv.pgergely.cts.common.commsystem.HttpCommSystem;
+import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
-import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.FeedURL;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Latest;
@@ -57,9 +38,6 @@ import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 public class FeedVersionHandler implements VersionHandlerThread {
 	
 	@Autowired
-	private CtsConfig config;
-	
-	@Autowired
 	private FeedVersionServiceImpl feedVsSrv;
 	
 	@Autowired
@@ -69,7 +47,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
 	private TransitFeedZipFileContent zipContent;
 	
 	@Autowired
-	private HttpCommSystem comm;
+	private Queue<TransitFeedZipFile> store;
 	
 	private Logger logger = LogManager.getLogger(FeedVersionHandler.class);
 	private AtomicInteger counter = new AtomicInteger(1);
@@ -85,7 +63,8 @@ public class FeedVersionHandler implements VersionHandlerThread {
 			for (Map.Entry<String, FeedVersion> pair : links.entrySet()) {
 				String[] fileUrl = pair.getKey().split("/");
 				String fileName = fileUrl[fileUrl.length-1];
-				downloadFile(pair.getKey(),fileName);
+				TransitFeedZipFile zipFile = downloadFile(pair.getKey(),fileName);
+				store.add(zipFile);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -131,20 +110,17 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		}
 	}
 	
-    private void downloadFile(String urlAddress, String archiveName) throws IOException{
+    private TransitFeedZipFile downloadFile(String urlAddress, String archiveName) throws IOException{
+    	logger.info("Download file from: "+urlAddress);
     	URI getZipUrl = zipContent.getLinkFromLocation(urlAddress);
     	ResponseEntity<byte[]> entity = zipContent.getZipFile(getZipUrl.toString());
     	byte[] zipFile = entity.getBody();
-        logger.info("Download file from: "+urlAddress);
-        try(InputStream in = new ByteArrayInputStream(zipFile)){
-        	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
-        	String uri = config.getTempDirectory()+"/"+checkNameCollosion(fileName.isEmpty() ? archiveName : fileName);
-            Files.copy(in, Paths.get(uri+".tmp"), StandardCopyOption.REPLACE_EXISTING);
-            renameFile(uri+".tmp", uri);
-        }catch(MalformedURLException m){
-        	logger.error(m);
-        }
+    	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
+    	String uri = checkNameCollosion(fileName.isEmpty() ? archiveName : fileName);
+    	TransitFeedZipFile actZipFile = new TransitFeedZipFile(uri, zipFile);
         logger.info("Download finished!");
+        
+        return actZipFile;
     }
     
     private void renameFile(String path, String newName) throws IOException{

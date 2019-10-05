@@ -1,7 +1,7 @@
 spring: 
   datasource-primary:
     driver-class-name: org.postgresql.Driver 
-    jdbcUrl: jdbc:postgresql://172.18.20.1:5432/datasource?reWriteBatchedInserts=true
+    jdbcUrl: jdbc:postgresql://postgres-cts:5432/datasource?reWriteBatchedInserts=true
     schema: cts_dataset
     username: postgres
     password: home

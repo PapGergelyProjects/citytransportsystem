@@ -1,12 +1,17 @@
 package prv.pgergely.ctsdata.config;
 
+import java.util.Queue;
+import java.util.concurrent.SynchronousQueue;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 import prv.pgergely.cts.common.CommonComponents;
+import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.ctsdata.CtsDsComponents;
 
 @SpringBootApplication
@@ -22,4 +27,8 @@ public class ApplicationCtsDatasource extends SpringBootServletInitializer {
 		SpringApplication.run(ApplicationCtsDatasource.class, args);
 	}
 	
+	@Bean
+	public Queue<TransitFeedZipFile> getInternalStore(){
+		return new SynchronousQueue<TransitFeedZipFile>();
+	}
 }
