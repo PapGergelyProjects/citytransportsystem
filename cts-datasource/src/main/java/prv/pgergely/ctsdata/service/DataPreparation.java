@@ -1,9 +1,13 @@
 package prv.pgergely.ctsdata.service;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,75 +42,58 @@ public class DataPreparation {
 	@Autowired
 	private GtfsTablesService srvc;
 	
-    public List<File> checkFolderForContent(){
-    	File sourceFolder = new File(config.getTempDirectory());
-        File[] fileList = sourceFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".zip") || name.toLowerCase().endsWith(".rar"));
-        
-        return Arrays.asList(fileList);
-    }
-	
-    public void extractZipFile(String zipPath) throws IOException{
+    public void extractZipFile(byte[] zipStream) throws IOException{
     	logger.info("Starting extracting files from zip...");
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(zipPath));
-        ZipEntry zipEntry = zis.getNextEntry();
-        byte[] buffer = new byte[1024];
-        while(zipEntry != null){
+        ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(zipStream));
+        ZipEntry zipEntry;
+        while((zipEntry = zis.getNextEntry()) != null){
             String fileName = zipEntry.getName();
             if(config.getTables().contains(fileName.replace(".txt", ""))){
-            	File feedFile = new File(config.getTempDirectory()+fileName);
-            	try(FileOutputStream f = new FileOutputStream(feedFile)){
-            		int len;
-            		while ((len = zis.read(buffer)) > 0) {
-            			f.write(buffer, 0, len);
-            		}
-            	}catch(IOException e){
-            		logger.error("File extraction faild: "+e);
-            	}
+                BufferedReader bfr = new BufferedReader(new InputStreamReader(zis));
+                List<String> fileContent = new ArrayList<>();
+                while(bfr.ready()){
+                	fileContent.add(bfr.readLine());
+                }
+                createInsertFromLine(fileName, fileContent);
             }
-            zipEntry = zis.getNextEntry();
         }
         logger.info("File extraction done!");
         zis.closeEntry();
         zis.close();
     }
     
-	public void createInsertFromFile() throws IOException{
-        File[] listOfFiles = new File(config.getTempDirectory()).listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
+	private void createInsertFromLine(String fileName, List<String> fileContent) throws IOException{
         Map<String, TableInsertValues> tableList = Arrays.asList(TableInsertValues.values()).stream().collect(Collectors.toMap(TableInsertValues::getTableName, v -> v));
-        for (File file : listOfFiles) {
-            List<String> fileContent = Files.readAllLines(Paths.get(config.getTempDirectory()+file.getName()), Charset.forName("utf-8"));
-            String tableName = file.getName().replace(".txt", "");
-            logger.info("Table next: "+tableName);
-            TableInsertValues value = tableList.get(tableName);
-            List<String> columns = value.getColNames(new ArrayList<>(Arrays.asList(fileContent.remove(0).split(","))));
-            String joinedCols = columns.stream().collect(Collectors.joining(",","(",")"));
-            while(0<fileContent.size()){
-            	StringBuilder insert = new StringBuilder();
-            	insert.append("INSERT INTO ").append(tableName).append(" ");
-            	insert.append(joinedCols).append(" VALUES ");
-            	StringJoiner joinValues = new StringJoiner(",");
-            	int cnt = 10000; // Optimal for inserts
-            	while(0<cnt){
-            		if(fileContent.size()==0){
-            			break;
-            		}
-            		String raw = replaceUselessComma(fileContent.remove(0));
-            		String[] rows = raw.endsWith(",") ? (raw+"null").replace("\"", "").split(",") : raw.replace("\"", "").split(",");//
-            		Map<String, String> content = new HashMap<>();
-            		for (int j = 0; j < columns.size(); j++) {
-            			String row = rows[j];
-            			content.put(columns.get(j), row.isEmpty() ? "null" : row);
-            		}
-            		joinValues.add(value.getInsertValue(columns, content));
-            		cnt--;
-            		content = null;
-            	}
-            	insert.append(joinValues);
-            	srvc.insertValues(insert.toString());
-            }
-            logger.info(tableName+" insert done.");
-            Files.delete(Paths.get(config.getTempDirectory()+file.getName()));
+        String tableName = fileName.replace(".txt", "");
+        logger.info("Table next: "+tableName);
+        TableInsertValues value = tableList.get(tableName);
+        List<String> columns = value.getColNames(new ArrayList<>(Arrays.asList(fileContent.remove(0).split(","))));
+        String joinedCols = columns.stream().collect(Collectors.joining(",","(",")"));
+        while(0<fileContent.size()){
+        	StringBuilder insert = new StringBuilder();
+        	insert.append("INSERT INTO ").append(tableName).append(" ");
+        	insert.append(joinedCols).append(" VALUES ");
+        	StringJoiner joinValues = new StringJoiner(",");
+        	int cnt = 10000; // Optimal for inserts
+        	while(0<cnt){
+        		if(fileContent.size()==0){
+        			break;
+        		}
+        		String raw = replaceUselessComma(fileContent.remove(0));
+        		String[] rows = raw.endsWith(",") ? (raw+"null").replace("\"", "").split(",") : raw.replace("\"", "").split(",");//
+        		Map<String, String> content = new HashMap<>();
+        		for (int j = 0; j < columns.size(); j++) {
+        			String row = rows[j];
+        			content.put(columns.get(j), row.isEmpty() ? "null" : row);
+        		}
+        		joinValues.add(value.getInsertValue(columns, content));
+        		cnt--;
+        		content = null;
+        	}
+        	insert.append(joinValues);
+        	srvc.insertValues(insert.toString());
         }
+        logger.info(tableName+" insert done.");
         srvc.refreshMateralizedViews();
 	}
 	

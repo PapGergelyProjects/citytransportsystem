@@ -44,22 +44,13 @@ public class DataUpdater implements ApplicationRunner {
 	public void run(ApplicationArguments args) throws Exception {
 		Runnable logic = () -> {
 			logger.info("Data updater started");
-			List<File> files = dataPrep.checkFolderForContent();
-			try {
-				if(!files.isEmpty()){
-					logger.info("Zip file in the folder.");
-					dataPrep.clearTables();
-					logger.info("Tables Cleard");
-					for(File file : files) {
-						dataPrep.extractZipFile(file.getPath());
-						dataPrep.createInsertFromFile();
-						Files.delete(Paths.get(file.getPath()));
-					}
-				}else {
-					logger.info("File was not found in the folder.");
+			while(!internalStore.isEmpty()) {
+				TransitFeedZipFile zip = internalStore.poll();
+				try {
+					dataPrep.extractZipFile(zip.getZipStream());
+				} catch (IOException e) {
+					logger.error(e.getMessage());
 				}
-			} catch (IOException e) {
-				logger.error(e.getMessage());
 			}
 		};
 		thEngine.process(config.getThreadParams().getInitDelayed(), config.getThreadParams().getDelayBetween(), TimeUnit.SECONDS, "data_updater", logic);

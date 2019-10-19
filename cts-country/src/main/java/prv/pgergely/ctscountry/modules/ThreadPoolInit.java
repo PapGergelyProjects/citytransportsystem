@@ -1,5 +1,7 @@
 package prv.pgergely.ctscountry.modules;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -7,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.interfaces.FixedThreadEngine;
+import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
 import prv.pgergely.ctscountry.services.ZipContentSender;
 
 @Order(2)
@@ -14,7 +17,7 @@ import prv.pgergely.ctscountry.services.ZipContentSender;
 public class ThreadPoolInit implements ApplicationRunner {
 	
 	@Autowired
-	private FixedThreadEngine threadEng;
+	private ScheduledThreadEngine threadEng;
 	
 	@Autowired
 	private FeedVersionHandler versionHandler;
@@ -24,8 +27,8 @@ public class ThreadPoolInit implements ApplicationRunner {
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		threadEng.process("VersionHandler", versionHandler);
-		threadEng.process("ZipSender", zipSender);
+		threadEng.process(10, 300, TimeUnit.SECONDS, "VersionHandler", versionHandler);
+		threadEng.process(10, 300, TimeUnit.SECONDS, "ZipSender", zipSender);
 	}
 
 }

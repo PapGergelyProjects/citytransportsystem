@@ -27,7 +27,7 @@ public class ZipContentSender implements ContentSenderThread {
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		while(store.size()>0) {
 			TransitFeedZipFile zipFile = store.poll();
-			HttpEntity<byte[]> entity = new HttpEntity<>(zipFile.getZipStream(), headers);
+			HttpEntity<TransitFeedZipFile> entity = new HttpEntity<>(zipFile, headers);
 			template.postForObject("<url from zip>", entity, String.class);
 		}
 	}
