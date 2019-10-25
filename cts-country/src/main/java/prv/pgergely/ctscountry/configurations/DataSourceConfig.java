@@ -16,5 +16,4 @@ public class DataSourceConfig {
 		DataSourceBuilder dsBuilder = DataSourceBuilder.create();
 		return dsBuilder.build();
 	}
-	
 }

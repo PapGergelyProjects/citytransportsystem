@@ -51,14 +51,11 @@ public class FeedVersionHandler implements VersionHandlerThread {
 	
 	private Logger logger = LogManager.getLogger(FeedVersionHandler.class);
 	private AtomicInteger counter = new AtomicInteger(1);
-	private List<String> fileNames;
-	
 	
 	@Override
 	public void run() {
 		logger.info("Starting version handler process...");
 		try {
-			fileNames = new ArrayList<>();
 			Map<String, FeedVersion> links = checkSelectedFeed();
 			for (Map.Entry<String, FeedVersion> pair : links.entrySet()) {
 				String[] fileUrl = pair.getKey().split("/");
@@ -67,7 +64,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
 				store.add(zipFile);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	
@@ -100,32 +97,16 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		return downloadLinks;
 	}
 	
-	private String checkNameCollosion(String rawFileName) {
-		String[] fileName = rawFileName.split("\\.");
-		if(fileNames.contains(fileName[0])) {
-			return fileName[0]+counter.getAndIncrement()+"."+fileName[1];
-		}else {
-			fileNames.add(fileName[0]);
-			return rawFileName;
-		}
-	}
-	
     private TransitFeedZipFile downloadFile(String urlAddress, String archiveName) throws IOException{
     	logger.info("Download file from: "+urlAddress);
     	URI getZipUrl = zipContent.getLinkFromLocation(urlAddress);
     	ResponseEntity<byte[]> entity = zipContent.getZipFile(getZipUrl.toString());
     	byte[] zipFile = entity.getBody();
     	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
-    	String uri = checkNameCollosion(fileName.isEmpty() ? archiveName : fileName);
+    	String uri = fileName.isEmpty() ? archiveName : fileName;
     	TransitFeedZipFile actZipFile = new TransitFeedZipFile(uri, zipFile);
         logger.info("Download finished!");
         
         return actZipFile;
     }
-    
-    private void renameFile(String path, String newName) throws IOException{
-    	Path source = Paths.get(path);
-    	Files.move(source, source.resolveSibling(newName), new CopyOption[]{StandardCopyOption.REPLACE_EXISTING});
-    }
-
 }

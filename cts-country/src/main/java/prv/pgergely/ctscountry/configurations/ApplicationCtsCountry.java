@@ -2,7 +2,7 @@ package prv.pgergely.ctscountry.configurations;
 
 
 import java.util.Queue;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,7 +37,7 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer {
 	
 	@Bean
 	public Queue<TransitFeedZipFile> getInternalQueue() {
-		return new SynchronousQueue<TransitFeedZipFile>();
+		return new LinkedBlockingQueue<TransitFeedZipFile>();
 	}
 	
 }
