@@ -1,7 +1,7 @@
 package prv.pgergely.ctsdata.config;
 
 import java.util.Queue;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,6 +29,6 @@ public class ApplicationCtsDatasource extends SpringBootServletInitializer {
 	
 	@Bean
 	public Queue<TransitFeedZipFile> getInternalStore(){
-		return new SynchronousQueue<TransitFeedZipFile>();
+		return new LinkedBlockingQueue<TransitFeedZipFile>();
 	}
 }

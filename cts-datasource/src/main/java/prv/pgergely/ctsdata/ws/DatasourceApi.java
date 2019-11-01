@@ -21,7 +21,7 @@ public class DatasourceApi {
 	@Autowired
 	private Queue<TransitFeedZipFile> internalStore;
 	
-	@PostMapping(path="/send_zip")
+	@PostMapping(path="/receive_zip")
 	public ResponseEntity<DefaultResponse> getZipPackage(@RequestBody TransitFeedZipFile zipFile){
 		DefaultResponse resp = new DefaultResponse();
 		resp.message = "Package has been transferred";

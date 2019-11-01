@@ -12,6 +12,7 @@ public class CtsConfig {
 	private String transitFeedKey;
 	private String tempDirectory;
 	private ThreadParams threadParams;
+	private String datasourceUrl;
 	
 	public String getTransitFeedKey() {
 		return transitFeedKey;
@@ -30,5 +31,11 @@ public class CtsConfig {
 	}
 	public void setThreadParams(ThreadParams threadParams) {
 		this.threadParams = threadParams;
+	}
+	public String getDatasourceUrl() {
+		return datasourceUrl;
+	}
+	public void setDatasourceUrl(String datasourceUrl) {
+		this.datasourceUrl = datasourceUrl;
 	}
 }

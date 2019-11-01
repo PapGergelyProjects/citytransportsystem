@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.domain.TransitFeedZipFile;
+import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.interfaces.ContentSenderThread;
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
@@ -25,6 +26,9 @@ public class ZipContentSender implements ContentSenderThread {
 	@Autowired
 	private Queue<TransitFeedZipFile> store;
 	
+	@Autowired
+	private CtsConfig config;
+	
 	private Logger logger = LogManager.getLogger(ZipContentSender.class);
 	
 	@Override
@@ -33,6 +37,7 @@ public class ZipContentSender implements ContentSenderThread {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		System.out.println(store);
+		config.getDatasourceUrl();
 //		while(store.size()>0) {
 //			TransitFeedZipFile zipFile = store.poll();
 //			HttpEntity<TransitFeedZipFile> entity = new HttpEntity<>(zipFile, headers);

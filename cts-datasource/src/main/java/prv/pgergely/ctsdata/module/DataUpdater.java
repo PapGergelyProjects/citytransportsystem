@@ -1,10 +1,6 @@
 package prv.pgergely.ctsdata.module;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +11,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;

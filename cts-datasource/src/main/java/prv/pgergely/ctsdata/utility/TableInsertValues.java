@@ -2,7 +2,6 @@ package prv.pgergely.ctsdata.utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -248,6 +247,13 @@ public enum TableInsertValues {
 	 */
     public abstract String getInsertValue(List<String> columns, Map<String, String> records);
     
+    /**
+     * <b>This function ensures that only those columns appears in the insert which originally exists in the GTFS's documentation.</b>
+     * </br>
+     * Sometimes the providers set custom columns for other function which is not part of the default column set.
+     * @param rawCols
+     * @return
+     */
     public abstract List<String> getColNames(List<String> rawCols);
     
     private String tableName;

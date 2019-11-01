@@ -1,29 +1,22 @@
-package prv.pgergely.ctscountry.modules;
+package prv.pgergely.ctscountry.services;
 
-import java.io.FileInputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
-@Component
+@Service
 public class TransitFeedZipFileContent {
 	
 	@Autowired

@@ -33,6 +33,7 @@ import prv.pgergely.ctscountry.interfaces.VersionHandlerThread;
 import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.services.FeedSource;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
+import prv.pgergely.ctscountry.services.TransitFeedZipFileContent;
 
 @Component
 public class FeedVersionHandler implements VersionHandlerThread {
