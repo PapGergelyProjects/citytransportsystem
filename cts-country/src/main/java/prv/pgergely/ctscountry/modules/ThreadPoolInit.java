@@ -27,6 +27,8 @@ public class ThreadPoolInit implements ApplicationRunner {
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		System.out.println(args.getNonOptionArgs());
+		System.out.println(args.getOptionNames());
 		threadEng.process(10, 300, TimeUnit.SECONDS, "VersionHandler", versionHandler);
 		threadEng.process(10, 300, TimeUnit.SECONDS, "ZipSender", zipSender);
 	}

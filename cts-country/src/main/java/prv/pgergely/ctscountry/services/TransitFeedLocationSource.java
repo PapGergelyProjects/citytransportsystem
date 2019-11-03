@@ -16,12 +16,9 @@ import org.springframework.stereotype.Service;
 import prv.pgergely.ctscountry.domain.FeedLocationsJson;
 import prv.pgergely.ctscountry.domain.FeedLocationsJson.Feed;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
-
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Locations;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Results;
-import prv.pgergely.ctscountry.interfaces.FeedVersionService;
-import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.modules.TransitFeedApi;
 
 @Service
@@ -34,10 +31,11 @@ public class TransitFeedLocationSource {
 	private FeedSource feedSrc;
 	
 	@Autowired
-	private FeedVersionService feedVersion;
+	private FeedVersionServiceImpl feedVersion;
+
+	private List<FeedLocationsJson> locationList = new ArrayList<>();
 	
 	public List<FeedLocationsJson> getLocations() throws IOException {
-		List<FeedLocationsJson> locationList = new ArrayList<>();
 		TransitFeedLocationJson location = feed.getLocations().getBody();
 		List<Long> versions = feedVersion.getFeedVersions().stream().map(m -> m.getFeedId()).collect(Collectors.toList());
 		List<Feeds> feeds = feedSrc.getFeeds();
@@ -50,12 +48,12 @@ public class TransitFeedLocationSource {
 			json.title = loc.rawLocationName;
 			json.feed = new Feed();
 			json.isEnabled = versions.contains(json.id);
-			Feeds feed = feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null)).findFirst().orElse(new Feeds());
-			json.feed.title = feed.feedTitle;
-			json.feed.latest = feed.latest == null ? null : Instant.ofEpochMilli(feed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
-			locationList.add(json);
+			feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null && p.latest != null)).forEach(e -> {
+				json.feed.title = e.feedTitle;
+				json.feed.latest = Instant.ofEpochMilli(e.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+				locationList.add(json);
+			});
 		}
-		
 		
 		return locationList;
 	}

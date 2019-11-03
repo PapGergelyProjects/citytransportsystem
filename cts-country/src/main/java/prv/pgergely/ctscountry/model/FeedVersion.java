@@ -12,6 +12,7 @@ public class FeedVersion implements Serializable{
 	private long id;
 	private long feedId;
 	private String title;
+	private String technicalTitle;
 	private LocalDate latestVersion;
 	private boolean recent;
 	private boolean newVersion;
@@ -21,6 +22,7 @@ public class FeedVersion implements Serializable{
 	public FeedVersion(SelectedFeed feed, boolean isNewVersion) {
 		this.feedId = feed.id;
 		this.title = feed.title;
+		this.technicalTitle = feed.technicalTitle;
 		this.latestVersion = feed.latest;
 		this.recent = isNewVersion;
 		this.newVersion = isNewVersion;
@@ -66,10 +68,17 @@ public class FeedVersion implements Serializable{
 	public void setNewVersion(boolean newVersion) {
 		this.newVersion = newVersion;
 	}
-	
+	public String getTechnicalTitle() {
+		return technicalTitle;
+	}
+	public void setTechnicalTitle(String technicalTitle) {
+		this.technicalTitle = technicalTitle;
+	}
+
 	@Override
 	public String toString() {
-		return "FeedVersion [feedId=" + feedId + ", title=" + title + ", latestVersion=" + latestVersion + ", recent="
-				+ recent + ", newVersion=" + newVersion + "]";
+		return "FeedVersion [id=" + id + ", feedId=" + feedId + ", title=" + title + ", technicalTitle="
+				+ technicalTitle + ", latestVersion=" + latestVersion + ", recent=" + recent + ", newVersion="
+				+ newVersion + "]";
 	}
 }

@@ -14,6 +14,7 @@ countryApp.controller('feed_list', function($scope, $http, feeds){
     	let json = {
     		'id':clickData.id,
     		'title':clickData.title,
+    		'technicalTitle':clickData.technical_title,
     		'enabled':clickData.status,
     		'latest':clickData.latest
     	};

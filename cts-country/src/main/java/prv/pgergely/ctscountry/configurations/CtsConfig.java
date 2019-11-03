@@ -3,6 +3,7 @@ package prv.pgergely.ctscountry.configurations;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import prv.pgergely.ctscountry.utils.Datasource;
 import prv.pgergely.ctscountry.utils.ThreadParams;
 
 @Configuration
@@ -12,7 +13,7 @@ public class CtsConfig {
 	private String transitFeedKey;
 	private String tempDirectory;
 	private ThreadParams threadParams;
-	private String datasourceUrl;
+	private Datasource datasource;
 	
 	public String getTransitFeedKey() {
 		return transitFeedKey;
@@ -32,10 +33,10 @@ public class CtsConfig {
 	public void setThreadParams(ThreadParams threadParams) {
 		this.threadParams = threadParams;
 	}
-	public String getDatasourceUrl() {
-		return datasourceUrl;
+	public Datasource getDatasource() {
+		return datasource;
 	}
-	public void setDatasourceUrl(String datasourceUrl) {
-		this.datasourceUrl = datasourceUrl;
+	public void setDatasource(Datasource datasource) {
+		this.datasource = datasource;
 	}
 }

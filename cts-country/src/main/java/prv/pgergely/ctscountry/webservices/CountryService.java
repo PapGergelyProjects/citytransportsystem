@@ -1,11 +1,8 @@
 package prv.pgergely.ctscountry.webservices;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,19 +19,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import prv.pgergely.cts.common.domain.DefaultResponse;
-import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
-import prv.pgergely.ctscountry.interfaces.FeedVersionService;
 import prv.pgergely.ctscountry.model.FeedVersion;
+import prv.pgergely.ctscountry.services.DatasourceService;
+import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 
 @RestController
 @RequestMapping(path="/")
 public class CountryService {
 	
 	@Autowired
-	private FeedVersionService feedVersion;
+	private FeedVersionServiceImpl feedVersion;
+	
+	@Autowired
+	private DatasourceService dsService;
 	
 	@RequestMapping(path="/versions", method= {RequestMethod.GET, RequestMethod.HEAD})
 	public ResponseEntity<List<FeedVersion>> getVersion() {
@@ -50,6 +49,7 @@ public class CountryService {
 	public ResponseEntity<ResponseData> insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
 		feedVersion.insert(version);
+		dsService.insert(version);
 		ResponseData data = new ResponseData();
 		data.message = HttpStatus.CREATED.getReasonPhrase();
 		data.statusCode = HttpStatus.CREATED.value();

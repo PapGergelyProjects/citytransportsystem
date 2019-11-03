@@ -42,7 +42,7 @@
                                 <div class="row list-col-shape">
                                     <div class="col-lg-1">
 		                                <label class="custom-control custom-checkbox format-toggle-box">
-		                                    <input id="feed_{{feeds.id}}" type="checkbox" class="custom-control-input" ng-init="alt[feeds.id]=feeds.isEnabled" ng-model="alt[feeds.id]" ng-change="checkTick({'id':feeds.id, 'status':alt[feeds.id], 'title':feeds.title, 'latest':feeds.feed.latest })">
+		                                    <input id="feed_{{feeds.id}}" type="checkbox" class="custom-control-input" ng-init="alt[feeds.id]=feeds.isEnabled" ng-model="alt[feeds.id]" ng-change="checkTick({'id':feeds.id, 'status':alt[feeds.id], 'title':feeds.title, 'technical_title':feeds.feed.title, 'latest':feeds.feed.latest })">
 		                                    <span class="custom-control-indicator"></span>
 		                                </label>
                                     </div>

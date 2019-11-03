@@ -11,6 +11,12 @@ BEGIN
 		    recent BOOLEAN,
 		    new_version BOOLEAN DEFAULT FALSE
 		);
+		CREATE TABLE datasource_info(
+		    id SERIAL PRIMARY KEY,
+		    source_name TEXT,
+		    source_url TEXT,
+		    schema_name TEXT
+		);
 	END IF;
 END;
 $body$ ^;

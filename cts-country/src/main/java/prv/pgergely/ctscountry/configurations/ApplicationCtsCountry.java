@@ -1,6 +1,5 @@
 package prv.pgergely.ctscountry.configurations;
 
-
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -19,13 +18,13 @@ import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, ApplicationCountryComponents.class})
-public class ApplicationCtsCountry extends SpringBootServletInitializer {
+public class ApplicationCtsCountry extends SpringBootServletInitializer{
 	
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
     	return application.sources(ApplicationCtsCountry.class);
     }
-	
+    
 	public static void main(String[] args) {
 		SpringApplication.run(ApplicationCtsCountry.class, args);
 	}

@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
 
 import prv.pgergely.ctscountry.interfaces.FeedVersionDao;
 import prv.pgergely.ctscountry.model.FeedVersion;
