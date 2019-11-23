@@ -44,4 +44,8 @@ public class DatasourceService {
 	public void deleteDsService(long feedId) {
 		repo.deleteDatasourceInfo(feedId);
 	}
+	
+	public DatasourceInfo getByFeedId(long id) {
+		return repo.getDatasourceInfoById(id);
+	}
 }

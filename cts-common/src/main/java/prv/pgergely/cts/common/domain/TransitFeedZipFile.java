@@ -6,14 +6,22 @@ public class TransitFeedZipFile implements Serializable {
 	
 	private static final long serialVersionUID = 4514814349821146885L;
 	
+	private long feedId;
 	private String fileName;
 	private byte[] zipStream;
 	
-	public TransitFeedZipFile(String fileName, byte[] zipStream) {
+	public TransitFeedZipFile(long feedId, String fileName, byte[] zipStream) {
+		this.feedId = feedId;
 		this.fileName = fileName;
 		this.zipStream = zipStream;
 	}
 	
+	public long getFeedId() {
+		return feedId;
+	}
+	public void setFeedId(long feedId) {
+		this.feedId = feedId;
+	}
 	public String getFileName() {
 		return fileName;
 	}

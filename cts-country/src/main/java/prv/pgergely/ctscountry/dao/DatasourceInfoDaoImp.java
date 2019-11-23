@@ -43,7 +43,7 @@ public class DatasourceInfoDaoImp extends JdbcDaoSupport implements DatasourceIn
 
 	@Override
 	public DatasourceInfo getDatasourceInfoById(long id) {
-		final String select = "SELECT id, feed_id, source_name, source_url, schema_name FROM datasource_info WHERE id=?";
+		final String select = "SELECT id, feed_id, source_name, source_url, schema_name FROM datasource_info WHERE feed_id=?";
 		RowMapper<DatasourceInfo> mapper = (rs, rows) ->{
 			DatasourceInfo info = new DatasourceInfo(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			return info;

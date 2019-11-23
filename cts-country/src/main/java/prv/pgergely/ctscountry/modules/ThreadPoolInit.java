@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.interfaces.FixedThreadEngine;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
+import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.services.ZipContentSender;
 
 @Order(2)
@@ -25,12 +26,15 @@ public class ThreadPoolInit implements ApplicationRunner {
 	@Autowired
 	private ZipContentSender zipSender;
 	
+	@Autowired
+	private CtsConfig config;
+	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		System.out.println(args.getNonOptionArgs());
-		System.out.println(args.getOptionNames());
-		threadEng.process(10, 300, TimeUnit.SECONDS, "VersionHandler", versionHandler);
-		threadEng.process(10, 300, TimeUnit.SECONDS, "ZipSender", zipSender);
+		long initDelay = config.getThreadParams().getInitDelayed();
+		long delayBetween = config.getThreadParams().getDelayBetween();
+		threadEng.process(initDelay, delayBetween, TimeUnit.SECONDS, "VersionHandler", versionHandler);
+		threadEng.process(initDelay, delayBetween, TimeUnit.SECONDS, "ZipSender", zipSender);
 	}
 
 }

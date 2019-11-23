@@ -61,10 +61,10 @@ public class FeedVersionHandler implements VersionHandlerThread {
 			for (Map.Entry<String, FeedVersion> pair : links.entrySet()) {
 				String[] fileUrl = pair.getKey().split("/");
 				String fileName = fileUrl[fileUrl.length-1];
-				TransitFeedZipFile zipFile = downloadFile(pair.getKey(),fileName);
+				TransitFeedZipFile zipFile = downloadFile(pair.getKey(),fileName, pair.getValue().getFeedId());
 				store.add(zipFile);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error(e);
 		}
 	}
@@ -98,15 +98,16 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		return downloadLinks;
 	}
 	
-    private TransitFeedZipFile downloadFile(String urlAddress, String archiveName) throws IOException{
+    private TransitFeedZipFile downloadFile(String urlAddress, String archiveName, long feedId) throws IOException{
     	logger.info("Download file from: "+urlAddress);
     	URI getZipUrl = zipContent.getLinkFromLocation(urlAddress);
-    	ResponseEntity<byte[]> entity = zipContent.getZipFile(getZipUrl.toString());
+    	String zipUrl = getZipUrl==null ? urlAddress : getZipUrl.toString();
+    	ResponseEntity<byte[]> entity = zipContent.getZipFile(zipUrl);
     	byte[] zipFile = entity.getBody();
     	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
     	String uri = fileName.isEmpty() ? archiveName : fileName;
-    	TransitFeedZipFile actZipFile = new TransitFeedZipFile(uri, zipFile);
-        logger.info("Download finished!");
+    	TransitFeedZipFile actZipFile = new TransitFeedZipFile(feedId, uri, zipFile);
+    	logger.info("Download finished!");
         
         return actZipFile;
     }

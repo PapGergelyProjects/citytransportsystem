@@ -32,4 +32,12 @@ public class TransitFeedsTemplate {
 		return template;
 	}
 	
+	@Bean(TemplateQualifier.ZIPFILE_TEMPLATE)
+	public RestTemplate getZipFileTemplate() {
+		RestTemplate template = new RestTemplate();
+		template.getMessageConverters().add(new ByteArrayHttpMessageConverter());
+		
+		return template;
+	}
+	
 }
