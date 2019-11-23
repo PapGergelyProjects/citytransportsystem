@@ -13,6 +13,7 @@ BEGIN
 		);
 		CREATE TABLE datasource_info(
 		    id SERIAL PRIMARY KEY,
+		    feed_id INT,
 		    source_name TEXT,
 		    source_url TEXT,
 		    schema_name TEXT

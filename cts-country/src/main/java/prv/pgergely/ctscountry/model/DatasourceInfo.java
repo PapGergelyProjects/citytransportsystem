@@ -3,18 +3,20 @@ package prv.pgergely.ctscountry.model;
 public class DatasourceInfo {
 	
 	private long id;
+	private long feedId;
     private String source_name;
     private String source_url;
     private String schema_name;
     
-    public DatasourceInfo(long id, String source_name, String source_url, String schema_name) {
+    public DatasourceInfo(long id, long feedId, String source_name, String source_url, String schema_name) {
 		this.id = id;
 		this.source_name = source_name;
 		this.source_url = source_url;
 		this.schema_name = schema_name;
 	}
     
-    public DatasourceInfo(String source_name, String source_url, String schema_name) {
+    public DatasourceInfo(long feedId, String source_name, String source_url, String schema_name) {
+    	this.feedId = feedId; 
 		this.source_name = source_name;
 		this.source_url = source_url;
 		this.schema_name = schema_name;
@@ -25,6 +27,12 @@ public class DatasourceInfo {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public long getFeedId() {
+		return feedId;
+	}
+	public void setFeedId(long feedId) {
+		this.feedId = feedId;
 	}
 	public String getSource_name() {
 		return source_name;

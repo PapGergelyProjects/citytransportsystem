@@ -31,21 +31,21 @@ public class DatasourceInfoDaoImp extends JdbcDaoSupport implements DatasourceIn
 	
 	@Override
 	public void insert(DatasourceInfo value) {
-		final String insert = "INSERT INTO datasource_info (source_name, source_url, schema_name) VALUES (?,?,?)";
-		this.getJdbcTemplate().update(insert, new Object[] {value.getSource_name(), value.getSource_url(), value.getSchema_name()});
+		final String insert = "INSERT INTO datasource_info (feed_id, source_name, source_url, schema_name) VALUES (?,?,?,?)";
+		this.getJdbcTemplate().update(insert, new Object[] {value.getFeedId(), value.getSource_name(), value.getSource_url(), value.getSchema_name()});
 	}
 
 	@Override
 	public void update(DatasourceInfo value) {
-		final String update = "UPDATE datasource_info SET source_name=?, source_url=?, schema_name=? WHERE id=?";
-		this.getJdbcTemplate().update(update, new Object[] {value.getSource_name(), value.getSource_url(), value.getSchema_name(), value.getId()});
+		final String update = "UPDATE datasource_info SET feed_id=? source_name=?, source_url=?, schema_name=? WHERE id=?";
+		this.getJdbcTemplate().update(update, new Object[] {value.getFeedId(), value.getSource_name(), value.getSource_url(), value.getSchema_name(), value.getId()});
 	}
 
 	@Override
 	public DatasourceInfo getDatasourceInfoById(long id) {
-		final String select = "SELECT id, source_name, source_url, schema_name FROM datasource_info WHERE id=?";
+		final String select = "SELECT id, feed_id, source_name, source_url, schema_name FROM datasource_info WHERE id=?";
 		RowMapper<DatasourceInfo> mapper = (rs, rows) ->{
-			DatasourceInfo info = new DatasourceInfo(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4));
+			DatasourceInfo info = new DatasourceInfo(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			return info;
 		};
 		
@@ -54,19 +54,19 @@ public class DatasourceInfoDaoImp extends JdbcDaoSupport implements DatasourceIn
 
 	@Override
 	public List<DatasourceInfo> getDatasourceInfos() {
-		final String selectAll = "SELECT id, source_name, source_url, schema_name FROM datasource_info";
+		final String selectAll = "SELECT id, feed_id, source_name, source_url, schema_name FROM datasource_info";
 		List<Map<String, Object>> rawRes = this.getJdbcTemplate().queryForList(selectAll);
 		List<DatasourceInfo> results = rawRes
 										.stream()
-										.map(mp -> new DatasourceInfo(Long.valueOf(mp.get("id").toString()), String.valueOf(mp.get("source_name")), String.valueOf(mp.get("source_url")), String.valueOf(mp.get("schema_name"))))
+										.map(mp -> new DatasourceInfo(Long.valueOf(mp.get("id").toString()), Long.valueOf(mp.get("feed_id").toString()), String.valueOf(mp.get("source_name")), String.valueOf(mp.get("source_url")), String.valueOf(mp.get("schema_name"))))
 										.collect(Collectors.toList());
 		
 		return results;
 	}
 
 	@Override
-	public void deleteDatasourceInfo(DatasourceInfo value) throws HttpClientErrorException {
-		int rows = this.getJdbcTemplate().update("DELETE FROM feed_version WHERE feed_id=?", new Object[]{value.getId()});
+	public void deleteDatasourceInfo(long feedId) throws HttpClientErrorException {
+		int rows = this.getJdbcTemplate().update("DELETE FROM datasource_info WHERE feed_id=?", new Object[]{feedId});
 		if(rows == 0) {
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 		}

@@ -12,6 +12,6 @@ public interface DatasourceInfoDao {
 	public void update(DatasourceInfo value);
 	public DatasourceInfo getDatasourceInfoById(long id);
 	public List<DatasourceInfo> getDatasourceInfos();
-	public void deleteDatasourceInfo(DatasourceInfo value) throws HttpClientErrorException;
+	public void deleteDatasourceInfo(long feedId) throws HttpClientErrorException;
 	
 }

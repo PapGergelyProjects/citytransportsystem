@@ -74,6 +74,7 @@ public class CountryService {
 		try {
 			FeedVersion version = new FeedVersion(feedId);
 			feedVersion.deleteFeedVersion(version);
+			dsService.deleteDsService(feedId);
 			return ResponseEntity.noContent().build();
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<Void>(e.getStatusCode());

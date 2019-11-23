@@ -22,7 +22,7 @@ public class DatasourceService {
 		String title = version.getTitle();
 		String techTitle = version.getTechnicalTitle();
 		
-		DatasourceInfo info = new DatasourceInfo(title, createEndpointFromData(id), createSchemaFromData(techTitle));
+		DatasourceInfo info = new DatasourceInfo(id, title, createEndpointFromData(id), createSchemaFromData(techTitle));
 		repo.insert(info);
 	}
 	
@@ -41,4 +41,7 @@ public class DatasourceService {
 		return title.replaceAll("[\\s,]", "_");
 	}
 	
+	public void deleteDsService(long feedId) {
+		repo.deleteDatasourceInfo(feedId);
+	}
 }
