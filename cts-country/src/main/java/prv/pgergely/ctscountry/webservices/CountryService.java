@@ -23,6 +23,7 @@ import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
 import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.services.DatasourceService;
+import prv.pgergely.ctscountry.services.FeedRegistration;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 
 @RestController
@@ -34,6 +35,9 @@ public class CountryService {
 	
 	@Autowired
 	private DatasourceService dsService;
+	
+	@Autowired
+	private FeedRegistration register;
 	
 	@RequestMapping(path="/versions", method= {RequestMethod.GET, RequestMethod.HEAD})
 	public ResponseEntity<List<FeedVersion>> getVersion() {
@@ -48,8 +52,7 @@ public class CountryService {
 	@PostMapping(path="/register_feed", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<ResponseData> insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
-		feedVersion.insert(version);
-		dsService.insert(version);
+		register.apply(version);
 		ResponseData data = new ResponseData();
 		data.message = HttpStatus.CREATED.getReasonPhrase();
 		data.statusCode = HttpStatus.CREATED.value();

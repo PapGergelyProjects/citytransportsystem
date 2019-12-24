@@ -1,8 +1,8 @@
 DO
 $body$
 BEGIN
-    IF NOT EXISTS(SELECT * FROM information_schema.schemata WHERE schema_name='cts_dataset') THEN
-    CREATE SCHEMA cts_dataset
+    IF NOT EXISTS(SELECT * FROM information_schema.schemata WHERE schema_name='<schema_name>') THEN
+    CREATE SCHEMA <schema_name>
 		CREATE TABLE agency(
 		    id SERIAL PRIMARY KEY,
 		    agency_id CHARACTER VARYING(10),

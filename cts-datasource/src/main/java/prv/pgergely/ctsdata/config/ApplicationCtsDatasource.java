@@ -21,7 +21,7 @@ public class ApplicationCtsDatasource extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
     	application.addCommandLineProperties(true);
-    	application.properties("spring.datasource.primary.schema="+System.getProperty("schema"));
+    	application.properties("spring.datasource-primary.schema="+System.getProperty("schema"));
     	return application.sources(ApplicationCtsDatasource.class);
     }
 	

@@ -17,13 +17,14 @@ public class DatasourceService {
 	@Autowired
 	private CtsConfig conf;
 	
-	public void insert(FeedVersion version) {
+	public DatasourceInfo insert(FeedVersion version) {
 		long id = version.getFeedId();
 		String title = version.getTitle();
 		String techTitle = version.getTechnicalTitle();
 		
 		DatasourceInfo info = new DatasourceInfo(id, title, createEndpointFromData(id), createSchemaFromData(techTitle));
 		repo.insert(info);
+		return info;
 	}
 	
 	private String createEndpointFromData(final long feedId) {
