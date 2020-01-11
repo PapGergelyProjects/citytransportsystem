@@ -18,6 +18,8 @@ import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
 
+import prv.pgergely.ctsdata.utility.Schema;
+
 @Order(1)
 @Component
 public class DatabaseInit implements ApplicationRunner {
@@ -27,6 +29,9 @@ public class DatabaseInit implements ApplicationRunner {
 	
 	@Autowired
 	private DataSource dataSource;
+	
+	@Autowired
+	private Schema schema;
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
@@ -55,7 +60,7 @@ public class DatabaseInit implements ApplicationRunner {
 				sb.append(bfr.readLine()+"\n");
 			}
 		}
-		String sql = sb.toString().replaceAll("<schema_name>", System.getProperty("schema"));
+		String sql = sb.toString().replaceAll("<schema_name>", schema.getSchemaName());
 		Resource resource = new ByteArrayResource(sql.getBytes());
 		return resource;
 	}

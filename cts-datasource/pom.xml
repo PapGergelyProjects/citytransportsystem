@@ -113,5 +113,16 @@
         </configuration>
       </plugin>
     </plugins>
+    <resources>
+        <resource>
+            <directory>src/main/resources/docker_files</directory>
+            <includes>
+                <include>context.xml</include>
+                <include>Dockerfile</include>
+                <include>server.xml</include>
+            </includes>
+            <targetPath>${basedir}/target/docker_files</targetPath>
+        </resource>
+    </resources>
   </build>
 </project>
