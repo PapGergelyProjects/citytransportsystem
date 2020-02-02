@@ -1,6 +1,11 @@
 package prv.pgergely.ctsdata.service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.ctsdata.interfaces.GtfsTableDao;
@@ -13,6 +18,10 @@ public class GtfsTablesService {
 	
 	public void insertValues(String inserts) {
 		tablesSrv.insert(inserts);
+	}
+	
+	public void copy(String copyQuery, InputStream copyValue) throws CannotGetJdbcConnectionException, SQLException, IOException {
+		tablesSrv.copy(copyQuery, copyValue);
 	}
 	
 	public void refreshMateralizedViews() {

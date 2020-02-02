@@ -1,7 +1,9 @@
-spring: 
+spring:
+  profiles:
+     active: dev
   datasource-primary:
     driver-class-name: org.postgresql.Driver 
-    jdbcUrl: jdbc:postgresql://postgres-cts:5432/sandbox?reWriteBatchedInserts=true
+    jdbcUrl: jdbc:postgresql://postgres-cts:5432/sandbox
     username: postgres
     password: home
     separator: ^;
@@ -19,3 +21,5 @@ configs:
       - routes
       - stop_times
       - stops
+      - shapes
+      - pathways

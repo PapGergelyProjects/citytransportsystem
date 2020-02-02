@@ -33,6 +33,11 @@ public enum TableInsertValues {
 			rawCols.retainAll(new ArrayList<>(agencyList));
 			return rawCols;
 		}
+
+		@Override
+		public List<String> getColNames() {
+			return agencyList;
+		}
     },
     FEED_INFO("feed_info"){
     	
@@ -56,6 +61,11 @@ public enum TableInsertValues {
 			rawCols.retainAll(feedInfoList);
 			return rawCols;
 		}
+
+		@Override
+		public List<String> getColNames() {
+			return feedInfoList;
+		}
     },
     CALENDAR_DATES("calendar_dates"){
     	
@@ -76,6 +86,11 @@ public enum TableInsertValues {
 		public List<String> getColNames(List<String> rawCols) {
 			rawCols.retainAll(calendarDates);
 			return rawCols;
+		}
+
+		@Override
+		public List<String> getColNames() {
+			return calendarDates;
 		}
     },
     PATHWAYS("pathways"){
@@ -100,6 +115,11 @@ public enum TableInsertValues {
 		public List<String> getColNames(List<String> rawCols) {
 			rawCols.retainAll(pathwaysList);
 			return rawCols;
+		}
+
+		@Override
+		public List<String> getColNames() {
+			return pathwaysList;
 		}
     },
     ROUTES("routes"){
@@ -129,6 +149,11 @@ public enum TableInsertValues {
 			rawCols.retainAll(routesList);
 			return rawCols;
 		}
+
+		@Override
+		public List<String> getColNames() {
+			return routesList;
+		}
     },
     SHAPES("shapes"){
     	
@@ -138,7 +163,7 @@ public enum TableInsertValues {
         public String getInsertValue(List<String> columns, Map<String, String> records) {
             StringJoiner insertValues = new StringJoiner(",", "(",")");
             Map<String, String> valueMap = new HashMap<>();
-            valueMap.put("shape_id", "'"+records.get("shape_id")+"'");
+            valueMap.put("shape_id", STRING_MARKER+records.get("shape_id")+STRING_MARKER);
             valueMap.put("shape_pt_sequence", records.get("shape_pt_sequence"));
             valueMap.put("shape_pt_lat", records.get("shape_pt_lat"));
             valueMap.put("shape_pt_lon", records.get("shape_pt_lon"));
@@ -152,6 +177,11 @@ public enum TableInsertValues {
 			rawCols.retainAll(shapes);
 			return rawCols;
 		}
+
+		@Override
+		public List<String> getColNames() {
+			return shapes;
+		}
     },
     STOP_TIMES("stop_times"){
     	
@@ -161,10 +191,10 @@ public enum TableInsertValues {
         public String getInsertValue(List<String> columns, Map<String, String> records) {
             StringJoiner insertValues = new StringJoiner(",", "(",")");
             Map<String, String> valueMap = new HashMap<>();
-            valueMap.put("trip_id", "'"+records.get("trip_id")+"'");
-            valueMap.put("stop_id", "'"+records.get("stop_id")+"'");
-            valueMap.put("arrival_time", "'"+records.get("arrival_time")+"'::interval");
-            valueMap.put("departure_time", "'"+records.get("departure_time")+"'::interval");
+            valueMap.put("trip_id", STRING_MARKER+records.get("trip_id")+STRING_MARKER);
+            valueMap.put("stop_id", STRING_MARKER+records.get("stop_id")+STRING_MARKER);
+            valueMap.put("arrival_time", STRING_MARKER+records.get("arrival_time")+STRING_MARKER+"::interval");
+            valueMap.put("departure_time", STRING_MARKER+records.get("departure_time")+STRING_MARKER+"::interval");
             valueMap.put("stop_sequence", nullValues(records.get("stop_sequence"), false));
             valueMap.put("stop_headsign", nullValues(records.get("stop_headsign"), true));
             valueMap.put("pickup_type", nullValues(records.get("pickup_type"), false));
@@ -180,6 +210,11 @@ public enum TableInsertValues {
 			rawCols.retainAll(stopTimesList);
 			return rawCols;
 		}
+
+		@Override
+		public List<String> getColNames() {
+			return stopTimesList;
+		}
     },
     STOPS("stops"){
     	
@@ -189,8 +224,8 @@ public enum TableInsertValues {
         public String getInsertValue(List<String> columns, Map<String, String> records) {
             StringJoiner insertValues = new StringJoiner(",", "(",")");
             Map<String, String> valueMap = new HashMap<>();
-            valueMap.put("stop_id", "'"+records.get("stop_id")+"'");
-            valueMap.put("stop_name", "'"+records.get("stop_name")+"'");
+            valueMap.put("stop_id", STRING_MARKER+records.get("stop_id")+STRING_MARKER);
+            valueMap.put("stop_name", STRING_MARKER+records.get("stop_name")+STRING_MARKER);
             valueMap.put("stop_desc", nullValues(records.get("stop_desc"), true));
             valueMap.put("stop_lat", records.get("stop_lat"));
             valueMap.put("stop_lon", records.get("stop_lon"));
@@ -209,6 +244,11 @@ public enum TableInsertValues {
 			rawCols.retainAll(stopsList);
 			return rawCols;
 		}
+
+		@Override
+		public List<String> getColNames() {
+			return stopsList;
+		}
     },
     TRIPS("trips"){
     	
@@ -218,14 +258,14 @@ public enum TableInsertValues {
         public String getInsertValue(List<String> columns, Map<String, String> records) {
             StringJoiner insertValues = new StringJoiner(",", "(",")");
             Map<String, String> valueMap = new HashMap<>();
-            valueMap.put("route_id", "'"+records.get("route_id")+"'");
-            valueMap.put("trip_id", "'"+records.get("trip_id")+"'");
-            valueMap.put("service_id", "'"+records.get("service_id")+"'");
-            valueMap.put("trip_headsign", "'"+records.get("trip_headsign")+"'");
+            valueMap.put("route_id", STRING_MARKER+records.get("route_id")+STRING_MARKER);
+            valueMap.put("trip_id", STRING_MARKER+records.get("trip_id")+STRING_MARKER);
+            valueMap.put("service_id", STRING_MARKER+records.get("service_id")+STRING_MARKER);
+            valueMap.put("trip_headsign", STRING_MARKER+records.get("trip_headsign")+STRING_MARKER);
             valueMap.put("trip_short_name", nullValues(records.get("trip_short_name"), true));
             valueMap.put("direction_id", records.get("direction_id"));
-            valueMap.put("block_id", "'"+records.get("block_id")+"'");
-            valueMap.put("shape_id", "'"+records.get("shape_id")+"'");
+            valueMap.put("block_id", STRING_MARKER+records.get("block_id")+STRING_MARKER);
+            valueMap.put("shape_id", STRING_MARKER+records.get("shape_id")+STRING_MARKER);
             valueMap.put("wheelchair_accessible", records.get("wheelchair_accessible"));
             valueMap.put("bikes_allowed", records.get("bikes_allowed"));
 
@@ -236,6 +276,11 @@ public enum TableInsertValues {
 		public List<String> getColNames(List<String> rawCols) {
 			rawCols.retainAll(tripsList);
 			return rawCols;
+		}
+
+		@Override
+		public List<String> getColNames() {
+			return tripsList;
 		}
     };
 	
@@ -255,8 +300,10 @@ public enum TableInsertValues {
      * @return
      */
     public abstract List<String> getColNames(List<String> rawCols);
+    public abstract List<String> getColNames();
     
     private String tableName;
+    private static final String STRING_MARKER = "\"";
 
     private TableInsertValues(String tableName){
         this.tableName = tableName;
@@ -267,14 +314,14 @@ public enum TableInsertValues {
     }
 
     private static String strToDateFormat(String rawDate){
-        return "'"+rawDate.substring(0,4)+"-"+rawDate.substring(4,6)+"-"+rawDate.substring(6,8)+"'";
+        return STRING_MARKER+rawDate.substring(0,4)+"-"+rawDate.substring(4,6)+"-"+rawDate.substring(6,8)+STRING_MARKER;
     }
 
     private static String nullValues(String value, boolean isStr){
     	if(value == null){
     		return "skip";
     	}
-        return "null".equals(value) ? "null" : isStr ? "'"+value+"'" : value;
+        return "null".equals(value) ? "null" : isStr ? STRING_MARKER+value+STRING_MARKER : value;
     }
     
     private static String getFilteredValues(List<String> columns, StringJoiner insertValues, Map<String, String> valueMap){

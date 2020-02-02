@@ -1,6 +1,7 @@
 package prv.pgergely.ctsdata.module;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.domain.TransitFeedZipFile;
@@ -43,7 +45,7 @@ public class DataUpdater implements ApplicationRunner {
 				TransitFeedZipFile zip = internalStore.poll();
 				try {
 					dataPrep.extractZipFile(zip.getZipStream());
-				} catch (IOException e) {
+				} catch (IOException | CannotGetJdbcConnectionException | SQLException e) {
 					logger.error(e.getMessage());
 				}
 			}

@@ -1,12 +1,18 @@
 package prv.pgergely.ctsdata.repo;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import org.postgresql.PGConnection;
+import org.postgresql.copy.CopyManager;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +33,12 @@ public class GtfsTableDaoImpl extends JdbcDaoSupport implements GtfsTableDao {
 	public void insert(String insertValues) {
 		int[] array = this.getJdbcTemplate().batchUpdate(insertValues);
 		System.out.println(Arrays.toString(array));//DELETE
+	}
+	
+	@Override
+	public void copy(String copyQuery, InputStream copyValue) throws CannotGetJdbcConnectionException, SQLException, IOException {
+		CopyManager copy = this.getConnection().unwrap(PGConnection.class).getCopyAPI();
+		copy.copyIn(copyQuery, copyValue);
 	}
 
 	@Override

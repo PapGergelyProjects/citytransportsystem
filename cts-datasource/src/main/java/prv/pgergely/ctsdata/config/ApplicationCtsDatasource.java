@@ -7,20 +7,20 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-
+import org.springframework.context.annotation.Profile;
 
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.ctsdata.CtsDsComponents;
 import prv.pgergely.ctsdata.utility.Schema;
 
+@Profile("dev")
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, CtsDsComponents.class})
 public class ApplicationCtsDatasource extends SpringBootServletInitializer {
@@ -39,7 +39,7 @@ public class ApplicationCtsDatasource extends SpringBootServletInitializer {
 			String schema = (String) ctx.lookup("java:/comp/env/global/schema");
 			return schema;
 		} catch (NamingException e) {
-			return null;
+			return "test_gtfs";
 		}
     }
 	
