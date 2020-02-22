@@ -67,9 +67,9 @@ public class DataPreparation {
         logger.info("Table next: "+tableName);
         TableInsertValues value = tableList.get(tableName);
         List<String> columns = value.getColNames();
+        transform.setDefaultColumns(columns);
         transform.setStream(stream);
-        transform.generateStringMatrixFromCsv();
-        ByteArrayOutputStream outStream = transform.filterCsvContentByColumnList(columns);
+        ByteArrayOutputStream outStream = transform.generateNormalizedStreamFromCsv();
         String joinedCols = columns.stream().collect(Collectors.joining(",","(",")"));
         String copy = "COPY "+tableName+" "+joinedCols+" FROM STDIN WITH CSV DELIMITER ',' QUOTE '\"' ";
         try(InputStream inStream = new ByteArrayInputStream(outStream.toByteArray())){
