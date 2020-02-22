@@ -1,26 +1,13 @@
 package prv.pgergely.ctsdata.service;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -34,6 +21,7 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.ctsdata.config.CtsDataConfig;
+import prv.pgergely.ctsdata.utility.CsvTransformer;
 import prv.pgergely.ctsdata.utility.TableInsertValues;
 
 @Service
@@ -46,6 +34,9 @@ public class DataPreparation {
 	
 	@Autowired
 	private GtfsTablesService srvc;
+	
+	@Autowired
+	private CsvTransformer transform;
 	
 	private Map<String, TableInsertValues> tableList;
 	
@@ -66,7 +57,7 @@ public class DataPreparation {
                 copyCsvContent(fileName, zis);
             }
         }
-        logger.info("File extraction done!");
+        logger.info("File extraction is done!");
         zis.closeEntry();
         zis.close();
     }
@@ -76,9 +67,14 @@ public class DataPreparation {
         logger.info("Table next: "+tableName);
         TableInsertValues value = tableList.get(tableName);
         List<String> columns = value.getColNames();
+        transform.setStream(stream);
+        transform.generateStringMatrixFromCsv();
+        ByteArrayOutputStream outStream = transform.filterCsvContentByColumnList(columns);
         String joinedCols = columns.stream().collect(Collectors.joining(",","(",")"));
-        String copy = "COPY "+tableName+" "+joinedCols+" FROM STDIN WITH CSV DELIMITER ',' HEADER";
-        srvc.copy(copy, stream);
+        String copy = "COPY "+tableName+" "+joinedCols+" FROM STDIN WITH CSV DELIMITER ',' QUOTE '\"' ";
+        try(InputStream inStream = new ByteArrayInputStream(outStream.toByteArray())){
+        	srvc.copy(copy, inStream);
+        }
         logger.info(tableName+" is done.");
 	}
     

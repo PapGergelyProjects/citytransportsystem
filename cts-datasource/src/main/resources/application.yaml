@@ -1,6 +1,4 @@
 spring:
-  profiles:
-     active: dev
   datasource-primary:
     driver-class-name: org.postgresql.Driver 
     jdbcUrl: jdbc:postgresql://postgres-cts:5432/sandbox

@@ -28,7 +28,8 @@ BEGIN
 		    feed_start_date DATE,
 		    feed_end_date DATE,
 		    feed_version CHARACTER VARYING(255),
-		    feed_ext_version INTEGER
+		    feed_contact_email CHARACTER VARYING(255),
+		    feed_contact_url CHARACTER VARYING(255)
 		)
 		CREATE TABLE pathways(
 		    id SERIAL PRIMARY KEY,
@@ -41,8 +42,8 @@ BEGIN
 		)
 		CREATE TABLE routes(
 		    id SERIAL PRIMARY KEY,
-		    agency_id CHARACTER VARYING(10),
 		    route_id CHARACTER VARYING(60),
+		    agency_id CHARACTER VARYING(10),
 		    route_short_name CHARACTER VARYING(10),
 		    route_long_name CHARACTER VARYING(255),
 		    route_desc TEXT,
@@ -55,9 +56,9 @@ BEGIN
 		CREATE TABLE shapes(
 		    id SERIAL PRIMARY KEY,
 		    shape_id CHARACTER VARYING(10),
-		    shape_pt_sequence INTEGER,
 		    shape_pt_lat DOUBLE PRECISION,
 		    shape_pt_lon DOUBLE PRECISION,
+		    shape_pt_sequence INTEGER,
 		    shape_dist_traveled DOUBLE PRECISION
 		)
 		CREATE TABLE stop_times(
@@ -76,23 +77,25 @@ BEGIN
 		CREATE TABLE stops(
 		    id SERIAL PRIMARY KEY,
 		    stop_id CHARACTER VARYING(100),
+		    stop_code CHARACTER VARYING(20),
 		    stop_name TEXT,
 		    stop_desc TEXT,
 		    stop_lat DOUBLE PRECISION,
 		    stop_lon DOUBLE PRECISION,
-		    stop_code CHARACTER VARYING(20),
-		    stop_url TEXT,
 		    zone_id CHARACTER VARYING(20),
+		    stop_url TEXT,
 		    location_type INTEGER,
 		    parent_station CHARACTER VARYING(20),
+		    stop_timezone CHARACTER VARYING(100),
 		    wheelchair_boarding INTEGER,
-		    stop_timezone CHARACTER VARYING(100)
+		    level_id INTEGER,
+		    platform_code CHARACTER VARYING(10)
 		)
 		CREATE TABLE trips(
 		    id SERIAL PRIMARY KEY,
 		    route_id CHARACTER VARYING(60),
-		    trip_id CHARACTER VARYING(100),
 		    service_id CHARACTER VARYING(255),
+		    trip_id CHARACTER VARYING(100),
 		    trip_headsign TEXT,
 		    trip_short_name CHARACTER VARYING(100),
 		    direction_id INTEGER,

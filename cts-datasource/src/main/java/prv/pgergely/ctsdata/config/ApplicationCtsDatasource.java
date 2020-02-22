@@ -13,14 +13,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Profile;
 
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.domain.TransitFeedZipFile;
 import prv.pgergely.ctsdata.CtsDsComponents;
 import prv.pgergely.ctsdata.utility.Schema;
 
-@Profile("dev")
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, CtsDsComponents.class})
 public class ApplicationCtsDatasource extends SpringBootServletInitializer {

@@ -17,7 +17,7 @@ import java.util.StringJoiner;
 public enum TableInsertValues {
     AGENCY("agency"){
     	
-    	private final List<String> agencyList = Arrays.asList("agency_id", "agency_name", "agency_url", "agency_timezone", "agency_lang", "agency_phone");
+    	private final List<String> agencyList = Arrays.asList("agency_id", "agency_name", "agency_url", "agency_timezone", "agency_lang", "agency_phone", "agency_fare_url", "agency_email");
     	
         @Override
         public String getInsertValue(List<String> columns, Map<String, String> records) {
@@ -41,7 +41,7 @@ public enum TableInsertValues {
     },
     FEED_INFO("feed_info"){
     	
-    	private final List<String> feedInfoList = Arrays.asList("feed_publisher_name", "feed_publisher_url", "feed_lang", "feed_start_date", "feed_end_date", "feed_version", "feed_ext_version");
+    	private final List<String> feedInfoList = Arrays.asList("feed_publisher_name", "feed_publisher_url", "feed_lang", "feed_start_date", "feed_end_date", "feed_version", "feed_contact_email", "feed_contact_url");
     	
         @Override
         public String getInsertValue(List<String> columns, Map<String, String> records) {
@@ -51,7 +51,7 @@ public enum TableInsertValues {
             valueMap.put("feed_start_date", strToDateFormat(records.get("feed_start_date")));
             valueMap.put("feed_end_date", strToDateFormat(records.get("feed_end_date")));
             valueMap.put("feed_version", nullValues(records.get("feed_version"), true));
-            valueMap.put("feed_ext_version", nullValues(records.get("feed_ext_version"), false));
+            valueMap.put("feed_version", nullValues(records.get("feed_ext_version"), false));
 
             return getFilteredValues(columns, insertValues, valueMap);
         }
@@ -124,7 +124,7 @@ public enum TableInsertValues {
     },
     ROUTES("routes"){
     	
-    	private final List<String> routesList = Arrays.asList("agency_id", "route_id", "route_short_name", "route_long_name", "route_type", "route_desc", "route_url", "route_color", "route_text_color", "route_sort_order");
+    	private final List<String> routesList = Arrays.asList("route_id", "agency_id", "route_short_name", "route_long_name", "route_desc", "route_type", "route_url", "route_color", "route_text_color", "route_sort_order");
     	
         @Override
         public String getInsertValue(List<String> columns, Map<String, String> records) {
@@ -218,7 +218,7 @@ public enum TableInsertValues {
     },
     STOPS("stops"){
     	
-    	private final List<String> stopsList = Arrays.asList("stop_id", "stop_name", "stop_desc", "stop_lat", "stop_lon", "stop_url", "stop_code", "location_type", "parent_station", "wheelchair_boarding", "stop_timezone");
+    	private final List<String> stopsList = Arrays.asList("stop_id", "stop_code", "stop_name", "stop_desc", "stop_lat", "stop_lon", "zone_id", "stop_url", "location_type", "parent_station", "stop_timezone", "wheelchair_boarding");
     	
         @Override
         public String getInsertValue(List<String> columns, Map<String, String> records) {
@@ -252,7 +252,7 @@ public enum TableInsertValues {
     },
     TRIPS("trips"){
     	
-    	private final List<String> tripsList = Arrays.asList("route_id", "trip_id", "service_id", "trip_headsign", "trip_short_name", "direction_id", "block_id", "shape_id", "wheelchair_accessible", "bikes_allowed");
+    	private final List<String> tripsList = Arrays.asList("route_id", "service_id", "trip_id", "trip_headsign", "trip_short_name", "direction_id", "block_id", "shape_id", "wheelchair_accessible", "bikes_allowed");
     	
         @Override
         public String getInsertValue(List<String> columns, Map<String, String> records) {

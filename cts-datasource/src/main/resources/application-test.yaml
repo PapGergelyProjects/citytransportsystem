@@ -6,3 +6,19 @@ spring:
     username: postgres
     password: home
     separator: ^;
+---
+configs:
+   threadParams:
+      initDelayed: 30
+      delayBetween: 40
+   tempDirectory: E:/Development/temp_downloads/
+   tables:
+      - agency
+      - feed_info
+      - trips
+      - calendar_dates
+      - routes
+      - stop_times
+      - stops
+      - shapes
+      - pathways
