@@ -21,17 +21,13 @@ import org.springframework.stereotype.Component;
 public class CsvTransformer {
     
     private String[] columns;
-    private byte[] stream;
+    private InputStream stream;
     private List<String> defaultColumnList;
     
     private Logger logger = LogManager.getLogger(CsvTransformer.class);
     
     public void setStream(InputStream stream) {
-        try {
-            this.stream = streamToByteArray(stream);
-        } catch (IOException ex) {
-        	logger.error(ex);
-        }
+    	this.stream = stream;
     }
     
     public void setDefaultColumns(List<String> defaultColumnList) {
@@ -50,38 +46,33 @@ public class CsvTransformer {
         return outStream.toByteArray();
     }
     
-    public ByteArrayOutputStream generateNormalizedStreamFromCsv(){
-        try(BufferedReader bfr = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(stream)))){
-        	ByteArrayOutputStream streamOut = new ByteArrayOutputStream();
-            if(bfr.ready()){
-                columns = bfr.readLine().split(",");
-            }
-            int[] columnSet = getColumnSet();
-            while(bfr.ready()){
-                String line = bfr.readLine();
-                String[] actualRow = replaceCommaWithinDoubleQoute(line).split(",", -1);
-                if(actualRow != null && actualRow.length != 0) {
-                	byte[] remainingCsvRows = new byte[0];
-                	for (int j = 0; j < columnSet.length; j++) {
-            			int idx = columnSet[j];
-            			byte[] separator = ((j+1) != columnSet.length) ? new byte[]{','} : new byte[]{'\n'};
-            			if(idx >= 0){
-            				byte[] actualCol = actualRow[idx].getBytes(StandardCharsets.UTF_8);
-            				remainingCsvRows = mergeArray(remainingCsvRows, mergeArray(actualCol, separator));
-            			}else{
-            				remainingCsvRows = mergeArray(remainingCsvRows, mergeArray(new byte[0], separator));
-            			}
-                	}
-                	streamOut.write(remainingCsvRows);
-                }
-            }
-            
-            return streamOut;
-        }catch(IOException ex){
-        	logger.error(ex);
-        }
-        
-        return new ByteArrayOutputStream();
+    public ByteArrayOutputStream generateNormalizedStreamFromCsv() throws IOException{
+    	BufferedReader bfr = new BufferedReader(new InputStreamReader(stream));
+    	ByteArrayOutputStream streamOut = new ByteArrayOutputStream();
+    	if(bfr.ready()){
+    		columns = bfr.readLine().split(",");
+    	}
+    	int[] columnSet = getColumnSet();
+    	while(bfr.ready()){
+    		String line = bfr.readLine();
+    		String[] actualRow = replaceCommaWithinDoubleQoute(line).split(",", -1);
+    		if(actualRow != null && actualRow.length != 0) {
+    			byte[] remainingCsvRows = new byte[0];
+    			for (int j = 0; j < columnSet.length; j++) {
+    				int idx = columnSet[j];
+    				byte[] separator = ((j+1) != columnSet.length) ? new byte[]{','} : new byte[]{'\n'};
+    				if(idx >= 0){
+    					byte[] actualCol = actualRow[idx].getBytes(StandardCharsets.UTF_8);
+    					remainingCsvRows = mergeArray(remainingCsvRows, mergeArray(actualCol, separator));
+    				}else{
+    					remainingCsvRows = mergeArray(remainingCsvRows, mergeArray(new byte[0], separator));
+    				}
+    			}
+    			streamOut.write(remainingCsvRows);
+    		}
+    	}
+    	
+    	return streamOut;
     }
     
     private String replaceCommaWithinDoubleQoute(String line){
