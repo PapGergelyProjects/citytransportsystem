@@ -2,6 +2,7 @@ package prv.pgergely.ctsdata.utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -282,6 +283,22 @@ public enum TableInsertValues {
 		public List<String> getColNames() {
 			return tripsList;
 		}
+    }, 
+    UNKNOWN(""){
+		@Override
+		public String getInsertValue(List<String> columns, Map<String, String> records) {
+			return null;
+		}
+
+		@Override
+		public List<String> getColNames(List<String> rawCols) {
+			return null;
+		}
+
+		@Override
+		public List<String> getColNames() {
+			return null;
+		}
     };
 	
 	/**
@@ -304,6 +321,7 @@ public enum TableInsertValues {
     
     private String tableName;
     private static final String STRING_MARKER = "\"";
+    private static final EnumSet<TableInsertValues> ALL_VALUE = EnumSet.allOf(TableInsertValues.class);
 
     private TableInsertValues(String tableName){
         this.tableName = tableName;
@@ -311,6 +329,10 @@ public enum TableInsertValues {
 
     public String getTableName(){
         return tableName;
+    }
+    
+    public static TableInsertValues getInsertValueByTableName(String tableName) {
+    	return ALL_VALUE.stream().filter(p -> p.getTableName().equals(tableName)).findFirst().orElse(UNKNOWN);
     }
 
     private static String strToDateFormat(String rawDate){

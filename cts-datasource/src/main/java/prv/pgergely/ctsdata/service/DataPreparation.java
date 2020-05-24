@@ -5,9 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -21,7 +19,7 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.ctsdata.config.CtsDataConfig;
-import prv.pgergely.ctsdata.utility.CsvTransformer;
+import prv.pgergely.ctsdata.utility.CsvRefiner;
 import prv.pgergely.ctsdata.utility.TableInsertValues;
 
 @Service
@@ -36,13 +34,10 @@ public class DataPreparation {
 	private GtfsTablesService srvc;
 	
 	@Autowired
-	private CsvTransformer transform;
-	
-	private Map<String, TableInsertValues> tableList;
+	private CsvRefiner transform;
 	
 	@PostConstruct
 	public void  init() {
-		tableList = Arrays.asList(TableInsertValues.values()).stream().collect(Collectors.toMap(TableInsertValues::getTableName, v -> v));
 	}
 	
     public void extractZipFile(byte[] zipStream) throws IOException, CannotGetJdbcConnectionException, SQLException{
@@ -65,7 +60,7 @@ public class DataPreparation {
 	private void copyCsvContent(String fileName, InputStream stream) throws CannotGetJdbcConnectionException, SQLException, IOException {
         String tableName = fileName.replace(".txt", "");
         logger.info("Table next: "+tableName);
-        TableInsertValues value = tableList.get(tableName);
+        TableInsertValues value = TableInsertValues.getInsertValueByTableName(tableName);
         List<String> columns = value.getColNames();
         transform.setDefaultColumns(columns);
         transform.setStream(stream);

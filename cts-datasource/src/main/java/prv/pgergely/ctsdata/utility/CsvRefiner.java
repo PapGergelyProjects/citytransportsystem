@@ -18,13 +18,13 @@ import org.springframework.stereotype.Component;
  * @author PapGergely
  */
 @Component
-public class CsvTransformer {
+public class CsvRefiner {
     
     private String[] columns;
     private InputStream stream;
     private List<String> defaultColumnList;
     
-    private Logger logger = LogManager.getLogger(CsvTransformer.class);
+    private Logger logger = LogManager.getLogger(CsvRefiner.class);
     
     public void setStream(InputStream stream) {
     	this.stream = stream;

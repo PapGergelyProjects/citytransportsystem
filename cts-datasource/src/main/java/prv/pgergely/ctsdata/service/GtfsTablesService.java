@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import prv.pgergely.ctsdata.interfaces.GtfsTableDao;
 
@@ -16,10 +17,12 @@ public class GtfsTablesService {
 	@Autowired
 	private GtfsTableDao tablesSrv;
 	
+	@Transactional
 	public void insertValues(String inserts) {
 		tablesSrv.insert(inserts);
 	}
 	
+	//@Transactional
 	public void copy(String copyQuery, InputStream copyValue) throws CannotGetJdbcConnectionException, SQLException, IOException {
 		tablesSrv.copy(copyQuery, copyValue);
 	}
