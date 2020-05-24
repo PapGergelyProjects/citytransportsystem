@@ -2,7 +2,9 @@ package prv.pgergely.ctsdata.repo;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
@@ -51,6 +53,11 @@ public class GtfsTableDaoImpl extends JdbcDaoSupport implements GtfsTableDao {
 	@Override
 	public void clearTables() {
 		this.getJdbcTemplate().execute("SELECT clear_tables();");
+	}
+
+	@Override
+	public void vacuumTable(String tableName) throws CannotGetJdbcConnectionException, SQLException {
+		this.getJdbcTemplate().execute("VACUUM VERBOSE ANALYZE "+tableName);
 	}
 
 }

@@ -12,4 +12,5 @@ public interface GtfsTableDao {
 	public void copy(String copyQuery, InputStream copyValue) throws CannotGetJdbcConnectionException, SQLException, IOException;
 	public void clearTables();
 	public void refreshMateralizedView();
+	public void vacuumTable(String tableName) throws CannotGetJdbcConnectionException, SQLException;
 }

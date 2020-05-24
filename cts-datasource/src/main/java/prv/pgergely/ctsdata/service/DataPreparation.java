@@ -70,6 +70,7 @@ public class DataPreparation {
         try(InputStream inStream = new ByteArrayInputStream(outStream.toByteArray())){
         	srvc.copy(copy, inStream);
         }
+        srvc.vacuumTable(tableName);
         logger.info(tableName+" is done.");
 	}
     

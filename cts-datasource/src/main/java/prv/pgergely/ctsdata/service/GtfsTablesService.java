@@ -22,7 +22,7 @@ public class GtfsTablesService {
 		tablesSrv.insert(inserts);
 	}
 	
-	//@Transactional
+	@Transactional
 	public void copy(String copyQuery, InputStream copyValue) throws CannotGetJdbcConnectionException, SQLException, IOException {
 		tablesSrv.copy(copyQuery, copyValue);
 	}
@@ -33,5 +33,9 @@ public class GtfsTablesService {
 	
 	public void clearTables() {
 		tablesSrv.clearTables();
+	}
+	
+	public void vacuumTable(String tableName) throws CannotGetJdbcConnectionException, SQLException {
+		tablesSrv.vacuumTable(tableName);
 	}
 }
