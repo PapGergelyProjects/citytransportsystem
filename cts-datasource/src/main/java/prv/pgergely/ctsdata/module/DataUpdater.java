@@ -50,7 +50,7 @@ public class DataUpdater implements ApplicationRunner {
 				}
 			}
 		};
-		thEngine.process(config.getThreadParams().getInitDelayed(), config.getThreadParams().getDelayBetween(), TimeUnit.SECONDS, "data_updater", logic);
+		thEngine.process(config.getThreadParams().getInitDelayed(), config.getThreadParams().getDelayBetween(), TimeUnit.SECONDS, "FEED DATA UPDATE", logic);
 	}
 
 }
