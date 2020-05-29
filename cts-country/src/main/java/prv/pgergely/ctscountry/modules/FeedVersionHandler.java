@@ -2,20 +2,13 @@ package prv.pgergely.ctscountry.modules;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.domain.TransitFeedZipFile;
-import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.FeedURL;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Latest;
@@ -51,7 +43,6 @@ public class FeedVersionHandler implements VersionHandlerThread {
 	private Queue<TransitFeedZipFile> store;
 	
 	private Logger logger = LogManager.getLogger(FeedVersionHandler.class);
-	private AtomicInteger counter = new AtomicInteger(1);
 	
 	@Override
 	public void run() {

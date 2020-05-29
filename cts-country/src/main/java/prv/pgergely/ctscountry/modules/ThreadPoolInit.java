@@ -8,7 +8,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import prv.pgergely.cts.common.interfaces.FixedThreadEngine;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.services.ZipContentSender;
