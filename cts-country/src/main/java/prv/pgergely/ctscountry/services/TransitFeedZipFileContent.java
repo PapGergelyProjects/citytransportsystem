@@ -32,7 +32,7 @@ public class TransitFeedZipFileContent {
 	
 	public ResponseEntity<byte[]> getZipFile(String urlAddress){
 		HttpHeaders headers = new HttpHeaders();
-		headers.set("Content-Encoding", "UTF-8");
+		headers.set("Content-Encoding", "gzip");
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
 		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36");
