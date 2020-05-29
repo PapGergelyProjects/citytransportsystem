@@ -34,4 +34,10 @@ public class TransitFeedZipFile implements Serializable {
 	public void setZipStream(byte[] zipStream) {
 		this.zipStream = zipStream;
 	}
+
+	@Override
+	public String toString() {
+		return "TransitFeedZipFile: "+feedId;
+	}
+	
 }
