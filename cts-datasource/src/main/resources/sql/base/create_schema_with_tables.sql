@@ -104,7 +104,6 @@ BEGIN
 		    wheelchair_accessible INTEGER,
 		    bikes_allowed INTEGER
 		);
-		SET SCHEMA '<schema_name>';
     END IF;
 END;
 $body$ ^;
