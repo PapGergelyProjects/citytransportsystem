@@ -5,6 +5,23 @@ spring:
     username: postgres
     password: home
     separator: ^;
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 120000
+      connectionTimeout: 300000
+      leakDetectionThreshold: 300000
+  datasource-secondary:
+   driver-class-name: org.postgresql.Driver 
+   jdbcUrl: jdbc:postgresql://localhost:5434/sandbox
+   username: postgres
+   schema: test_gtfs
+   password: home
+   separator: ^;
+  servlet: 
+   multipart:
+    max-file-size: 50MB
+    max-request-size: 50MB
 ---
 configs:
    threadParams:
