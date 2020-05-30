@@ -11,8 +11,8 @@ public class DefaultResponse {
 	
 	@Override
 	public String toString() {
-		return "DefaultResponse [message=" + message + ", urlPart=" + urlPart + ", timestamp=" + timestamp
-				+ ", statusCode=" + statusCode + "]";
+		return "DefaultResponse {\n message: " + message + ",\n urlPart: " + urlPart + ",\n timestamp: " + timestamp
+				+ ",\n statusCode: " + statusCode + "\n}";
 	}
 	
 }

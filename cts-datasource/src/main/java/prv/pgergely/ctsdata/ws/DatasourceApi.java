@@ -28,7 +28,7 @@ public class DatasourceApi {
 	
 	@PostMapping(path="/receive_zip", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<DefaultResponse> getZipPackage(@RequestBody DownloadRequest zipFile){
-		logger.info("Package has arrived: "+zipFile.getFeedId());
+		logger.info("Package has arrived: "+zipFile);
 		DefaultResponse resp = new DefaultResponse();
 		resp.message = "Package has been transferred";
 		resp.timestamp = LocalDateTime.now();

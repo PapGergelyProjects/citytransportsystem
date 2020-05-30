@@ -9,7 +9,7 @@ import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
-//@Service
+@Service
 public class FeedRegistration {
 	
 	@Autowired

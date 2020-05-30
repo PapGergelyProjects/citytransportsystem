@@ -37,9 +37,6 @@ public class CountryFeedService {
 	@Autowired
 	private TransitFeedLocationSource locationSrc;
 	
-	@Autowired
-	private DockerService dockerSrvc;
-	
 	@GetMapping(path="/hello")
 	public String greet() {
 		return "Test Works";
@@ -73,14 +70,4 @@ public class CountryFeedService {
 		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.FORBIDDEN);
 	}
 	
-	@GetMapping(path="/containers")
-	public ResponseEntity<Map<ContainerStatus, List<DockerContainer>>> getContainers(){
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		headers.setAcceptCharset(Arrays.asList(Charset.forName("UTF-8")));
-		headers.set("X-Docker", "OK");
-		headers.set("Cts-Country", "true");
-		
-		return new ResponseEntity<Map<ContainerStatus, List<DockerContainer>>>(dockerSrvc.getContainers(), headers, HttpStatus.ACCEPTED);
-	}
 }

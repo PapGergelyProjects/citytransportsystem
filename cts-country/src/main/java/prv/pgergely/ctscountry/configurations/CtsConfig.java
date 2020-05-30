@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import prv.pgergely.ctscountry.utils.Datasource;
 import prv.pgergely.ctscountry.utils.ThreadParams;
+import prv.pgergely.ctscountry.utils.docker.DockerCommands;
 
 @Configuration
 @ConfigurationProperties("config")
@@ -14,6 +15,7 @@ public class CtsConfig {
 	private String tempDirectory;
 	private ThreadParams threadParams;
 	private Datasource datasource;
+	private DockerCommands dockerCommands;
 	
 	public String getTransitFeedKey() {
 		return transitFeedKey;
@@ -38,5 +40,11 @@ public class CtsConfig {
 	}
 	public void setDatasource(Datasource datasource) {
 		this.datasource = datasource;
+	}
+	public DockerCommands getDockerCommands() {
+		return dockerCommands;
+	}
+	public void setDockerCommands(DockerCommands dockerCommands) {
+		this.dockerCommands = dockerCommands;
 	}
 }

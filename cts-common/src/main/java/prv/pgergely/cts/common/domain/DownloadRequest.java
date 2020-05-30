@@ -11,6 +11,8 @@ public class DownloadRequest {
 	private long feedId;
 	private String fileName;
 	private String urlAddress;
+
+	public DownloadRequest() {}
 	
 	public DownloadRequest(long feedId, String fileName, String urlAddress) {
 		this.feedId = feedId;
@@ -30,7 +32,7 @@ public class DownloadRequest {
 
 	@Override
 	public String toString() {
-		return "DownloadRequest {\n feedId:" + feedId + ",\n fileName:" + fileName + ",\n urlAddress:" + urlAddress + "\n}";
+		return "DownloadRequest {\n feedId: " + feedId + ",\n fileName: " + fileName + ",\n urlAddress: " + urlAddress + "\n}";
 	}
 	
 }

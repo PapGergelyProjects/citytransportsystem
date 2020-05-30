@@ -8,28 +8,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.domain.docker.DockerContainer;
 import prv.pgergely.ctscountry.utils.docker.ContainerStatus;
 import prv.pgergely.ctscountry.utils.docker.ProcessHandler;
 
 @Service
 public class DockerService {
-
-	public Map<ContainerStatus, List<DockerContainer>> getContainers(){
+	
+	@Autowired
+	private CtsConfig config;
+	
+	public Map<ContainerStatus, List<DockerContainer>> getContainers(ContainerStatus stat){
 		Map<ContainerStatus, List<DockerContainer>> statusCont = new HashMap<>();
 		List<DockerContainer> containers = new ArrayList<>();
-        for(ContainerStatus status : ContainerStatus.getAllStatus()){
-            containers = launchCommand("docker container ps -a --format \"{{.ID}};{{.Image}};{{.CreatedAt}};{{.Ports}};{{.Status}};{{.Size}};{{.Names}};{{.Networks}}\" --filter status="+status.getName(), status);
-            statusCont.put(status, containers);
-        }
+		if(ContainerStatus.ALL.equals(stat)) {
+			for(ContainerStatus status : ContainerStatus.getAllStatus()){
+				containers = getContainersByStatus(status);
+				statusCont.put(status, containers);
+			}
+		}else {
+			containers = getContainersByStatus(stat);
+			statusCont.put(stat, containers);
+		}
         return statusCont;
 	}
 	
-    private List<DockerContainer> launchCommand(String command, ContainerStatus status){
+    private List<DockerContainer> getContainersByStatus(ContainerStatus status){
         List<DockerContainer> containers = new ArrayList<>();
-        Supplier<String> dockerCmd = ProcessHandler.execute.command(command).getOutput();
+        String command = config.getDockerCommands().getListContainer();
+        Supplier<String> dockerCmd = ProcessHandler.execute.command(command.replace("<status>", status.getName())).getOutput();
         for(String line = dockerCmd.get(); line != null; line = dockerCmd.get()){
             String[] splitted = line.split(";");
             String dateTime = splitted[2].substring(0, 19);

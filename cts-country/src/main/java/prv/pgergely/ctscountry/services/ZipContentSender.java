@@ -40,7 +40,6 @@ public class ZipContentSender implements ContentSenderThread {
 	@Override
 	public void run() {
 		logger.info("Prepare to send zips");
-		System.out.println(store);
 		while(store.size()>0) {
 			DownloadRequest request = store.poll();
 			DatasourceInfo info = dsService.getByFeedId(request.getFeedId());
@@ -51,7 +50,7 @@ public class ZipContentSender implements ContentSenderThread {
 			HttpEntity<DownloadRequest> entity = new HttpEntity<>(request, headers);
 			try {
 				DefaultResponse resp = template.postForObject("http://"+info.getSource_url()+config.getDatasource().getUrl()+"/receive_zip", entity, DefaultResponse.class);
-				logger.info(request+" sended");
+				logger.info(request);
 				logger.info(resp);
 			} catch (Exception e) {
 				logger.warn("Cannot send zip file to "+info.getSource_url()+" "+e);
