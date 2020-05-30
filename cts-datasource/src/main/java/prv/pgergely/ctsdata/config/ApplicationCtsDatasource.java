@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 import prv.pgergely.cts.common.CommonComponents;
-import prv.pgergely.cts.common.domain.TransitFeedZipFile;
+import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.ctsdata.CtsDsComponents;
 import prv.pgergely.ctsdata.utility.Schema;
 
@@ -46,8 +46,8 @@ public class ApplicationCtsDatasource extends SpringBootServletInitializer {
 	}
 	
 	@Bean
-	public Queue<TransitFeedZipFile> getInternalStore(){
-		return new LinkedBlockingQueue<TransitFeedZipFile>();
+	public Queue<DownloadRequest> getInternalStore(){
+		return new LinkedBlockingQueue<DownloadRequest>();
 	}
 	
 	@Bean

@@ -1,11 +1,10 @@
-package prv.pgergely.ctscountry.services;
+package prv.pgergely.ctsdata.service;
 
 import java.net.URI;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,21 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
+import prv.pgergely.ctsdata.config.TemplateConfig;
 
 @Service
-public class TransitFeedZipFileContent {
+public class TransitFeedPackageDownloader {
 	
 	@Autowired
-	@Qualifier(TemplateQualifier.TRANSITFEED_ZIPFILE_TEMPLATE)
+	@Qualifier(TemplateConfig.TRANSITFEED_ZIPFILE_TEMPLATE)
 	private RestTemplate template;
 	
 	@Autowired
-	@Qualifier(TemplateQualifier.DEFAULT_TEMPLATE)
+	@Qualifier(TemplateConfig.DEFAULT_TEMPLATE)
 	private RestTemplate defTemplate;
-	
-	@Value("${temp_directory}")
-	private String tempFolder;
 	
 	public ResponseEntity<byte[]> getZipFile(String urlAddress){
 		HttpHeaders headers = new HttpHeaders();

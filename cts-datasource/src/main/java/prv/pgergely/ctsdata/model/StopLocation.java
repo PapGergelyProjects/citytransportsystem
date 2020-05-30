@@ -1,7 +1,6 @@
 package prv.pgergely.ctsdata.model;
 
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 
 

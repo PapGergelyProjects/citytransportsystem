@@ -1,4 +1,4 @@
-package prv.pgergely.ctscountry.utils;
+package prv.pgergely.ctsdata.utility;
 
 import java.io.IOException;
 import java.util.List;

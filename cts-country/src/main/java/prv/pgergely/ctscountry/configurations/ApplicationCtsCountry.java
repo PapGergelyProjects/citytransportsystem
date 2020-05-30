@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.CommonComponents;
-import prv.pgergely.cts.common.domain.TransitFeedZipFile;
+import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.ctscountry.ApplicationCountryComponents;
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 
@@ -35,8 +35,8 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer{
 	}
 	
 	@Bean
-	public Queue<TransitFeedZipFile> getInternalQueue() {
-		return new LinkedBlockingQueue<TransitFeedZipFile>();
+	public Queue<DownloadRequest> getInternalQueue() {
+		return new LinkedBlockingQueue<DownloadRequest>();
 	}
 	
 }

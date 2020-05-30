@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 import prv.pgergely.ctscountry.utils.TransitFeedTemplateInterceptor;
-import prv.pgergely.ctscountry.utils.TransitFeedZipFileInterceptor;
 
 @Configuration
 public class TransitFeedsTemplate {
@@ -30,15 +29,6 @@ public class TransitFeedsTemplate {
 	public RestTemplate transitTemplate() {
 		RestTemplate template = new RestTemplate();
 		template.setInterceptors(Arrays.asList(new TransitFeedTemplateInterceptor()));
-		
-		return template;
-	}
-	
-	@Bean(TemplateQualifier.TRANSITFEED_ZIPFILE_TEMPLATE)
-	public RestTemplate getFileTemplate() {
-		RestTemplate template = new RestTemplate();
-		template.setInterceptors(Arrays.asList(new TransitFeedZipFileInterceptor()));
-		template.getMessageConverters().add(new ByteArrayHttpMessageConverter());
 		
 		return template;
 	}

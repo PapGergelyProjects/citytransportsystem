@@ -8,9 +8,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-
-import prv.pgergely.ctscountry.configurations.TransitFeedsTemplate;
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.modules.TransitFeedApi;

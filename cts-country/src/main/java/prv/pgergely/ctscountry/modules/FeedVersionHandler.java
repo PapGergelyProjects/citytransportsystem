@@ -1,7 +1,6 @@
 package prv.pgergely.ctscountry.modules;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -13,10 +12,9 @@ import java.util.Queue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import prv.pgergely.cts.common.domain.TransitFeedZipFile;
+import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.FeedURL;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Latest;
@@ -25,7 +23,6 @@ import prv.pgergely.ctscountry.interfaces.VersionHandlerThread;
 import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.services.FeedSource;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
-import prv.pgergely.ctscountry.services.TransitFeedZipFileContent;
 
 @Component
 public class FeedVersionHandler implements VersionHandlerThread {
@@ -37,10 +34,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
 	private FeedSource feed;
 	
 	@Autowired
-	private TransitFeedZipFileContent zipContent;
-	
-	@Autowired
-	private Queue<TransitFeedZipFile> store;
+	private Queue<DownloadRequest> store;
 	
 	private Logger logger = LogManager.getLogger(FeedVersionHandler.class);
 	
@@ -52,8 +46,8 @@ public class FeedVersionHandler implements VersionHandlerThread {
 			for (Map.Entry<String, FeedVersion> pair : links.entrySet()) {
 				String[] fileUrl = pair.getKey().split("/");
 				String fileName = fileUrl[fileUrl.length-1];
-				TransitFeedZipFile zipFile = downloadFile(pair.getKey(),fileName, pair.getValue().getFeedId());
-				store.add(zipFile);
+				DownloadRequest request = new DownloadRequest(pair.getValue().getFeedId(), fileName, pair.getKey());
+				store.add(request);
 			}
 		} catch (Exception e) {
 			logger.error(e);
@@ -88,18 +82,4 @@ public class FeedVersionHandler implements VersionHandlerThread {
 		}
 		return downloadLinks;
 	}
-	
-    private TransitFeedZipFile downloadFile(String urlAddress, String archiveName, long feedId) throws IOException{
-    	logger.info("Download file from: "+urlAddress);
-    	URI getZipUrl = zipContent.getLinkFromLocation(urlAddress);
-    	String zipUrl = getZipUrl==null ? urlAddress : getZipUrl.toString();
-    	ResponseEntity<byte[]> entity = zipContent.getZipFile(zipUrl);
-    	byte[] zipFile = entity.getBody();
-    	String fileName = entity.getHeaders().get("X-Alternate-FileName").get(0);
-    	String uri = fileName.isEmpty() ? archiveName : fileName;
-    	TransitFeedZipFile actZipFile = new TransitFeedZipFile(feedId, uri, zipFile);
-    	logger.info("Download finished!");
-        
-        return actZipFile;
-    }
 }
