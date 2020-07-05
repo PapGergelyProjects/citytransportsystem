@@ -21,22 +21,26 @@ public class DatasourceService {
 		long id = version.getFeedId();
 		String title = version.getTitle();
 		String techTitle = version.getTechnicalTitle();
+		String url = conf.getDatasource().getUrl();
+		int port = createPortNumberFromFeedId(id);
+		String endpoint = url+":"+port;
 		
-		DatasourceInfo info = new DatasourceInfo(id, title, createEndpointFromData(id), createSchemaFromData(techTitle));
+		DatasourceInfo info = new DatasourceInfo(id, port, title, endpoint, createSchemaFromData(techTitle));
 		repo.insert(info);
 		return info;
 	}
 	
-	private String createEndpointFromData(final long feedId) {
-		String url = conf.getDatasource().getUrl();
-		String feedIdStr = String.valueOf(feedId);
+	private int createPortNumberFromFeedId(final long feedId) {
 		String portNumber=conf.getDatasource().getPort();
+		String feedIdStr = String.valueOf(feedId);
 		for (int i = feedIdStr.length(); i < 3; i++) {
 			portNumber+="0";
 		}
 		portNumber+=feedIdStr;
-		return url+":"+portNumber;
+		
+		return Integer.valueOf(portNumber);
 	}
+	
 	
 	private String createSchemaFromData(String title) {
 		return title.replaceAll("[\\s,]", "_");

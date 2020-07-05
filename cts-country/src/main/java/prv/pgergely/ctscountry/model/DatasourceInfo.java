@@ -4,24 +4,28 @@ public class DatasourceInfo {
 	
 	private long id;
 	private long feedId;
+	private int port;
     private String source_name;
     private String source_url;
     private String schema_name;
     
     public DatasourceInfo(long id, long feedId, String source_name, String source_url, String schema_name) {
 		this.id = id;
+		this.feedId = feedId;
 		this.source_name = source_name;
 		this.source_url = source_url;
 		this.schema_name = schema_name;
 	}
     
-    public DatasourceInfo(long feedId, String source_name, String source_url, String schema_name) {
-    	this.feedId = feedId; 
+	public DatasourceInfo(long feedId, int port, String source_name, String source_url, String schema_name) {
+		super();
+		this.feedId = feedId;
+		this.port = port;
 		this.source_name = source_name;
 		this.source_url = source_url;
 		this.schema_name = schema_name;
 	}
-    
+
 	public long getId() {
 		return id;
 	}
@@ -52,10 +56,17 @@ public class DatasourceInfo {
 	public void setSchema_name(String schema_name) {
 		this.schema_name = schema_name;
 	}
+	public int getPort() {
+		return port;
+	}
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 	@Override
 	public String toString() {
-		return "DatasourceInfo [id=" + id + ", source_name=" + source_name + ", source_url=" + source_url
-				+ ", schema_name=" + schema_name + "]";
+		return "DatasourceInfo {\n id: " + id + ",\n feedId: " + feedId + ",\n port:" + port + ",\n source_name:" + source_name
+				+ ",\n source_url: " + source_url + ",\n schema_name: " + schema_name + "\n}";
 	}
+	
 }

@@ -2,10 +2,17 @@ package prv.pgergely.ctscountry.utils.docker;
 
 public class DockerCommands {
 	
+	private String imageName;
 	private String listImages;
 	private String listContainer;
 	private String createContainer;
 	
+	public String getImageName() {
+		return imageName;
+	}
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
 	public String getListImages() {
 		return listImages;
 	}

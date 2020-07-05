@@ -23,7 +23,7 @@ import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
 import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.services.DatasourceService;
-import prv.pgergely.ctscountry.services.FeedRegistration;
+import prv.pgergely.ctscountry.services.FeedOperations;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 
 @RestController
@@ -34,10 +34,7 @@ public class CountryService {
 	private FeedVersionServiceImpl feedVersion;
 	
 	@Autowired
-	private DatasourceService dsService;
-	
-	@Autowired
-	private FeedRegistration register;
+	private FeedOperations operation;
 	
 	@RequestMapping(path="/versions", method= {RequestMethod.GET, RequestMethod.HEAD})
 	public ResponseEntity<List<FeedVersion>> getVersion() {
@@ -49,10 +46,10 @@ public class CountryService {
 		return new ResponseEntity<List<FeedVersion>>(feedVersion.getFeedVersions(), headers, HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/register_feed", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+	@PostMapping(path="/register_feed", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ResponseData> insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
-		register.apply(version);
+		operation.create(version);
 		ResponseData data = new ResponseData();
 		data.message = HttpStatus.CREATED.getReasonPhrase();
 		data.statusCode = HttpStatus.CREATED.value();
@@ -60,7 +57,7 @@ public class CountryService {
 		return new ResponseEntity<ResponseData>(data, HttpStatus.CREATED);
 	}
 	
-	@PutMapping(path="/update_feed", consumes = "application/json;charset=UTF-8")
+	@PutMapping(path="/update_feed", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ResponseData> updateVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, false);
 		feedVersion.update(version);
@@ -76,8 +73,8 @@ public class CountryService {
 	public ResponseEntity<Void> deleteVersion(@PathVariable long feedId) {
 		try {
 			FeedVersion version = new FeedVersion(feedId);
-			feedVersion.deleteFeedVersion(version);
-			dsService.deleteDsService(feedId);
+			operation.delete(version);
+			
 			return ResponseEntity.noContent().build();
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<Void>(e.getStatusCode());

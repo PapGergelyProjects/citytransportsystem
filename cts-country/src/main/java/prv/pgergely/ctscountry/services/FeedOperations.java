@@ -1,16 +1,15 @@
 package prv.pgergely.ctscountry.services;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
 import prv.pgergely.ctscountry.model.FeedVersion;
+import prv.pgergely.ctscountry.utils.docker.ProcessHandler;
 
 @Service
-public class FeedRegistration {
+public class FeedOperations {
 	
 	@Autowired
 	private FeedVersionServiceImpl feedVersion;
@@ -21,11 +20,23 @@ public class FeedRegistration {
 	@Autowired
 	private CtsConfig conf;
 	
-	private AtomicInteger counter = new AtomicInteger(0);
-	
-	public void apply(FeedVersion version) {
-		feedVersion.insert(version);
+	public void create(FeedVersion version) {
 		DatasourceInfo info = dsService.insert(version);
-		String dockerContainerStart = "docker run --name %s -d -p %d:8080 %s --Dschema=\"%s\" ";
+		String containerName = "GTFS-"+info.getFeedId();
+		String schema = info.getSchema_name();
+		int accesPort = info.getPort();
+		String image = conf.getDockerCommands().getImageName();
+		String dockerContainerRun = conf.getDockerCommands().getCreateContainer();
+		dockerContainerRun = dockerContainerRun.replace("<cont_name>", containerName).replace("<scheam_name>", schema).replace("<access_port>", String.valueOf(accesPort)).replace("<image_name>", image);
+		
+		ProcessHandler.execute.command(dockerContainerRun).getOutput();
+		
+		feedVersion.insert(version);
+	}
+	
+	public void delete(FeedVersion version) {
+		// TODO: docker container handling
+		feedVersion.deleteFeedVersion(version);
+		dsService.deleteDsService(version.getFeedId());
 	}
 }
