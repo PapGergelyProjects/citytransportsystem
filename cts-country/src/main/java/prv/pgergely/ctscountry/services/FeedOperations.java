@@ -20,7 +20,8 @@ public class FeedOperations {
 	@Autowired
 	private CtsConfig conf;
 	
-	public void create(FeedVersion version) {
+	public void create(FeedVersion version) {//TODO: implement insertion, image creation handler.
+		feedVersion.insert(version);
 		DatasourceInfo info = dsService.insert(version);
 		String containerName = "GTFS-"+info.getFeedId();
 		String schema = info.getSchema_name();
@@ -30,8 +31,6 @@ public class FeedOperations {
 		dockerContainerRun = dockerContainerRun.replace("<cont_name>", containerName).replace("<scheam_name>", schema).replace("<access_port>", String.valueOf(accesPort)).replace("<image_name>", image);
 		
 		ProcessHandler.execute.command(dockerContainerRun).getOutput();
-		
-		feedVersion.insert(version);
 	}
 	
 	public void delete(FeedVersion version) {

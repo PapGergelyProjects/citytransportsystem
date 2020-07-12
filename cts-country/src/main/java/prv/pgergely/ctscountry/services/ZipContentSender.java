@@ -44,7 +44,7 @@ public class ZipContentSender implements ContentSenderThread {
 			DownloadRequest request = store.poll();
 			DatasourceInfo info = dsService.getByFeedId(request.getFeedId());
 			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.set("X-Schema", info.getSchema_name());
 			headers.set("X-Feed", info.getFeedId()+"");
 			HttpEntity<DownloadRequest> entity = new HttpEntity<>(request, headers);

@@ -22,7 +22,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
 import prv.pgergely.ctscountry.model.FeedVersion;
-import prv.pgergely.ctscountry.services.DatasourceService;
 import prv.pgergely.ctscountry.services.FeedOperations;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 
@@ -39,14 +38,14 @@ public class CountryService {
 	@RequestMapping(path="/versions", method= {RequestMethod.GET, RequestMethod.HEAD})
 	public ResponseEntity<List<FeedVersion>> getVersion() {
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAcceptCharset(Arrays.asList(Charset.forName("UTF-8")));
 		headers.set("X-Version", "1.0");
 		
 		return new ResponseEntity<List<FeedVersion>>(feedVersion.getFeedVersions(), headers, HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/register_feed", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(path="/register_feed", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
 		operation.create(version);
@@ -57,7 +56,7 @@ public class CountryService {
 		return new ResponseEntity<ResponseData>(data, HttpStatus.CREATED);
 	}
 	
-	@PutMapping(path="/update_feed", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path="/update_feed", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> updateVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, false);
 		feedVersion.update(version);

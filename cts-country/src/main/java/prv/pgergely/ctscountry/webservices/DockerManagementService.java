@@ -40,7 +40,7 @@ public class DockerManagementService {
 	@GetMapping(path="/container/list/{status}")
 	public ResponseEntity<Map<ContainerStatus, List<DockerContainer>>> listContainers(@PathVariable String status){
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAcceptCharset(Arrays.asList(Charset.forName("UTF-8")));
 		headers.set("X-Docker-Containers", "True");
 		headers.set("X-Container-Status", status.toUpperCase());

@@ -1,7 +1,7 @@
 package prv.pgergely.cts.common.domain;
 
 /**
- * This class represents a download request for the each ds service.
+ * This class represents a download request for each ds service.
  * 
  * @author PapGergely
  *
