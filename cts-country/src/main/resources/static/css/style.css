@@ -23,6 +23,7 @@
     overflow-y: scroll;
 }
 .list-element-shape{
+    height: 50px;
     margin-top: 15px;
     text-align: center;
     padding: 0px;
@@ -36,10 +37,11 @@
     padding: 15px;
 }
 .list-cell-format{
-    border: 2px solid #cccccc;
+    height: 50px;
+    /*border: 2px solid #cccccc;*/
     box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
     cursor:pointer;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 .status-inactive{
     background-color: #a6a6a6;
