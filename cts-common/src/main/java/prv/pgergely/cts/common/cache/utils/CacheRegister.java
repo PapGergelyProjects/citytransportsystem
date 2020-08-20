@@ -13,7 +13,8 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import prv.pgergely.cts.common.cache.Cache;
+import prv.pgergely.cts.common.cache.model.Cache;
+import prv.pgergely.cts.common.cache.model.ShortLiveCacheObject;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
 
 @Service
@@ -24,16 +25,22 @@ public class CacheRegister {
 	@Autowired
 	private ScheduledThreadEngine thread;
 	
+	public CacheRegister() {}
+	
+	public CacheRegister(ScheduledThreadEngine threadEngine) {
+		this.thread = threadEngine;
+	}
+	
 	@PostConstruct
 	public void init() {
 		thread.process(0, 5, TimeUnit.SECONDS, "Cache Sweeper", ()->{
 			System.out.println("Cache Sweeper has been started");
 			storage.forEach((k,v) ->{
-				LocalDateTime now = LocalDateTime.now();
-				LocalDateTime cacheStart = Instant.ofEpochMilli(v.getStartTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-				long liveTime = ChronoUnit.MILLIS.between(cacheStart, now);
+				long start = v.startTime();
+				LocalDateTime cacheStart = Instant.ofEpochMilli(start).atZone(ZoneId.systemDefault()).toLocalDateTime();
+				long liveTime = ChronoUnit.MILLIS.between(cacheStart, LocalDateTime.now());
 				System.out.println(k+" live time: "+liveTime);
-				if(liveTime >= v.getLifeTime()) {
+				if(liveTime >= v.aliveTime()) {
 					storage.remove(k);
 					System.out.println(k+" removed.");
 				}
@@ -41,7 +48,12 @@ public class CacheRegister {
 		});
 	}
 	
-	public <T>void addToCached(String cacheName, Cache<T> element) {
+	
+	public <T> void addToShortLiveCache(String name, T object) {
+		addToCached(name, new ShortLiveCacheObject<T>(object));
+	}
+	
+	private <T>void addToCached(String cacheName, Cache<T> element) {
 		storage.compute(cacheName, (name, elem) -> {
 			if(elem == null) {
 				return element;
@@ -53,10 +65,10 @@ public class CacheRegister {
 		});
 	}
 	
-	public Cache<?> getFromCache(String cacheName) {
-		Cache<?> actCache = storage.get(cacheName);
+	public <T> T getFromCache(String name, Class<T> clazz) {
+		Cache<?> actCache = storage.get(name);
 		
-		return actCache;
+		return clazz.cast(actCache.store());
 	}
 	
 	public int getStorageSize() {
