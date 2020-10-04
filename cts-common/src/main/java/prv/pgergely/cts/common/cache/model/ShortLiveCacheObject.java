@@ -4,6 +4,7 @@ public class ShortLiveCacheObject<T> implements Cache<T> {
 	
 	private T object;
 	private long start = System.currentTimeMillis();
+	private boolean deleteMarker;
 	
 	public ShortLiveCacheObject(T object) {
 		this.object = object;
@@ -31,6 +32,11 @@ public class ShortLiveCacheObject<T> implements Cache<T> {
 	@Override
 	public long startTime() {
 		return start;
+	}
+
+	@Override
+	public boolean isMarkedForDelete() {
+		return deleteMarker;
 	}
 	
 }

@@ -33,8 +33,8 @@ public class TransitFeedApi {
 	
 	public ResponseEntity<TransitFeedJson> getFeed(int page) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
 		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&page=%d&limit=100&type=gtfs", config.getTransitFeedKey(), page);
 		
@@ -43,8 +43,8 @@ public class TransitFeedApi {
 	
 	public ResponseEntity<TransitFeedJson> getFeeds(long feedId){
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
 		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&location=%d&limit=100&type=gtfs", config.getTransitFeedKey(), feedId);
 		
@@ -53,8 +53,8 @@ public class TransitFeedApi {
 	
 	public ResponseEntity<TransitFeedLocationJson> getLocations(){
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
 		String url = String.format("http://api.transitfeeds.com/v1/getLocations?key=%s", config.getTransitFeedKey());
 		

@@ -36,13 +36,17 @@ public class CacheRegister {
 		thread.process(0, 5, TimeUnit.SECONDS, "Cache Sweeper", ()->{
 			System.out.println("Cache Sweeper has been started");
 			storage.forEach((k,v) ->{
-				long start = v.startTime();
-				LocalDateTime cacheStart = Instant.ofEpochMilli(start).atZone(ZoneId.systemDefault()).toLocalDateTime();
-				long liveTime = ChronoUnit.MILLIS.between(cacheStart, LocalDateTime.now());
-				System.out.println(k+" live time: "+liveTime);
-				if(liveTime >= v.aliveTime()) {
-					storage.remove(k);
-					System.out.println(k+" removed.");
+				if(!v.isConstant()) {
+					long start = v.startTime();
+					LocalDateTime cacheStart = Instant.ofEpochMilli(start).atZone(ZoneId.systemDefault()).toLocalDateTime();
+					long liveTime = ChronoUnit.MILLIS.between(cacheStart, LocalDateTime.now());
+					System.out.println(k+" live time: "+liveTime);
+					if(liveTime >= v.aliveTime()) {
+						storage.remove(k);
+						System.out.println(k+" removed.");
+					}
+				} else {
+					
 				}
 			});
 		});
