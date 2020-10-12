@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import prv.pgergely.cts.common.cache.utils.CacheRegister;
 import prv.pgergely.ctscountry.domain.FeedLocationsJson;
 import prv.pgergely.ctscountry.domain.FeedLocationsJson.Feed;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
@@ -32,6 +33,9 @@ public class TransitFeedLocationSource {
 	
 	@Autowired
 	private FeedVersionServiceImpl feedVersion;
+	
+	@Autowired
+	private CacheRegister cache;
 
 	private List<FeedLocationsJson> locationList = new ArrayList<>();
 	

@@ -19,7 +19,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
+import prv.pgergely.ctscountry.utils.TemplateQualifier;
 import prv.pgergely.ctscountry.utils.TransitFeedTemplateInterceptor;
 
 @Configuration

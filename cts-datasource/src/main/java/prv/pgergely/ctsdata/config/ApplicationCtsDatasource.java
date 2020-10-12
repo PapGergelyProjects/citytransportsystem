@@ -1,6 +1,7 @@
 package prv.pgergely.ctsdata.config;
 
 import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.naming.Context;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.ctsdata.CtsDsComponents;
+import prv.pgergely.ctsdata.utility.Qualifiers;
 import prv.pgergely.ctsdata.utility.Schema;
 
 @SpringBootApplication
@@ -45,8 +47,13 @@ public class ApplicationCtsDatasource extends SpringBootServletInitializer {
 		SpringApplication.run(ApplicationCtsDatasource.class, args);
 	}
 	
-	@Bean
-	public Queue<DownloadRequest> getInternalStore(){
+	@Bean(Qualifiers.FUTURE_STORE)
+	public Queue<CompletableFuture<DownloadRequest>> getInternalTaskStore(){
+		return new LinkedBlockingQueue<CompletableFuture<DownloadRequest>>();
+	}
+	
+	@Bean(Qualifiers.REQUEST_STORE)
+	public Queue<DownloadRequest> getInternalRequestStore(){
 		return new LinkedBlockingQueue<DownloadRequest>();
 	}
 	

@@ -16,8 +16,8 @@ import prv.pgergely.cts.common.domain.DefaultResponse;
 import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.interfaces.ContentSenderThread;
-import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
+import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @Service	
 public class ZipContentSender implements ContentSenderThread {

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
-import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
+import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @Configuration
 public class ResponseBeanConfig {

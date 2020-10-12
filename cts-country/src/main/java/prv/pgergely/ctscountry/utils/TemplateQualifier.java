@@ -1,4 +1,4 @@
-package prv.pgergely.ctscountry.interfaces;
+package prv.pgergely.ctscountry.utils;
 
 public class TemplateQualifier {
 	public static final String DEFAULT_TEMPLATE = "DEFAULT_TEMPLATE";

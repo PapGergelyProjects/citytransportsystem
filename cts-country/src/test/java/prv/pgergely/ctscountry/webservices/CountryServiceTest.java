@@ -67,7 +67,7 @@ public class CountryServiceTest {
 		vers.latest = LocalDate.now();
 		
 		HttpHeaders head = new HttpHeaders();
-		head.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		head.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<SelectedFeed> entity = new HttpEntity<>(vers, head); 
 		ResponseEntity<ResponseData> resp = temp.exchange("/update_feed", HttpMethod.PUT, entity, ResponseData.class);
 		assertEquals(202, resp.getBody().statusCode);

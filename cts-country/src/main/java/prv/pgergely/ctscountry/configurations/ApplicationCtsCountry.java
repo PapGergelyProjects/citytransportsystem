@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.ctscountry.ApplicationCountryComponents;
-import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
+import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, ApplicationCountryComponents.class})

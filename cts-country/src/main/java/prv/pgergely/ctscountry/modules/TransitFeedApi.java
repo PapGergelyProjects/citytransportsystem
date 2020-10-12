@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
-import prv.pgergely.ctscountry.interfaces.TemplateQualifier;
+import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @Component
 public class TransitFeedApi {

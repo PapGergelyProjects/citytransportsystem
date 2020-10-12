@@ -33,7 +33,7 @@ public class CacheRegister {
 	
 	@PostConstruct
 	public void init() {
-		thread.process(0, 5, TimeUnit.SECONDS, "Cache Sweeper", ()->{
+		thread.process(0, 60, TimeUnit.SECONDS, "Cache Sweeper", ()->{
 			System.out.println("Cache Sweeper has been started");
 			storage.forEach((k,v) ->{
 				if(!v.isConstant()) {
