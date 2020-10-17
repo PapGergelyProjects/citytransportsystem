@@ -35,7 +35,7 @@ public class DatasourceApi {
 		resp.message = "Package has been transferred";
 		resp.timestamp = LocalDateTime.now();
 		resp.statusCode = HttpStatus.ACCEPTED.value();
-		updater.runUpdateTask(zipFile);
+		updater.addTask(zipFile);
 		
 		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.ACCEPTED);
 	}
