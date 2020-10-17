@@ -12,25 +12,24 @@ import javax.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
-import prv.pgergely.ctsdata.utility.Qualifiers;
+import prv.pgergely.ctsdata.service.ZipHandlerService;
 
 @Component
-public class UpdateTaskHandler {
-	
-	@Autowired
-	private DataUpdater updater;
-	
-	private Queue<DownloadRequest> storage = new LinkedBlockingQueue<>();
-	private Deque<CompletableFuture<DownloadRequest>> futureStorage = new LinkedBlockingDeque<>();
-	private Logger logger = LogManager.getLogger(UpdateTaskHandler.class);
+public class DatasourceUpdater {
 	
 	@Autowired
 	private ScheduledThreadEngine threadEng;
+	
+	@Autowired
+	private ZipHandlerService zipSrvc;
+	
+	private Queue<DownloadRequest> storage = new LinkedBlockingQueue<>();
+	private Deque<CompletableFuture<DownloadRequest>> futureStorage = new LinkedBlockingDeque<>();
+	private Logger logger = LogManager.getLogger(DatasourceUpdater.class);
 	
 	@PostConstruct
 	public void init() {
@@ -64,7 +63,7 @@ public class UpdateTaskHandler {
 	
 	private CompletableFuture<DownloadRequest> task(final DownloadRequest req){
 		return CompletableFuture.completedFuture(req).thenApplyAsync(e -> {
-			updater.proceedUpdate(e);
+			zipSrvc.proceedZipFile(e);
 			return e;
 		}).whenCompleteAsync((a, thr)->{
 			if(thr==null) {

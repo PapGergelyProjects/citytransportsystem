@@ -47,16 +47,6 @@ public class ApplicationCtsDatasource extends SpringBootServletInitializer {
 		SpringApplication.run(ApplicationCtsDatasource.class, args);
 	}
 	
-	@Bean(Qualifiers.FUTURE_STORE)
-	public Queue<CompletableFuture<DownloadRequest>> getInternalTaskStore(){
-		return new LinkedBlockingQueue<CompletableFuture<DownloadRequest>>();
-	}
-	
-	@Bean(Qualifiers.REQUEST_STORE)
-	public Queue<DownloadRequest> getInternalRequestStore(){
-		return new LinkedBlockingQueue<DownloadRequest>();
-	}
-	
 	@Bean
 	public Schema getSchema() {
 		Schema sc = new Schema();

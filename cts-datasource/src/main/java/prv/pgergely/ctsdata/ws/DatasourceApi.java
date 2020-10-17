@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import prv.pgergely.cts.common.domain.DefaultResponse;
 import prv.pgergely.cts.common.domain.DownloadRequest;
-import prv.pgergely.ctsdata.module.DataUpdater;
-import prv.pgergely.ctsdata.module.UpdateTaskHandler;
+import prv.pgergely.ctsdata.module.DatasourceUpdater;
+import prv.pgergely.ctsdata.service.ZipHandlerService;
 
 @RestController
 @RequestMapping("/api/")
 public class DatasourceApi {
 	
 	@Autowired
-	private UpdateTaskHandler updater;
+	private DatasourceUpdater updater;
 	
 	private Logger logger = LogManager.getLogger(DatasourceApi.class);
 	
@@ -32,7 +32,7 @@ public class DatasourceApi {
 	public ResponseEntity<DefaultResponse> getZipPackage(@RequestBody DownloadRequest zipFile){
 		logger.info("Package has arrived: "+zipFile);
 		DefaultResponse resp = new DefaultResponse();
-		resp.message = "Package has been transferred";
+		resp.message = "Package has been transferred: "+zipFile.getFeedId();
 		resp.timestamp = LocalDateTime.now();
 		resp.statusCode = HttpStatus.ACCEPTED.value();
 		updater.addTask(zipFile);

@@ -1,4 +1,4 @@
-package prv.pgergely.ctsdata.module;
+package prv.pgergely.ctsdata.service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,11 +12,9 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.domain.DownloadRequest;
-import prv.pgergely.ctsdata.service.DataPreparation;
-import prv.pgergely.ctsdata.service.TransitFeedPackageDownloader;
 
 @Component
-public class DataUpdater {
+public class ZipHandlerService {
 	
 	@Autowired
 	private DataPreparation dataPrep;
@@ -24,9 +22,9 @@ public class DataUpdater {
 	@Autowired
 	private TransitFeedPackageDownloader zipContent;
 	
-	private Logger logger = LogManager.getLogger(DataUpdater.class);
+	private Logger logger = LogManager.getLogger(ZipHandlerService.class);
 	
-	public void proceedUpdate(final DownloadRequest zip) {// TODO: save the download event...
+	public void proceedZipFile(final DownloadRequest zip) {// TODO: save the download event...
 		try {
 			byte[] downloadedStream = downloadZipFile(zip.getUrlAddress(), zip.getFileName(), zip.getFeedId());
 			dataPrep.extractZipFile(downloadedStream);
