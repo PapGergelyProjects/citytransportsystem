@@ -9,7 +9,7 @@
   </parent>
   <groupId>prv.pgergely.citytransportsystem</groupId>
   <artifactId>cts-common</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
   <name>cts-common</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -20,33 +20,33 @@
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
-        <version>LATEST</version>
+        <version>[5.7.0,)</version>
         <scope>test</scope>
     </dependency>
 	<dependency>
 	    <groupId>org.apache.logging.log4j</groupId>
 	    <artifactId>log4j-core</artifactId>
-	    <version>LATEST</version>
+	    <version>[2.13.3,)</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.apache.logging.log4j</groupId>
 	    <artifactId>log4j-api</artifactId>
-	    <version>LATEST</version>
+	    <version>[2.13.3,)</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter</artifactId>
-	    <version>RELEASE</version>
+	    <version>[2.3.4,)</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-tomcat</artifactId>
-	    <version>RELEASE</version>
+	    <version>[2.3.4,)</version>
 	</dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
-        <version>RELEASE</version>
+        <version>[2.3.4,)</version>
         <scope>test</scope>
     </dependency>
   </dependencies>
@@ -57,8 +57,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>14</source>
+          <target>14</target>
         </configuration>
       </plugin>
       <plugin>
