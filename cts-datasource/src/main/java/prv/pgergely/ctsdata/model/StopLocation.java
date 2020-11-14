@@ -3,10 +3,11 @@ package prv.pgergely.ctsdata.model;
 import java.time.LocalTime;
 import java.util.List;
 
+import prv.pgergely.cts.common.domain.Coordinate;
+
 
 /**
- * This bean is hold a stop location.
- * The properties of the bean represents a valid location.
+ * This bean represents a stop location.
  * 
  * @author Pap Gergely
  *

@@ -1,7 +1,8 @@
 package prv.pgergely.ctsdata.ws;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import prv.pgergely.cts.common.domain.DefaultResponse;
 import prv.pgergely.cts.common.domain.DownloadRequest;
+import prv.pgergely.cts.common.domain.SearchLocation;
+import prv.pgergely.ctsdata.model.StopLocation;
 import prv.pgergely.ctsdata.module.DatasourceUpdater;
-import prv.pgergely.ctsdata.service.ZipHandlerService;
+import prv.pgergely.ctsdata.service.StopLocationService;
+import prv.pgergely.ctsdata.utility.LocationQuery;
 
 @RestController
 @RequestMapping("/api/")
@@ -26,9 +31,12 @@ public class DatasourceApi {
 	@Autowired
 	private DatasourceUpdater updater;
 	
+	@Autowired
+	private StopLocationService stopSrvc;
+	
 	private Logger logger = LogManager.getLogger(DatasourceApi.class);
 	
-	@PostMapping(path="/receive_zip", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	@PostMapping(path="/update", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<DefaultResponse> getZipPackage(@RequestBody DownloadRequest zipFile){
 		logger.info("Package has arrived: "+zipFile);
 		DefaultResponse resp = new DefaultResponse();
@@ -40,4 +48,23 @@ public class DatasourceApi {
 		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.ACCEPTED);
 	}
 	
+	@PostMapping(path="/stop_locations/{withTime}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<StopLocation>> getLocationByCoordinates(@PathVariable String withTime, @RequestBody SearchLocation searchVals){
+		List<StopLocation> res = switch (LocationQuery.getByMethod(withTime)) {
+			case WITH_TIMES: {
+				yield stopSrvc.getAllStopWithinRadiusWithTime(searchVals);
+			}
+			case ONLY_LOCATIONS:{
+				yield stopSrvc.getAllStopWithinRadius(searchVals);
+			}
+			default:{
+				yield new ArrayList<StopLocation>();
+			}
+		};
+		if(res.isEmpty()) {
+			return new ResponseEntity<List<StopLocation>>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<List<StopLocation>>(res, HttpStatus.OK);
+	}
 }

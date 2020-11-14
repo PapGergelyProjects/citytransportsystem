@@ -2,7 +2,7 @@ package prv.pgergely.ctsdata.interfaces;
 
 import java.util.List;
 
-import prv.pgergely.ctsdata.model.Coordinate;
+import prv.pgergely.cts.common.domain.Coordinate;
 
 public interface CoordinateDao {
 	

@@ -49,7 +49,7 @@ public class ZipContentSender implements ContentSenderThread {
 			headers.set("X-Feed", info.getFeedId()+"");
 			HttpEntity<DownloadRequest> entity = new HttpEntity<>(request, headers);
 			try {
-				DefaultResponse resp = template.postForObject("http://"+info.getSource_url()+config.getDatasource().getUrl()+"/receive_zip", entity, DefaultResponse.class);
+				DefaultResponse resp = template.postForObject("http://"+info.getSource_url()+config.getDatasource().getUrl()+"/update", entity, DefaultResponse.class);
 				logger.info(request);
 				logger.info(resp);
 			} catch (Exception e) {

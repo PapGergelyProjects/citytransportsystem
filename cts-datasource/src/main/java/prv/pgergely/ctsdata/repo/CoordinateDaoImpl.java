@@ -10,8 +10,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.ctsdata.interfaces.CoordinateDao;
-import prv.pgergely.ctsdata.model.Coordinate;
 
 @Repository
 public class CoordinateDaoImpl extends JdbcDaoSupport implements CoordinateDao {
