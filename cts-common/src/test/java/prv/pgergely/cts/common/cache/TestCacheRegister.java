@@ -2,8 +2,7 @@ package prv.pgergely.cts.common.cache;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,13 +40,13 @@ public class TestCacheRegister {
 			}
 			size = register.getStorageSize();
 		}
-		Assert.assertEquals(size, 0);
+		Assertions.assertEquals(size, 0);
 	}
 	
 	@Test
 	@DisplayName("Test 2: check retrieve from cache")
 	public void test2() {
 		String val = register.getFromCache("second", String.class);
-		Assert.assertEquals(val, "SecondItem");
+		Assertions.assertEquals(val, "SecondItem");
 	}
 }
