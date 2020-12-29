@@ -104,7 +104,8 @@ public class CsvRefiner {
             boolean isNotIn = true;
             int idx = -1;
             for (int i = 0; i < columns.length; i++) {
-                if(customCol.equals(columns[i])){
+            	String columnFromFile = columns[i].replace("\"", "");
+                if(customCol.equals(columnFromFile)){
                     idxArray[cIdx++] = i;
                     isNotIn = false;
                 }
