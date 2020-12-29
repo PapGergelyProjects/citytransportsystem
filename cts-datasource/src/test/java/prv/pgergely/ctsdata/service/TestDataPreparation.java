@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,11 +29,18 @@ public class TestDataPreparation {
 	@Autowired
 	private ResourceLoader resourceLoader;
 	
-	@Test
+	//@Test
 	public void testDataLoader() throws IOException, CannotGetJdbcConnectionException, SQLException {
 		InputStream stream = resourceLoader.getResource("classpath:test/data2.zip").getInputStream();
 		byte[] array = new byte[stream.available()];
 		stream.read(array);
 		prepare.extractZipFile(array);
+	}
+	
+	@Test
+	@DisplayName("CSV generator")
+	public void testCsvContentGenerator() throws IOException {
+		InputStream stream = resourceLoader.getResource("classpath:test/stops.txt").getInputStream();
+		prepare.prepareCsvContentForTest("stops.txt", stream);
 	}
 }

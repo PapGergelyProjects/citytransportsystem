@@ -77,4 +77,16 @@ public class DataPreparation {
     public void clearTables() {
     	srvc.clearTables();
     }
+    
+    public void prepareCsvContentForTest(String fileName, InputStream stream) throws IOException {
+    	String tableName = fileName.replace(".txt", "");
+        TableInsertValues value = TableInsertValues.getInsertValueByTableName(tableName);
+        List<String> columns = value.getColNames();
+        transform.setDefaultColumns(columns);
+        transform.setStream(stream);
+        ByteArrayOutputStream outStream = transform.generateNormalizedStreamFromCsv();
+        String output = new String(outStream.toByteArray());
+        
+        System.out.println(output);
+    }
 }
