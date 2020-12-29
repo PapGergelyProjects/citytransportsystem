@@ -21,7 +21,7 @@ public class ProcessHandler {
         try {
             process = Runtime.getRuntime().exec(cmd);
         } catch (IOException ex) {
-            System.out.println(ex);
+        	logger.error(ex.getMessage(), ex);
         }
         
         return this;

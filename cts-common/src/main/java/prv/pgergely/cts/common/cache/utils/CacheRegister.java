@@ -33,6 +33,7 @@ public class CacheRegister {
 	
 	@PostConstruct
 	public void init() {
+		/*
 		thread.process(1L, 5L, TimeUnit.SECONDS, "CacheSweeper", ()->{
 			System.out.println("Cache Sweeper has been started");
 			storage.forEach((k,v) ->{
@@ -50,6 +51,7 @@ public class CacheRegister {
 				}
 			});
 		});
+		*/
 	}
 	
 	

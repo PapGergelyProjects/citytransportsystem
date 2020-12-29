@@ -65,9 +65,17 @@ public class DatasourceUpdater {
 		return CompletableFuture.completedFuture(req).thenApplyAsync(e -> {
 			zipSrvc.proceedZipFile(e);
 			return e;
+		}).exceptionallyAsync(e -> {
+			logger.error(e.getMessage());
+			DownloadRequest ret = new DownloadRequest(-1L, null, null);
+			return ret;
 		}).whenCompleteAsync((a, thr)->{
 			if(thr==null) {
-				logger.info("Feed source "+a.getFeedId()+" has been successfully updated.");
+				if(a.getFeedId() == -1) {
+					logger.warn("Feed source has been failed to update.");
+				}else {
+					logger.info("Feed source "+a.getFeedId()+" has been successfully updated.");
+				}
 			}else {
 				logger.error(thr.getMessage(), thr);
 			}
