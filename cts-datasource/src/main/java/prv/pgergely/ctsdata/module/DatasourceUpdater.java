@@ -27,7 +27,7 @@ public class DatasourceUpdater {
 	@Autowired
 	private ZipHandlerService zipSrvc;
 	
-	private Queue<DownloadRequest> storage = new LinkedBlockingQueue<>();
+	private Queue<CompletableFuture<DownloadRequest>> storage = new LinkedBlockingQueue<>();
 	private Deque<CompletableFuture<DownloadRequest>> futureStorage = new LinkedBlockingDeque<>();
 	private Logger logger = LogManager.getLogger(DatasourceUpdater.class);
 	
@@ -37,8 +37,8 @@ public class DatasourceUpdater {
 			if(!futureStorage.isEmpty()) {
 				CompletableFuture<DownloadRequest> actualUpdate = futureStorage.peekFirst();
 				if(actualUpdate.isDone() && !storage.isEmpty()) {
-					DownloadRequest nextRequest = storage.poll();
-					this.addTask(nextRequest);
+					CompletableFuture<DownloadRequest> nextRequest = storage.poll();
+					this.addTask(nextRequest.join());
 					DownloadRequest doneReq = futureStorage.removeLast().join();
 					logger.info(doneReq.getFeedId()+" done.");
 				}
@@ -47,22 +47,23 @@ public class DatasourceUpdater {
 	}
 	
 	public void addTask(final DownloadRequest req) {
+		CompletableFuture<DownloadRequest> actualRequest = CompletableFuture.completedFuture(req);
 		if(futureStorage.isEmpty()) {
-			futureStorage.push(task(req));
+			futureStorage.push(task(actualRequest));
 		}else {
 			CompletableFuture<DownloadRequest> actualUpdate = futureStorage.pollFirst();
 			if(actualUpdate.isDone()) {
-				futureStorage.push(task(req));
+				futureStorage.push(task(actualRequest));
 				futureStorage.addLast(actualUpdate);
 			}else {
-				storage.add(req);
+				storage.add(actualRequest);
 				futureStorage.addFirst(actualUpdate);
 			}
 		}
 	}
 	
-	private CompletableFuture<DownloadRequest> task(final DownloadRequest req){
-		return CompletableFuture.completedFuture(req).thenApplyAsync(e -> {
+	private CompletableFuture<DownloadRequest> task(final CompletableFuture<DownloadRequest> completedRequest){
+		return completedRequest.thenApplyAsync(e -> {
 			zipSrvc.proceedZipFile(e);
 			return e;
 		}).exceptionallyAsync(e -> {
