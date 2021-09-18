@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.domain.docker.DockerContainer;
+import prv.pgergely.ctscountry.model.DatasourceInfo;
 import prv.pgergely.ctscountry.utils.docker.ContainerStatus;
 import prv.pgergely.ctscountry.utils.docker.ProcessHandler;
 
@@ -52,5 +53,16 @@ public class DockerService {
         }
         
         return containers;
+    }
+    
+    public void createContainer(DatasourceInfo info) {
+		String containerName = "GTFS-"+info.getFeedId();
+		String schema = info.getSchema_name();
+		int accesPort = info.getPort();
+		String image = config.getDockerCommands().getImageName();
+		String dockerContainerRun = config.getDockerCommands().getCreateContainer();
+		dockerContainerRun = dockerContainerRun.replace("<cont_name>", containerName).replace("<scheam_name>", schema).replace("<access_port>", String.valueOf(accesPort)).replace("<image_name>", image);
+		
+		ProcessHandler.execute.command(dockerContainerRun).getOutput();
     }
 }

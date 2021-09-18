@@ -18,19 +18,12 @@ public class FeedOperations {
 	private DatasourceService dsService;
 	
 	@Autowired
-	private CtsConfig conf;
+	private DockerService dockerSrvc;
 	
 	public void create(FeedVersion version) {//TODO: implement insertion, image creation handler.
 		feedVersion.insert(version);
 		DatasourceInfo info = dsService.insert(version);
-		String containerName = "GTFS-"+info.getFeedId();
-		String schema = info.getSchema_name();
-		int accesPort = info.getPort();
-		String image = conf.getDockerCommands().getImageName();
-		String dockerContainerRun = conf.getDockerCommands().getCreateContainer();
-		dockerContainerRun = dockerContainerRun.replace("<cont_name>", containerName).replace("<scheam_name>", schema).replace("<access_port>", String.valueOf(accesPort)).replace("<image_name>", image);
-		
-		ProcessHandler.execute.command(dockerContainerRun).getOutput();
+		dockerSrvc.createContainer(info);
 	}
 	
 	public void delete(FeedVersion version) {

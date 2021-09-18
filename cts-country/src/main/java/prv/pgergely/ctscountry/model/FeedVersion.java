@@ -1,9 +1,7 @@
 package prv.pgergely.ctscountry.model;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 import prv.pgergely.ctscountry.domain.SelectedFeed;
 

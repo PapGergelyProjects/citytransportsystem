@@ -48,9 +48,9 @@ public class DatasourceApi {
 		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping(path="/stop_locations/{withTime}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<StopLocation>> getLocationByCoordinates(@PathVariable String withTime, @RequestBody SearchLocation searchVals){
-		List<StopLocation> res = switch (LocationQuery.getByMethod(withTime)) {
+	@PostMapping(path="/stop_locations/{withWhat}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<StopLocation>> getLocationByCoordinates(@PathVariable String withWhat, @RequestBody SearchLocation searchVals){
+		List<StopLocation> res = switch (LocationQuery.getByMethod(withWhat)) {
 			case WITH_TIMES: {
 				yield stopSrvc.getAllStopWithinRadiusWithTime(searchVals);
 			}
