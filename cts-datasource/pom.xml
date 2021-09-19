@@ -10,7 +10,7 @@
   <groupId>prv.pgergely.citytransportsystem</groupId>
   <artifactId>cts-datasource</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>cts-datasource Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -42,6 +42,13 @@
 		<version>[0.1.0]</version>
 		<scope>compile</scope>
 	</dependency>
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-parent</artifactId>
+	    <version>2.5.4</version>
+	    <type>pom</type>
+	    <scope>import</scope>
+	</dependency>
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
@@ -63,6 +70,11 @@
 	    <groupId>org.apache.logging.log4j</groupId>
 	    <artifactId>log4j-api</artifactId>
 	    <version>[2.13.3,)</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-slf4j-impl</artifactId>
+	    <version>[2.14.1,)</version>
 	</dependency>
     <dependency>
         <groupId>org.postgresql</groupId>
@@ -131,6 +143,10 @@
           <source>17</source>
           <target>17</target>
         </configuration>
+      </plugin>
+      <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
     </plugins>
 <!--     <resources> -->

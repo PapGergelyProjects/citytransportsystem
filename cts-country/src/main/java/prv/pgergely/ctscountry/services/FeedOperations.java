@@ -20,7 +20,7 @@ public class FeedOperations {
 	@Autowired
 	private DockerService dockerSrvc;
 	
-	public void create(FeedVersion version) {//TODO: implement insertion, image creation handler.
+	public void create(FeedVersion version) {
 		feedVersion.insert(version);
 		DatasourceInfo info = dsService.insert(version);
 		dockerSrvc.createContainer(info);

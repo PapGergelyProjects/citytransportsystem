@@ -1,3 +1,5 @@
+server:
+  port: 9443
 spring:
   datasource-primary:
     driver-class-name: org.postgresql.Driver 
