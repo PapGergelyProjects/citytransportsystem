@@ -32,13 +32,13 @@ public class MainPageService {
 		return "Some more";
 	}
 	
-	@RequestMapping(path="**/{urlPart}", method={RequestMethod.GET, RequestMethod.POST})
-	public ResponseEntity<DefaultResponse> getForAnyRequest(@PathVariable String urlPart){
-		DefaultResponse resp = new DefaultResponse();
-		resp.message = "The service currently is not available";
-		resp.urlPart = urlPart;
-		resp.statusCode = HttpStatus.FORBIDDEN.value();
-		
-		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.FORBIDDEN);
-	}
+//	@RequestMapping(path="**/{urlPart}", method={RequestMethod.GET, RequestMethod.POST})
+//	public ResponseEntity<DefaultResponse> getForAnyRequest(@PathVariable String urlPart){
+//		DefaultResponse resp = new DefaultResponse();
+//		resp.message = "The service currently is not available";
+//		resp.urlPart = urlPart;
+//		resp.statusCode = HttpStatus.FORBIDDEN.value();
+//		
+//		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.FORBIDDEN);
+//	}
 }

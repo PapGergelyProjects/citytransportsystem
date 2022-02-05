@@ -310,9 +310,9 @@ public enum TableInsertValues {
     public abstract String getInsertValue(List<String> columns, Map<String, String> records);
     
     /**
-     * <b>This function ensures that only those columns appears in the insert which originally exists in the GTFS's documentation.</b>
+     * <b>This function ensures that only those columns appear in the insert which originally exists in the GTFS's documentation.</b>
      * </br>
-     * Sometimes the providers set custom columns for other function which is not part of the default column set.
+     * Sometimes the providers set custom columns for other functions which is not part of the default column set.
      * @param rawCols
      * @return
      */
