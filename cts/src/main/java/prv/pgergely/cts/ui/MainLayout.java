@@ -19,6 +19,7 @@ import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 
 import prv.pgergely.cts.ui.views.AboutView;
+import prv.pgergely.cts.ui.views.ServiceConfigPage;
 import prv.pgergely.cts.ui.views.LandingPage;
 
 @PageTitle("Main")
@@ -118,8 +119,9 @@ public class MainLayout extends AppLayout {
 
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
-            new MenuItemInfo("Transport map", "la la-globe", LandingPage.class), //
-            new MenuItemInfo("About", "la la-file", AboutView.class), //
+            new MenuItemInfo("Transport map", "la la-globe", LandingPage.class),
+            new MenuItemInfo("Service configuration", "la la-wrench", ServiceConfigPage.class),
+            new MenuItemInfo("About", "la la-file", AboutView.class),
         };
     }
 
