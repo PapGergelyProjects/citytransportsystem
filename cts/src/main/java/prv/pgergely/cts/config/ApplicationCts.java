@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.vaadin.artur.helpers.LaunchUtil;
 
 import com.vaadin.flow.component.dependency.NpmPackage;
 
@@ -24,5 +25,25 @@ public class ApplicationCts extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ApplicationCts.class, args);
+		//LaunchUtil.launchBrowserInDevelopmentMode();
 	}
+	
+//	@Bean
+//	public ServletRegistrationBean<SpringServlet> springServlet(ApplicationContext context) {
+//	    return new ServletRegistrationBean<>(new SpringServlet(context, true), "/cts/*", "/frontend/*");
+//	}
+	
+//    @Bean
+//    public ServletRegistrationBean frontendServletBean() {
+//        ServletRegistrationBean bean = new ServletRegistrationBean<>(new VaadinServlet() {
+//            @Override
+//            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//                if (!serveStaticOrWebJarRequest(req, resp)) {
+//                    resp.sendError(404);
+//                }
+//            }
+//        }, "/frontend/*");
+//        bean.setLoadOnStartup(1);
+//        return bean;
+//    }
 }
