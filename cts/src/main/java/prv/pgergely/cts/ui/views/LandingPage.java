@@ -20,16 +20,15 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import prv.pgergely.cts.domain.AvailableLocation;
 import prv.pgergely.cts.ui.MainLayout;
-import prv.pgergely.cts.ui.utils.GoogleMapService;
 
 @UIScope
 @SpringComponent
-@PageTitle("Landing Page")
+@PageTitle("CTS - Map")
 @Route(value = "main", layout = MainLayout.class)
 public class LandingPage extends VerticalLayout {
 	
 	@Autowired
-	private GoogleMapService mapService;
+	private GoogleMap gMap;
 	
     private ComboBox<AvailableLocation> loadedLocations; 
 	
@@ -44,7 +43,6 @@ public class LandingPage extends VerticalLayout {
 	}
 	
 	private HorizontalLayout createMap() {
-		GoogleMap gMap = mapService.getMapInstance();
 		gMap.setSizeFull();
 		gMap.setMapType(MapType.ROADMAP);
 		gMap.setCenter(new LatLon(47.497913D, 19.040236D));

@@ -36,7 +36,7 @@ public class ApplicationCts extends SpringBootServletInitializer {
 	
 	@Bean
 	@UIScope
-	public GoogleMapService mapService() {
-		return new GoogleMapService(new GoogleMap(config.getGoogleApiKey(), "", ""));
+	public GoogleMap mapService() {
+		return new GoogleMap(config.getGoogleApiKey(), "", config.getGoogleMapLang());
 	}
 }
