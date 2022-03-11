@@ -11,12 +11,19 @@ import prv.pgergely.ctscountry.utils.docker.DockerCommands;
 @ConfigurationProperties("config")
 public class CtsConfig {
 	
+	private String transitFeedSource;
 	private String transitFeedKey;
 	private String tempDirectory;
 	private ThreadParams threadParams;
 	private Datasource datasource;
 	private DockerCommands dockerCommands;
 	
+	public String getTransitFeedSource() {
+		return transitFeedSource;
+	}
+	public void setTransitFeedSource(String transitFeedSource) {
+		this.transitFeedSource = transitFeedSource;
+	}
 	public String getTransitFeedKey() {
 		return transitFeedKey;
 	}

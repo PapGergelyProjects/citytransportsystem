@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.ctscountry.domain.TransitFeedJson;
@@ -18,10 +19,11 @@ public class FeedSource {
 	@Autowired
 	private TransitFeedApi transitResp;
 	
+	@Cacheable("feeds")
 	public List<Feeds> getFeeds() throws IOException{
 		List<Feeds> feedList = new ArrayList<>();
 		TransitFeedJson allFeed = transitResp.getFeed(100).getBody();
-		for (int i = 1; i <= allFeed.results.numPages; i++) {// Because I need all the GTFS type feed, but swagger supports querying by page only.
+		for (int i = 1; i <= allFeed.results.numPages; i++) {
 			TransitFeedJson actualPage = transitResp.getFeed(i).getBody();
 			List<Feeds> tempFeed =  Arrays.asList(actualPage.results.feeds);
 			feedList.addAll(tempFeed);

@@ -33,9 +33,6 @@ public class TransitFeedLocationSource {
 	
 	@Autowired
 	private FeedVersionServiceImpl feedVersion;
-	
-//	@Autowired
-//	private CacheRegister cache;
 
 	private List<FeedLocationsJson> locationList = new ArrayList<>();
 	

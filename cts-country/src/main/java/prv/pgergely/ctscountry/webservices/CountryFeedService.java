@@ -60,14 +60,4 @@ public class CountryFeedService {
 		}
 	}
 	
-	@RequestMapping(path="**/{urlPart}", method= {RequestMethod.GET, RequestMethod.POST})
-	public ResponseEntity<DefaultResponse> getForAnyReqest(@PathVariable String urlPart) {
-		DefaultResponse resp = new DefaultResponse();
-		resp.message = "This service currently is not available.";
-		resp.urlPart = urlPart;
-		resp.statusCode = HttpStatus.FORBIDDEN.value();
-		
-		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.FORBIDDEN);
-	}
-	
 }

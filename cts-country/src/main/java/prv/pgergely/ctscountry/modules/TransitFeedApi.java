@@ -36,7 +36,7 @@ public class TransitFeedApi {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
-		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&page=%d&limit=100&type=gtfs", config.getTransitFeedKey(), page);
+		String url = String.format(config.getTransitFeedSource()+"/getFeeds?key=%s&descendants=1&page=%d&limit=100&type=gtfs", config.getTransitFeedKey(), page);
 		
 		return template.exchange(url, HttpMethod.GET, entity, TransitFeedJson.class);
 	}
@@ -46,7 +46,7 @@ public class TransitFeedApi {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
-		String url = String.format("http://api.transitfeeds.com/v1/getFeeds?key=%s&descendants=1&location=%d&limit=100&type=gtfs", config.getTransitFeedKey(), feedId);
+		String url = String.format(config.getTransitFeedSource()+"/getFeeds?key=%s&descendants=1&location=%d&limit=100&type=gtfs", config.getTransitFeedKey(), feedId);
 		
 		return template.exchange(url, HttpMethod.GET, entity, TransitFeedJson.class);
 	}
@@ -56,7 +56,7 @@ public class TransitFeedApi {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<TransitFeedJson> entity = new HttpEntity<>(headers);
-		String url = String.format("http://api.transitfeeds.com/v1/getLocations?key=%s", config.getTransitFeedKey());
+		String url = String.format(config.getTransitFeedSource()+"/getLocations?key=%s", config.getTransitFeedKey());
 		
 		return defaultTemplate.exchange(url, HttpMethod.GET, entity, TransitFeedLocationJson.class);
 	} 
