@@ -1,12 +1,11 @@
 package prv.pgergely.cts.ui.views;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -16,6 +15,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 import prv.pgergely.cts.domain.TransitFeedView;
+import prv.pgergely.cts.service.TransitFeedSource;
 import prv.pgergely.cts.ui.MainLayout;
 
 @UIScope
@@ -24,37 +24,39 @@ import prv.pgergely.cts.ui.MainLayout;
 @Route(value = "configuration", layout = MainLayout.class)
 public class ServiceConfigPage extends VerticalLayout {
 	
+	@Autowired
+	private TransitFeedSource feedSource;
+	
 	private Grid<TransitFeedView> transitFeedGrid;
 	
 	@PostConstruct
 	public void init() {
 		this.setSizeFull();
-		transitFeedGrid = new Grid<>(TransitFeedView.class);
-		transitFeedGrid.setColumns("title", "feedTitle", "latest", "enabled");
+		transitFeedGrid = initGrid();
+		transitFeedGrid.setDataProvider(new ListDataProvider<>(feedSource.getTransitFeeds()));
 		this.add(transitFeedGrid);
+	}
+	
+	private Grid<TransitFeedView> initGrid(){
+		Grid<TransitFeedView> grid = new Grid<>(TransitFeedView.class, false);
+		grid.addColumn("title").setResizable(true).setHeader("Location Name");
+		grid.addColumn("feedTitle").setResizable(true).setHeader("Feed Name");
+		grid.addColumn("latest").setResizable(true).setHeader("Latest Update");
+		grid.addComponentColumn(r -> {
+			Button btn = new Button("unregistered");
+			btn.getStyle().set("background", "#a6a6a6");
+			btn.getStyle().set("color", "white");
+			return btn;
+		}).setHeader("Status");
+		grid.addColumn("enabled").setResizable(true).setHeader("Registered");
+		
+		return grid;
 	}
 
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
-		transitFeedGrid.setDataProvider(new ListDataProvider<>(createDummy()));
-	}
-	
-	private List<TransitFeedView> createDummy() {
-		TransitFeedView v1 = new TransitFeedView();
-		v1.setId(1L);
-		v1.setTitle("Transit1");
-		v1.setEnabled(true);
-		v1.setFeedTitle("Feed1");
-		v1.setLatest(LocalDate.now());
-		TransitFeedView v2 = new TransitFeedView();
-		v2.setId(2L);
-		v2.setTitle("Transit2");
-		v2.setEnabled(false);
-		v2.setFeedTitle("Feed2");
-		v2.setLatest(LocalDate.now());
-		
-		return Arrays.asList(v1, v2);
+		//transitFeedGrid.setDataProvider(new ListDataProvider<>(feedSource.getTransitFeeds()));
 	}
 	
 }

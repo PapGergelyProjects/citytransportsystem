@@ -4,10 +4,19 @@ import com.helger.commons.name.IHasDisplayName;
 
 public class AvailableLocation implements IHasDisplayName {
 	
+	private Long id;
 	private String locationName;
 	private Double lat;
 	private Double lon;
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getLocationName() {
 		return locationName;
 	}
