@@ -13,24 +13,24 @@ import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 
-import prv.pgergely.cts.ui.MainLayout.MenuItemInfo.LineAwesomeIcon;
 import prv.pgergely.cts.ui.utils.LineIcon;
 import prv.pgergely.cts.ui.views.AboutView;
-import prv.pgergely.cts.ui.views.ServiceConfigPage;
 import prv.pgergely.cts.ui.views.LandingPage;
+import prv.pgergely.cts.ui.views.ServiceConfigPage;
 
 @PageTitle("Main")
 @PWA(name = "CTS", shortName = "CTS", enableInstallPrompt = false)
 @Theme(themeFolder = "cts")
 public class MainLayout extends AppLayout {
 	
-    public static class MenuItemInfo extends ListItem {
+	private static final long serialVersionUID = 7069960176916400022L;
+
+	public static class MenuItemInfo extends ListItem {
 
         private final Class<? extends Component> view;
 
@@ -73,7 +73,7 @@ public class MainLayout extends AppLayout {
     private H1 viewTitle;
 
     public MainLayout() {
-        setPrimarySection(Section.DRAWER);
+        setPrimarySection(Section.NAVBAR);
         addToNavbar(true, createHeaderContent());
         addToDrawer(createDrawerContent());
     }

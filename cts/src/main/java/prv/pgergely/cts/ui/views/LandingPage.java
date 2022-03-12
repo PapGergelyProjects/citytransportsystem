@@ -41,6 +41,12 @@ public class LandingPage extends VerticalLayout {
 	public void init() {
 		this.setSizeFull();
 		loadedLocations = new ComboBox<>("Available Locations", source.getRegisteredLocations());
+		loadedLocations.addValueChangeListener(event -> {
+			AvailableLocation selected = event.getValue();
+			if(selected != null) {
+				gMap.setCenter(new LatLon(selected.getLat(), selected.getLon()));
+			}
+		});
         HorizontalLayout mapLayout = createMap();
         mapLayout.setSizeFull();
         this.add(loadedLocations);
