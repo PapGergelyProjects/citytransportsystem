@@ -23,7 +23,7 @@ public class FeedOperations {
 	public void create(FeedVersion version) {
 		feedVersion.insert(version);
 		DatasourceInfo info = dsService.insert(version);
-		dockerSrvc.createContainer(info);
+		//dockerSrvc.createContainer(info);
 	}
 	
 	public void delete(FeedVersion version) {

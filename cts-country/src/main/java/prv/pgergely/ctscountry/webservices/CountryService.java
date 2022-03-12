@@ -26,7 +26,7 @@ import prv.pgergely.ctscountry.services.FeedOperations;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
 
 @RestController
-@RequestMapping(path="/")
+@RequestMapping(path="/feed")
 public class CountryService {
 	
 	@Autowired
@@ -45,30 +45,31 @@ public class CountryService {
 		return new ResponseEntity<List<FeedVersion>>(feedVersion.getFeedVersions(), headers, HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/register_feed", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
 		operation.create(version);
 		ResponseData data = new ResponseData();
-		data.message = HttpStatus.CREATED.getReasonPhrase();
-		data.statusCode = HttpStatus.CREATED.value();
+		data.setId(vers.getId());
+		data.setTitle(vers.getTechnicalTitle());
+		data.setMessage("Registered");
 		
 		return new ResponseEntity<ResponseData>(data, HttpStatus.CREATED);
 	}
 	
-	@PutMapping(path="/update_feed", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> updateVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, false);
 		feedVersion.update(version);
-		
 		ResponseData data = new ResponseData();
-		data.message = HttpStatus.ACCEPTED.getReasonPhrase();
-		data.statusCode = HttpStatus.ACCEPTED.value();
+		data.setId(vers.getId());
+		data.setTitle(vers.getTechnicalTitle());
+		data.setMessage("Updated");
 		
 		return new ResponseEntity<ResponseData>(data, HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping(path="/delete_feed/{feedId}")
+	@DeleteMapping(path="/delete/{feedId}")
 	public ResponseEntity<Void> deleteVersion(@PathVariable long feedId) {
 		try {
 			FeedVersion version = new FeedVersion(feedId);

@@ -22,7 +22,7 @@ public class TransitFeedSource {
 	private RestTemplate template;
 	
 	public List<TransitFeedView> getTransitFeeds() {
-		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/getFeeds", FeedLocationList.class);
+		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/feeds/all", FeedLocationList.class);
 		FeedLocationList res =  resp.getBody();
 		return res.getFeeds().stream().map(m -> {
 			TransitFeedView view = new TransitFeedView();
@@ -37,7 +37,7 @@ public class TransitFeedSource {
 	}
 	
 	public List<AvailableLocation> getRegisteredLocations(){
-		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/getRegisteredFeeds", FeedLocationList.class);
+		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/feeds/registered", FeedLocationList.class);
 		return resp.getBody().getFeeds().stream().map(m -> {
 			AvailableLocation loc = new AvailableLocation();
 			loc.setId(m.id);

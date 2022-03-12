@@ -1,4 +1,4 @@
-package prv.pgergely.ctscountry.domain;
+package prv.pgergely.cts.domain;
 
 import java.time.LocalDate;
 
@@ -14,6 +14,16 @@ public class SelectedFeed{
 	private String technicalTitle;
 	private LocalDate latest;
 	
+	public SelectedFeed() {}
+
+	public SelectedFeed(Long id, String title, String technicalTitle, LocalDate latest) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.technicalTitle = technicalTitle;
+		this.latest = latest;
+	}
+
 	public Long getId() {
 		return id;
 	}

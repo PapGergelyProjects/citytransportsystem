@@ -1,4 +1,4 @@
-package prv.pgergely.ctscountry.domain;
+package prv.pgergely.cts.domain;
 
 public class ResponseData {
 	

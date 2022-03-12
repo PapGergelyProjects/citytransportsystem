@@ -27,6 +27,8 @@ import prv.pgergely.cts.ui.MainLayout;
 @Route(value = "main", layout = MainLayout.class)
 public class LandingPage extends VerticalLayout {
 	
+	private static final long serialVersionUID = -4689904492954301366L;
+
 	@Autowired
 	private GoogleMap gMap;
 	

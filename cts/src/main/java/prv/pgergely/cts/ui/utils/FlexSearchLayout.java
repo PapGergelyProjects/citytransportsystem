@@ -11,21 +11,16 @@ public class FlexSearchLayout extends FlexLayout {
 	public FlexSearchLayout(Component... children) {
 		super(children);
 		this.children = children;
-	}
-	
-	public FlexSearchLayout initStyle() {
 		this.setFlexDirection(FlexDirection.ROW);
 		this.setFlexWrap(FlexWrap.WRAP);
 		this.setJustifyContentMode(JustifyContentMode.CENTER);
 		this.setAlignItems(Alignment.BASELINE);
-		
-		return this;
 	}
 	
 	public void setGap(String px) {
 		for(Component child : children) {
 			if(child instanceof HasStyle e) {
-				e.getStyle().set("padding", px);
+				e.getStyle().set("padding-right", px);
 			}
 		}
 	}

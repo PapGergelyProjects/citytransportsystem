@@ -30,27 +30,22 @@ public class CountryFeedService {
 		return "Test Works";
 	}
 	
-	@GetMapping(path="/getFeeds", produces = "application/json")
-	public ResponseEntity<FeedLocationList> getFeeds(){
+	@GetMapping(path="/feeds/{locationState}", produces = "application/json")
+	public ResponseEntity<FeedLocationList> getFeeds(@PathVariable String locationState){
 		try {
-			FeedLocationList feedList = new FeedLocationList(locationSrc.getLocations(false));
-			return new ResponseEntity<FeedLocationList>(feedList, HttpStatus.OK);
+			if("all".equals(locationState)) {
+				return new ResponseEntity<FeedLocationList>(new FeedLocationList(locationSrc.getLocations(false)), HttpStatus.OK);
+			} else if("registered".equals(locationState)) {
+				return new ResponseEntity<FeedLocationList>(new FeedLocationList(locationSrc.getLocations(true)), HttpStatus.OK);
+			} else {
+				throw new IOException();
+			}
 		} catch (IOException e) {
 			return new ResponseEntity<FeedLocationList>(new FeedLocationList(), HttpStatus.NOT_FOUND);
 		}
 	}
 	
-	@GetMapping(path="/getRegisteredFeeds", produces = "application/json")
-	public ResponseEntity<FeedLocationList> getRegisteredFeeds(){
-		try {
-			FeedLocationList feedList = new FeedLocationList(locationSrc.getLocations(true));
-			return new ResponseEntity<FeedLocationList>(feedList, HttpStatus.OK);
-		} catch (IOException e) {
-			return new ResponseEntity<FeedLocationList>(new FeedLocationList(), HttpStatus.NOT_FOUND);
-		}
-	}
-	
-	@GetMapping(path="/getFeed/{feedId}", produces = "application/json")
+	@GetMapping(path="/feeds/id/{feedId}", produces = "application/json")
 	public ResponseEntity<Feeds> getFeed(@PathVariable Long feedId) {
 		try {
 			return new ResponseEntity<Feeds>(src.getFeed(feedId), HttpStatus.OK);

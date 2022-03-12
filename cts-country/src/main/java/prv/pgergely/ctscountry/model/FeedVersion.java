@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
 
 public class FeedVersion implements Serializable{
+
+	private static final long serialVersionUID = 4910263032782960952L;
 	
 	private long id;
 	private long feedId;
@@ -18,10 +20,10 @@ public class FeedVersion implements Serializable{
 	public FeedVersion() {}
 	
 	public FeedVersion(SelectedFeed feed, boolean isNewVersion) {
-		this.feedId = feed.id;
-		this.title = feed.title;
-		this.technicalTitle = feed.technicalTitle;
-		this.latestVersion = feed.latest;
+		this.feedId = feed.getId();
+		this.title = feed.getTitle();
+		this.technicalTitle = feed.getTechnicalTitle();
+		this.latestVersion = feed.getLatest();
 		this.recent = isNewVersion;
 		this.newVersion = isNewVersion;
 	}

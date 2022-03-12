@@ -1,8 +1,11 @@
 package prv.pgergely.cts.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class TransitFeedView {
+public class TransitFeedView implements Serializable {
+	
+	private static final long serialVersionUID = -1661190667055352079L;
 	
 	private Long id;
 	private String title;

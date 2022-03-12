@@ -17,7 +17,9 @@ import prv.pgergely.cts.ui.MainLayout;
 @Route(value = "about", layout = MainLayout.class)
 public class AboutView extends VerticalLayout {
 
-    public AboutView() {
+	private static final long serialVersionUID = -487630249371220520L;
+
+	public AboutView() {
         setSpacing(false);
 
         Image img = new Image("./images/empty-plant.png", "placeholder plant");
