@@ -81,7 +81,7 @@ public class ServiceConfigPage extends VerticalLayout {
 		Grid<TransitFeedView> grid = new Grid<>(TransitFeedView.class, false);
 		grid.addComponentColumn(r -> {
 			if(r.isEnabled()) {
-				Button btn = new Button(VaadinIcon.FOLDER_REMOVE.create());
+				Button btn = new Button(VaadinIcon.CLOSE.create());
 				btn.addClickListener(event -> {
 					operationSrvc.deleteFeed(r.getId());
 					Notification.show(r.getFeedTitle()+" deleted.", 5000, Position.TOP_CENTER);
@@ -89,7 +89,7 @@ public class ServiceConfigPage extends VerticalLayout {
 				});
 				return btn;
 			}
-			Button newBtn = new Button(VaadinIcon.FOLDER_ADD.create());
+			Button newBtn = new Button(VaadinIcon.DATABASE.create());
 			newBtn.addClickListener(event -> {
 				ResponseData resp = operationSrvc.registerFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
 				Notification.show(resp.getTitle()+" registered.", 5000, Position.TOP_CENTER);

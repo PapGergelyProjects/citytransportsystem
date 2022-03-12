@@ -45,5 +45,10 @@ public class AvailableLocation implements IHasDisplayName {
 	public String getDisplayName() {
 		return locationName;
 	}
+
+	@Override
+	public String toString() {
+		return locationName;
+	}
 	
 }

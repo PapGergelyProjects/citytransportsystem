@@ -1,7 +1,5 @@
 package prv.pgergely.cts.ui.views;
 
-import java.util.ArrayList;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,14 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 import prv.pgergely.cts.domain.AvailableLocation;
+import prv.pgergely.cts.service.TransitFeedSource;
 import prv.pgergely.cts.ui.MainLayout;
 
 @UIScope
@@ -32,12 +32,15 @@ public class LandingPage extends VerticalLayout {
 	@Autowired
 	private GoogleMap gMap;
 	
+	@Autowired
+	private TransitFeedSource source;
+	
     private ComboBox<AvailableLocation> loadedLocations; 
 	
 	@PostConstruct
 	public void init() {
 		this.setSizeFull();
-		loadedLocations = new ComboBox<>("Available Locations", new ArrayList<>());
+		loadedLocations = new ComboBox<>("Available Locations", source.getRegisteredLocations());
         HorizontalLayout mapLayout = createMap();
         mapLayout.setSizeFull();
         this.add(loadedLocations);
@@ -55,6 +58,7 @@ public class LandingPage extends VerticalLayout {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
+		loadedLocations.setDataProvider(new ListDataProvider<>(source.getRegisteredLocations()));
 	}
 
 }
