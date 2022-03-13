@@ -8,6 +8,8 @@ import org.vaadin.elmot.flow.sensors.Position;
 
 import com.flowingcode.vaadin.addons.googlemaps.GoogleMap;
 import com.flowingcode.vaadin.addons.googlemaps.GoogleMap.MapType;
+import com.flowingcode.vaadin.addons.googlemaps.GoogleMapMarker;
+import com.flowingcode.vaadin.addons.googlemaps.GoogleMapPolygon;
 import com.flowingcode.vaadin.addons.googlemaps.LatLon;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.button.Button;
@@ -16,6 +18,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -26,6 +29,7 @@ import prv.pgergely.cts.domain.AvailableLocation;
 import prv.pgergely.cts.service.TransitFeedSource;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.FlexSearchLayout;
+import prv.pgergely.cts.utils.Calculations;
 
 @UIScope
 @SpringComponent
@@ -42,6 +46,9 @@ public class LandingPage extends VerticalLayout {
 	private TransitFeedSource source;
 	private GeoLocation geoLocation;
 	private ComboBox<AvailableLocation> loadedLocations;
+	private IntegerField searchRadius;
+	private GoogleMapPolygon circle;
+	private GoogleMapMarker centerMarker;
 	
 	@PostConstruct
 	public void init() {
@@ -61,18 +68,19 @@ public class LandingPage extends VerticalLayout {
 				gMap.setCenter(new LatLon(selected.getLat(), selected.getLon()));
 			}
 		});
+		searchRadius = new IntegerField("Search Radius");
+		searchRadius.setRequiredIndicatorVisible(true);
 		Button currentLocation = new Button("Current Location", VaadinIcon.PIN.create());
 		currentLocation.addClickListener(event ->{
 			Position pos = geoLocation.getValue();
 			if(pos != null) {
 				gMap.setZoom(15);
 				gMap.setCenter(new LatLon(pos.getLatitude(), pos.getLongitude()));
-				//gMap.addMarker("You stand here", new LatLon(pos.getLatitude(), pos.getLongitude()), false, "");
 			} else {
 				Notification.show("The current location is not available.", 5000, com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER);
 			}
 		});
-		FlexSearchLayout layout = new FlexSearchLayout(loadedLocations, currentLocation);
+		FlexSearchLayout layout = new FlexSearchLayout(loadedLocations, searchRadius, currentLocation);
 		layout.setGap("10px");
 		
 		return layout;
@@ -81,8 +89,23 @@ public class LandingPage extends VerticalLayout {
 	private HorizontalLayout createMap() {
 		gMap.setSizeFull();
 		gMap.setMapType(MapType.ROADMAP);
+		gMap.addClickListener(event -> {
+			final Double lat = event.getLatitude();
+			final Double lon = event.getLongitude();
+			final Integer radius = searchRadius.getValue();
+			if(radius != null) {
+				if(circle != null && centerMarker != null) {
+					gMap.removePolygon(circle);
+					gMap.removeMarker(centerMarker);
+				}
+				circle = gMap.addPolygon(Calculations.calcArcPoints(lat, lon, radius/2));
+				circle.setClosed(false);
+				centerMarker = gMap.addMarker("You stand here", new LatLon(lat, lon), false, "");
+			} else {
+				Notification.show("Invalid radius value.", 5000, com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER);
+			}
+		});
 		//gMap.setCenter(new LatLon(47.497913D, 19.040236D));
-		
 		return new HorizontalLayout(gMap);
 	}
 	
