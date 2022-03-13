@@ -52,7 +52,7 @@ public class StopLocationDaoImpl extends JdbcDaoSupport implements StopLocationD
 		};
 		Coordinate coordinate = location.getCoordinates();
 		
-		return this.getJdbcTemplate().query(sql, new Object[] {coordinate.getLatitude(), coordinate.getLongitude(), location.getRadius()}, mapLocation);
+		return this.getJdbcTemplate().query(sql, mapLocation, new Object[] {coordinate.getLatitude(), coordinate.getLongitude(), location.getRadius()});
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class StopLocationDaoImpl extends JdbcDaoSupport implements StopLocationD
 		};
 		Coordinate coordinate = location.getCoordinates();
 		
-		return this.getJdbcTemplate().query(sql, new Object[] {coordinate.getLatitude(), coordinate.getLongitude(), location.getRadius()}, mapLocation);
+		return this.getJdbcTemplate().query(sql, mapLocation, new Object[] {coordinate.getLatitude(), coordinate.getLongitude(), location.getRadius()});
 	}
 
 	private List<LocalTime> getRefinedArray(String rawArr){

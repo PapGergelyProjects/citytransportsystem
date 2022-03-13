@@ -34,7 +34,7 @@ public class CoordinateDaoImpl extends JdbcDaoSupport implements CoordinateDao {
 			return coor;
 		};
 		
-		return this.getJdbcTemplate().queryForObject(sql, new Object[]{id}, mapper);
+		return this.getJdbcTemplate().queryForObject(sql, mapper, new Object[]{id});
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class CoordinateDaoImpl extends JdbcDaoSupport implements CoordinateDao {
 			return coor;
 		};
 		
-		return this.getJdbcTemplate().query(sql, new Object[] {lat, lon, radius}, mapper);
+		return this.getJdbcTemplate().query(sql, mapper, new Object[] {lat, lon, radius});
 	}
 
 }
