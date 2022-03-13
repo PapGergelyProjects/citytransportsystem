@@ -1,6 +1,7 @@
 package prv.pgergely.cts.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -14,7 +15,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import prv.pgergely.cts.ApplicationComponents;
 import prv.pgergely.cts.common.CommonComponents;
-import prv.pgergely.cts.ui.utils.GoogleMapService;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, ApplicationComponents.class})

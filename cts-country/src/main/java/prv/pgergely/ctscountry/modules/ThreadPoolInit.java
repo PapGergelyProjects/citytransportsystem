@@ -32,8 +32,9 @@ public class ThreadPoolInit implements ApplicationRunner {
 	public void run(ApplicationArguments args) throws Exception {
 		long initDelay = config.getThreadParams().getInitDelayed();
 		long delayBetween = config.getThreadParams().getDelayBetween();
-		threadEng.process(initDelay, delayBetween, TimeUnit.SECONDS, "VersionHandler", versionHandler);
-		threadEng.process(initDelay, delayBetween, TimeUnit.SECONDS, "ZipSender", zipSender);
+		long offset = config.getThreadParams().getOffset();
+		threadEng.process(initDelay, delayBetween, TimeUnit.MINUTES, "VersionHandler", versionHandler);
+		threadEng.process(initDelay, delayBetween+offset, TimeUnit.MINUTES, "ZipSender", zipSender);
 	}
 
 }

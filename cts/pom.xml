@@ -126,12 +126,10 @@
             <artifactId>a-vaadin-helper</artifactId>
             <version>1.9.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -168,7 +166,12 @@
         <dependency>
            <groupId>com.flowingcode.vaadin.addons</groupId>
            <artifactId>google-maps</artifactId>
-           <version>1.4.0</version>
+           <version>1.6.0</version>
+        </dependency>
+        <dependency>
+           <groupId>org.vaadin.elmot</groupId>
+           <artifactId>vaadin-geo-location-flow-v14</artifactId>
+           <version>2.0.1</version>
         </dependency>
     </dependencies>
 

@@ -4,6 +4,7 @@ public class ThreadParams {
 	
 	private long initDelayed;
 	private long delayBetween;
+	private long offset;
 	
 	public long getInitDelayed() {
 		return initDelayed;
@@ -16,5 +17,11 @@ public class ThreadParams {
 	}
 	public void setDelayBetween(long delayBetween) {
 		this.delayBetween = delayBetween;
+	}
+	public long getOffset() {
+		return offset;
+	}
+	public void setOffset(long offset) {
+		this.offset = offset;
 	}
 }
