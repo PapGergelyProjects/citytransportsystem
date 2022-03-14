@@ -1,8 +1,12 @@
 package prv.pgergely.cts.ui;
 
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.html.Footer;
@@ -13,9 +17,15 @@ import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.Theme;
 
 import prv.pgergely.cts.ui.utils.LineIcon;
@@ -23,6 +33,8 @@ import prv.pgergely.cts.ui.views.AboutView;
 import prv.pgergely.cts.ui.views.LandingPage;
 import prv.pgergely.cts.ui.views.ServiceConfigPage;
 
+@UIScope
+@SpringComponent
 @PageTitle("Main")
 @PWA(name = "CTS", shortName = "CTS", enableInstallPrompt = false)
 @Theme(themeFolder = "cts")
@@ -71,6 +83,7 @@ public class MainLayout extends AppLayout {
     }
 
     private H1 viewTitle;
+    private Button slideBtn;
 
     public MainLayout() {
         setPrimarySection(Section.NAVBAR);
@@ -86,11 +99,22 @@ public class MainLayout extends AppLayout {
 
         viewTitle = new H1();
         viewTitle.addClassNames("m-0", "text-l");
+        HorizontalLayout lay1 = new HorizontalLayout(toggle, viewTitle);
+        lay1.setWidth("100%");
+        lay1.setAlignItems(Alignment.CENTER);
+        slideBtn = new Button(VaadinIcon.DOWNLOAD.create());
+        HorizontalLayout lay2 = new HorizontalLayout(slideBtn);
+        lay2.setWidth("100%");
+        lay2.setJustifyContentMode(JustifyContentMode.END);
 
-        Header header = new Header(toggle, viewTitle);
-        header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center",
-                "w-full");
+        Header header = new Header(lay1, lay2);
+        header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center", "w-full");
         return header;
+    }
+    
+    public void addEventListenerToSlideBtn(ComponentEventListener<ClickEvent<Button>> listener) {
+    	slideBtn.addClickListener(listener).remove();
+    	slideBtn.addClickListener(listener);
     }
 
     private Component createDrawerContent() {
@@ -145,4 +169,14 @@ public class MainLayout extends AppLayout {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
     }
+    
+    public static MainLayout getMainInstance() {
+    	MainLayout mainLay = (MainLayout)UI.getCurrent().getChildren().filter(p -> p.getClass() == MainLayout.class).findFirst().orElse(null);
+    	return mainLay;
+    }
+
+	public Button getSlideBtn() {
+		return slideBtn;
+	}
+    
 }

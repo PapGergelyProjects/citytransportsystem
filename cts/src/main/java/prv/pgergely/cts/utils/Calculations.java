@@ -23,10 +23,10 @@ public class Calculations {
 	/**
 	 * Calculates the arc points of a circle.
 	 * 
-	 * @param lat
-	 * @param lon
+	 * @param lat Center point's latitude
+	 * @param lon Center point's longitude
 	 * @param distanceInMeter The radius of the circle
-	 * @return
+	 * @return 
 	 */
 	public static List<GoogleMapPoint> calcArcPoints(double lat, double lon, int distanceInMeter) {
 		double calcDistance = distanceInMeter / EARTH_RADIUS;

@@ -19,6 +19,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -33,6 +34,7 @@ import prv.pgergely.cts.ui.utils.FlexSearchLayout;
 
 @UIScope
 @SpringComponent
+@PreserveOnRefresh
 @PageTitle("CTS - Configuration")
 @Route(value = "configuration", layout = MainLayout.class)
 public class ServiceConfigPage extends VerticalLayout {

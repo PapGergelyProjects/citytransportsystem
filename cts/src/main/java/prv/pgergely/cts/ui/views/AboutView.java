@@ -5,6 +5,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -13,6 +14,7 @@ import prv.pgergely.cts.ui.MainLayout;
 
 @UIScope
 @SpringComponent
+@PreserveOnRefresh
 @PageTitle("About")
 @Route(value = "about", layout = MainLayout.class)
 public class AboutView extends VerticalLayout {
