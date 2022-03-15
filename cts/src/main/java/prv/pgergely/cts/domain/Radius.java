@@ -2,7 +2,7 @@ package prv.pgergely.cts.domain;
 
 public class Radius {
 	
-	private Integer radius = 500;
+	private Integer radius = 1000;
 
 	public Integer getRadius() {
 		return radius;

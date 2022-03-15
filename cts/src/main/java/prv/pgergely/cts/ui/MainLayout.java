@@ -102,7 +102,7 @@ public class MainLayout extends AppLayout {
         HorizontalLayout lay1 = new HorizontalLayout(toggle, viewTitle);
         lay1.setWidth("100%");
         lay1.setAlignItems(Alignment.CENTER);
-        slideBtn = new Button(VaadinIcon.DOWNLOAD.create());
+        slideBtn = new Button(VaadinIcon.ARROW_DOWN.create());
         HorizontalLayout lay2 = new HorizontalLayout(slideBtn);
         lay2.setWidth("100%");
         lay2.setJustifyContentMode(JustifyContentMode.END);
@@ -110,11 +110,6 @@ public class MainLayout extends AppLayout {
         Header header = new Header(lay1, lay2);
         header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center", "w-full");
         return header;
-    }
-    
-    public void addEventListenerToSlideBtn(ComponentEventListener<ClickEvent<Button>> listener) {
-    	slideBtn.addClickListener(listener).remove();
-    	slideBtn.addClickListener(listener);
     }
 
     private Component createDrawerContent() {
@@ -176,6 +171,7 @@ public class MainLayout extends AppLayout {
     }
 
 	public Button getSlideBtn() {
+		slideBtn = new Button(VaadinIcon.ARROW_DOWN.create());
 		return slideBtn;
 	}
     

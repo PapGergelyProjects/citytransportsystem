@@ -13,7 +13,7 @@ public class FlexSearchLayout extends FlexLayout {
 		this.children = children;
 		this.setFlexDirection(FlexDirection.ROW);
 		this.setFlexWrap(FlexWrap.WRAP);
-		this.setJustifyContentMode(JustifyContentMode.CENTER);
+		this.setJustifyContentMode(JustifyContentMode.START);
 		this.setAlignItems(Alignment.BASELINE);
 	}
 	

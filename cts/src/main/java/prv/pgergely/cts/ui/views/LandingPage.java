@@ -12,6 +12,8 @@ import com.flowingcode.vaadin.addons.googlemaps.GoogleMapMarker;
 import com.flowingcode.vaadin.addons.googlemaps.GoogleMapPolygon;
 import com.flowingcode.vaadin.addons.googlemaps.LatLon;
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -62,6 +64,11 @@ public class LandingPage extends VerticalLayout {
 	private GoogleMapPolygon circle;
 	private GoogleMapMarker centerMarker;
 	private boolean isOpen = false;
+	private ComponentEventListener<ClickEvent<Button>> listener = event -> {
+		isOpen = !isOpen;
+		searchLayout.setSplitterPosition(isOpen ? 0 : 15);
+	};
+	
 	
 	@PostConstruct
 	public void init() {
@@ -167,10 +174,7 @@ public class LandingPage extends VerticalLayout {
 	}
 	
 	private void setupSlideBtn() {
-		MainLayout.getMainInstance().addEventListenerToSlideBtn(event -> {
-			isOpen = !isOpen;
-			searchLayout.setSplitterPosition(isOpen ? 0 : 15);
-		});
+		MainLayout.getMainInstance().getSlideBtn().addClickListener(listener);
 	}
 	
 	@Override
@@ -178,6 +182,7 @@ public class LandingPage extends VerticalLayout {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
 		loadedLocations.setDataProvider(new ListDataProvider<>(source.getRegisteredLocations()));
+		setupSlideBtn();
 	}
 	
 }
