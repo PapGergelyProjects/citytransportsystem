@@ -52,7 +52,7 @@ public class DatabaseInit implements ApplicationRunner {
 				sb.append(bfr.readLine()+"\n");
 			}
 		}
-		String sql = sb.toString().replaceAll("<schema_name>", schema.getSchemaName());
+		String sql = sb.toString().replaceAll("<schema_name>", schema.getSchemaName().toLowerCase());
 		Resource resource = new ByteArrayResource(sql.getBytes());
 		return resource;
 	}

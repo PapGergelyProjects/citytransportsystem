@@ -1,9 +1,9 @@
 server:
-  port: 9443
+  port: 8080
 spring:
   datasource-primary:
     driver-class-name: org.postgresql.Driver 
-    jdbcUrl: jdbc:postgresql://postgres-cts:5432/sandbox
+    jdbcUrl: jdbc:postgresql://postgres1:5432/sandbox
     username: postgres
     password: home
     separator: ^;

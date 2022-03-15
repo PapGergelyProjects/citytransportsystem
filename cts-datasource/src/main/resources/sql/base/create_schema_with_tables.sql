@@ -104,6 +104,9 @@ BEGIN
 		    wheelchair_accessible INTEGER,
 		    bikes_allowed INTEGER
 		);
+		SET SEARCH_PATH TO <schema_name>;
+	ELSE
+		SET SEARCH_PATH TO <schema_name>;
     END IF;
 END;
 $body$ ^;
