@@ -19,19 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CsvRefiner {
     
-    private String[] columns;
-    private InputStream stream;
-    private List<String> defaultColumnList;
-    
     private Logger logger = LogManager.getLogger(CsvRefiner.class);
-    
-    public void setStream(InputStream stream) {
-    	this.stream = stream;
-    }
-    
-    public void setDefaultColumns(List<String> defaultColumnList) {
-    	this.defaultColumnList = defaultColumnList;
-    }
     
     private byte[] streamToByteArray(InputStream stream)throws IOException{
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -45,13 +33,14 @@ public class CsvRefiner {
         return outStream.toByteArray();
     }
     
-    public ByteArrayOutputStream generateNormalizedStreamFromCsv() throws IOException{
+    public ByteArrayOutputStream generateNormalizedStreamFromCsv(InputStream stream, List<String> defaultColumnList) throws IOException{
     	BufferedReader bfr = new BufferedReader(new InputStreamReader(stream));
     	ByteArrayOutputStream streamOut = new ByteArrayOutputStream();
+    	String[] columns = new String[0];
     	if(bfr.ready()){
     		columns = bfr.readLine().split(",");
     	}
-    	int[] columnSet = getColumnSet();
+    	int[] columnSet = getColumnSet(columns, defaultColumnList);
     	while(bfr.ready()){
     		String line = bfr.readLine();
     		String[] actualRow = replaceCommaWithinDoubleQoute(line).split(",", -1);
@@ -97,7 +86,7 @@ public class CsvRefiner {
         return new String(lineArray);
     }
     
-    private int[] getColumnSet() {
+    private int[] getColumnSet(String[] columns, List<String> defaultColumnList) {
         int[] idxArray = new int[defaultColumnList.size()];
         int cIdx = 0;
         for (String customCol : defaultColumnList){
