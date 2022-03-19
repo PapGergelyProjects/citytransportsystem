@@ -10,6 +10,7 @@ public class FeedLocationsJson {
 	public double lat;
 	public double lon;
 	public boolean isEnabled;
+	public boolean isActive;
 	
 	public static class Feed{
 		public String title;
@@ -18,7 +19,7 @@ public class FeedLocationsJson {
 
 	@Override
 	public String toString() {
-		return "FeedLocationsJson={id:" + id + ", title:" + title + ", feed:" + feed + ", enabled:" + isEnabled + "}";
+		return "FeedLocationsJson={id:" + id + ", title:" + title + ", feed:" + feed + ", enabled:" + isEnabled + ", active:"+isActive+"}";
 	}
 	
 }
