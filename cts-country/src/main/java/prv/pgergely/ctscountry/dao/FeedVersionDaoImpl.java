@@ -34,13 +34,13 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 	@Override
 	public void insert(FeedVersion value) {
 		final String insert = "INSERT INTO feed_version(feed_id, title, latest_version, recent, new_version) VALUES(?, ?, ?, ?, ?);";
-		this.getJdbcTemplate().update(insert, new Object[]{value.getFeedId(), value.getTitle(), Date.from(value.getLatestVersion().atStartOfDay(ZoneId.systemDefault()).toInstant()), true, true});
+		this.getJdbcTemplate().update(insert, value.getFeedId(), value.getTitle(), Date.from(value.getLatestVersion().atStartOfDay(ZoneId.systemDefault()).toInstant()), true, true);
 	}
 
 	@Override
 	public void update(FeedVersion value) {
 		final String update="UPDATE feed_version SET feed_id=?, title=?, latest_version=?, recent=?, new_version=? WHERE feed_id="+value.getFeedId();
-		this.getJdbcTemplate().update(update, new Object[]{value.getFeedId(), value.getTitle(), Date.from(value.getLatestVersion().atStartOfDay(ZoneId.systemDefault()).toInstant()), value.isRecent(), value.isNewVersion()});
+		this.getJdbcTemplate().update(update, value.getFeedId(), value.getTitle(), Date.from(value.getLatestVersion().atStartOfDay(ZoneId.systemDefault()).toInstant()), value.isRecent(), value.isNewVersion());
 	}
 
 	@Override
@@ -66,7 +66,10 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 
 	@Override
 	public List<FeedVersion> getFeedVersions() {
-		List<Map<String, Object>> allFeed = this.getJdbcTemplate().queryForList("SELECT id, feed_id, title, latest_version, recent, new_version FROM feed_version");
+		final String select = "SELECT v.id, v.feed_id, v.title, v.latest_version, v.recent, v.new_version, d.active "
+							+ "FROM feed_version v "
+							+ "INNER JOIN datasource_info d USING(feed_id)";
+		List<Map<String, Object>> allFeed = this.getJdbcTemplate().queryForList(select);
 		List<FeedVersion> res = new ArrayList<>();
 		allFeed.forEach(feed -> {
 			FeedVersion vers = new FeedVersion();
@@ -76,6 +79,7 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 			vers.setLatestVersion(LocalDate.parse(feed.get("latest_version").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			vers.setRecent((boolean)feed.get("recent"));
 			vers.setNewVersion((boolean)feed.get("new_version"));
+			vers.setActive((boolean)feed.get("active"));
 			res.add(vers);
 		});
 		return res;

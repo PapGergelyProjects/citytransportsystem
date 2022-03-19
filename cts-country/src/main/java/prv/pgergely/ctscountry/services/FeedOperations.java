@@ -26,9 +26,15 @@ public class FeedOperations {
 		dockerSrvc.createContainer(info);
 	}
 	
+	public void update(FeedVersion version) {
+		//feedVersion.update(version);
+		dsService.setDsActive(version.getFeedId());
+		dockerSrvc.startContainer(version.getFeedId());
+	}
+	
 	public void delete(FeedVersion version) {
-		// TODO: docker container handling
-		feedVersion.deleteFeedVersion(version);
+		//feedVersion.deleteFeedVersion(version);
 		dsService.deleteDsService(version.getFeedId());
+		dockerSrvc.stopContainer(version.getFeedId());
 	}
 }

@@ -16,7 +16,8 @@ BEGIN
 		    feed_id INT,
 		    source_name TEXT,
 		    source_url TEXT,
-		    schema_name TEXT
+		    schema_name TEXT,
+		    active BOOLEAN DEFAULT FALSE
 		);
 	END IF;
 END;

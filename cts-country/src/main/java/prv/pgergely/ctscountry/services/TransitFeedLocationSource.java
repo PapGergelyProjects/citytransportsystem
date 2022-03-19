@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Locations;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Results;
+import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.modules.TransitFeedApi;
 
 @Service
@@ -33,17 +35,17 @@ public class TransitFeedLocationSource {
 	@Autowired
 	private FeedVersionServiceImpl feedVersion;
 
-	public List<FeedLocationsJson> getLocations(boolean onlyRegistered) throws IOException {
+	public List<FeedLocationsJson> getLocations(boolean onlyActive) throws IOException {
 		List<FeedLocationsJson> locationList = new ArrayList<>();
 		TransitFeedLocationJson location = feed.getLocations().getBody();
-		List<Long> versions = feedVersion.getFeedVersions().stream().map(m -> m.getFeedId()).collect(Collectors.toList());
+		Map<Long, FeedVersion> versionMap = feedVersion.getFeedVersions().stream().collect(Collectors.toMap(k -> k.getFeedId(), v -> v));
 		List<Feeds> feeds = feedSrc.getFeeds();
 		Locations[] locations = Optional.of(location.results).orElse(new Results()).locations;
 		Set<Long> parentIds = Arrays.asList(locations).stream().map(m -> m.parentId).collect(Collectors.toSet());
 		List<Locations> refinedLocations = Arrays.asList(locations).stream().filter(p -> {
 			if(!parentIds.contains(p.id)) {
-				if(onlyRegistered) {
-					return versions.contains(p.id);
+				if(onlyActive) {
+					return versionMap.containsKey(p.id);
 				}
 				return true;
 			}
@@ -56,7 +58,8 @@ public class TransitFeedLocationSource {
 			json.lat = loc.lat;
 			json.lon = loc.lng;
 			json.feed = new Feed();
-			json.isEnabled = versions.contains(json.id);
+			json.isEnabled = versionMap.containsKey(json.id);
+			json.isActive = json.isEnabled ? versionMap.get(json.id).isActive() : false;
 			feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null && p.latest != null)).forEach(e -> {
 				json.feed.title = e.feedTitle;
 				json.feed.latest = Instant.ofEpochMilli(e.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();

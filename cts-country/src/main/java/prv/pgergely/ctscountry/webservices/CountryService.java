@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -57,10 +58,10 @@ public class CountryService {
 		return new ResponseEntity<ResponseData>(data, HttpStatus.CREATED);
 	}
 	
-	@PutMapping(path="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(path="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> updateVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, false);
-		feedVersion.update(version);
+		operation.update(version);
 		ResponseData data = new ResponseData();
 		data.setId(vers.getId());
 		data.setTitle(vers.getTechnicalTitle());

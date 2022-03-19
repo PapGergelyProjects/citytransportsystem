@@ -25,7 +25,7 @@ public class DatasourceService {
 		int port = createPortNumberFromFeedId(id);
 		String endpoint = url+":"+port;
 		
-		DatasourceInfo info = new DatasourceInfo(id, port, title, endpoint, createSchemaFromData(techTitle));
+		DatasourceInfo info = new DatasourceInfo(id, port, title, endpoint, createSchemaFromData(techTitle), true);
 		repo.insert(info);
 		return info;
 	}
@@ -44,6 +44,10 @@ public class DatasourceService {
 	
 	private String createSchemaFromData(String title) {
 		return title.replaceAll("[\\s,]", "_");
+	}
+	
+	public void setDsActive(Long feedId) {
+		repo.setActive(feedId);
 	}
 	
 	public void deleteDsService(long feedId) {

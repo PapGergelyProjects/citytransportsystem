@@ -33,8 +33,8 @@ public class ThreadPoolInit implements ApplicationRunner {
 		long initDelay = config.getThreadParams().getInitDelayed();
 		long delayBetween = config.getThreadParams().getDelayBetween();
 		long offset = config.getThreadParams().getOffset();
-		threadEng.process(initDelay, delayBetween, TimeUnit.MINUTES, "VersionHandler", versionHandler);
-		threadEng.process(initDelay, delayBetween+offset, TimeUnit.MINUTES, "ZipSender", zipSender);
+		threadEng.process(initDelay, delayBetween, TimeUnit.SECONDS, "VersionHandler", versionHandler);
+		threadEng.process(initDelay, delayBetween+offset, TimeUnit.SECONDS, "ZipSender", zipSender);
 	}
 
 }

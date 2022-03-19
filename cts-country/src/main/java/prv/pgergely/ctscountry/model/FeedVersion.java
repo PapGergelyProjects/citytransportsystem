@@ -16,6 +16,7 @@ public class FeedVersion implements Serializable{
 	private LocalDate latestVersion;
 	private boolean recent;
 	private boolean newVersion;
+	private boolean active;
 	
 	public FeedVersion() {}
 	
@@ -73,6 +74,12 @@ public class FeedVersion implements Serializable{
 	}
 	public void setTechnicalTitle(String technicalTitle) {
 		this.technicalTitle = technicalTitle;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override

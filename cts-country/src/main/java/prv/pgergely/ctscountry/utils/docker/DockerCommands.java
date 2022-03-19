@@ -6,7 +6,9 @@ public class DockerCommands {
 	private String listImages;
 	private String listContainer;
 	private String createContainer;
+	private String startContainer;
 	private String stopContainer;
+	private String pauseContainer;
 	
 	public String getImageName() {
 		return imageName;
@@ -26,6 +28,12 @@ public class DockerCommands {
 	public void setListContainer(String listContainer) {
 		this.listContainer = listContainer;
 	}
+	public String getStartContainer() {
+		return startContainer;
+	}
+	public void setStartContainer(String startContainer) {
+		this.startContainer = startContainer;
+	}
 	public String getCreateContainer() {
 		return createContainer;
 	}
@@ -37,5 +45,11 @@ public class DockerCommands {
 	}
 	public void setStopContainer(String stopContainer) {
 		this.stopContainer = stopContainer;
+	}
+	public String getPauseContainer() {
+		return pauseContainer;
+	}
+	public void setPauseContainer(String pauseContainer) {
+		this.pauseContainer = pauseContainer;
 	}
 }

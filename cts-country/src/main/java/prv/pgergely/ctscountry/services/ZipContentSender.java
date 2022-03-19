@@ -39,7 +39,7 @@ public class ZipContentSender implements ContentSenderThread {
 	
 	@Override
 	public void run() {
-		logger.info("Prepare to send zips");
+		logger.info("Prepare to send download requests");
 		while(store.size()>0) {
 			DownloadRequest request = store.poll();
 			DatasourceInfo info = dsService.getByFeedId(request.getFeedId());
@@ -53,7 +53,7 @@ public class ZipContentSender implements ContentSenderThread {
 				logger.info(request);
 				logger.info(resp);
 			} catch (Exception e) {
-				logger.warn("Cannot send zip file to "+info.getSource_url()+" "+e);
+				logger.warn("Cannot send request to "+info.getSource_url()+" "+e);
 			}
 		}
 	}

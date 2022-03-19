@@ -65,4 +65,18 @@ public class DockerService {
 		
 		ProcessHandler.execute.command(dockerContainerRun).getOutput();
     }
+    
+    public void startContainer(Long feedId) {
+    	String containerName = "GTFS-"+feedId;
+    	String startCommand = config.getDockerCommands().getStartContainer().replace("<cont_name>", containerName);
+    	
+    	ProcessHandler.execute.command(startCommand).getOutput();
+    }
+    
+    public void stopContainer(Long feedId) {
+    	String containerName = "GTFS-"+feedId;
+    	String stopCommand = config.getDockerCommands().getStopContainer().replace("<cont_name>", containerName);
+    	
+    	ProcessHandler.execute.command(stopCommand).getOutput();
+    }
 }

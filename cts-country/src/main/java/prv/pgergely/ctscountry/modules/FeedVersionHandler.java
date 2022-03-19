@@ -64,7 +64,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
 			FeedURL feedLink = allFeed.feedUrl;
 			Latest latest = allFeed.latest;
 			LocalDate verDate = Instant.ofEpochMilli(latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
-			if(feedVersion.getFeedId() == allFeed.location.id && (feedVersion.getLatestVersion().isBefore(verDate) || feedVersion.isRecent())){
+			if(feedVersion.getFeedId() == allFeed.location.id && (feedVersion.getLatestVersion().isBefore(verDate) || feedVersion.isRecent())){ // FIXME: Handle new_version
 				long feedId = location.id;
 				String title = allFeed.feedTitle;
 				String link = feedLink.urlDirectLink;

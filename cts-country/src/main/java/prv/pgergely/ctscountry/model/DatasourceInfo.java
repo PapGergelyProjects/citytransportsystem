@@ -8,22 +8,25 @@ public class DatasourceInfo {
     private String source_name;
     private String source_url;
     private String schema_name;
+    private boolean active;
     
-    public DatasourceInfo(long id, long feedId, String source_name, String source_url, String schema_name) {
+    public DatasourceInfo(long id, long feedId, String source_name, String source_url, String schema_name, boolean active) {
 		this.id = id;
 		this.feedId = feedId;
 		this.source_name = source_name;
 		this.source_url = source_url;
 		this.schema_name = schema_name;
+		this.active = active;
 	}
     
-	public DatasourceInfo(long feedId, int port, String source_name, String source_url, String schema_name) {
+	public DatasourceInfo(long feedId, int port, String source_name, String source_url, String schema_name, boolean active) {
 		super();
 		this.feedId = feedId;
 		this.port = port;
 		this.source_name = source_name;
 		this.source_url = source_url;
 		this.schema_name = schema_name;
+		this.active = active;
 	}
 
 	public long getId() {
@@ -62,11 +65,17 @@ public class DatasourceInfo {
 	public void setPort(int port) {
 		this.port = port;
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	@Override
 	public String toString() {
 		return "DatasourceInfo {\n id: " + id + ",\n feedId: " + feedId + ",\n port:" + port + ",\n source_name:" + source_name
-				+ ",\n source_url: " + source_url + ",\n schema_name: " + schema_name + "\n}";
+				+ ",\n source_url: " + source_url + ",\n schema_name: " + schema_name + "\n, active: "+active+"}";
 	}
 	
 }
