@@ -17,7 +17,6 @@ public class SelectedFeed{
 	public SelectedFeed() {}
 
 	public SelectedFeed(Long id, String title, String technicalTitle, LocalDate latest) {
-		super();
 		this.id = id;
 		this.title = title;
 		this.technicalTitle = technicalTitle;

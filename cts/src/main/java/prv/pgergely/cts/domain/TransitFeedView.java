@@ -12,6 +12,7 @@ public class TransitFeedView implements Serializable {
 	private boolean isEnabled;
 	private String feedTitle;
 	private LocalDate latest;
+	private boolean isActive;
 	
 	public Long getId() {
 		return id;
@@ -42,5 +43,11 @@ public class TransitFeedView implements Serializable {
 	}
 	public void setLatest(LocalDate latest) {
 		this.latest = latest;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

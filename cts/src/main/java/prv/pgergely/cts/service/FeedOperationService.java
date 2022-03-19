@@ -27,10 +27,23 @@ public class FeedOperationService {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		headers.set("X-Feed", actFeed.getTechnicalTitle());
+		headers.set("X-Mode", "Register");
 		HttpEntity<SelectedFeed> entity = new HttpEntity<>(actFeed, headers);
-		ResponseEntity<ResponseData> resp =  template.postForEntity("https://localhost:9443/cts-country/feed/register", entity, ResponseData.class);
+		ResponseEntity<ResponseData> resp =  template.postForEntity("https://localhost:9443/cts-country/feed/register", entity, ResponseData.class);//TODO: config file
 		
 		return resp.getBody();
+	}
+	
+	public ResponseData startFeed(SelectedFeed actFeed) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.set("X-Feed", actFeed.getTechnicalTitle());
+		headers.set("X-Mode", "Activate");
+		HttpEntity<SelectedFeed> entity = new HttpEntity<>(actFeed, headers);
+		ResponseData resp = template.patchForObject("https://localhost:9443/cts-country/feed/update", entity, ResponseData.class);
+		
+		return resp;
 	}
 	
 	public void deleteFeed(Long id) {

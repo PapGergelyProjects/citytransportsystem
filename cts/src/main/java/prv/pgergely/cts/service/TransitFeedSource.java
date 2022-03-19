@@ -31,6 +31,7 @@ public class TransitFeedSource {
 			view.setFeedTitle(m.feed.title);
 			view.setLatest(m.feed.latest);
 			view.setEnabled(m.isEnabled);
+			view.setActive(m.isActive);
 			
 			return view;
 		}).collect(Collectors.toList());
@@ -38,7 +39,7 @@ public class TransitFeedSource {
 	
 	public List<AvailableLocation> getRegisteredLocations(){
 		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/feeds/registered", FeedLocationList.class);
-		return resp.getBody().getFeeds().stream().map(m -> {
+		return resp.getBody().getFeeds().stream().filter(p -> p.isActive).map(m -> {
 			AvailableLocation loc = new AvailableLocation();
 			loc.setId(m.id);
 			loc.setLocationName(m.title);

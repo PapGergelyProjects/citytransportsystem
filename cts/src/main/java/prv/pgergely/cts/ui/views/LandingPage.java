@@ -102,7 +102,6 @@ public class LandingPage extends VerticalLayout {
 		});
 		searchRadius = new IntegerField("Search Radius");
 		searchRadius.setRequiredIndicatorVisible(true);
-		searchRadius.setValue(100);
 		fieldBinder.forField(searchRadius).withValidator((radius,c) -> {
 			if(radius == null) {
 				return ValidationResult.error("Radius cannot be null");
@@ -114,7 +113,7 @@ public class LandingPage extends VerticalLayout {
 		Button currentLocation = new Button("Current Location", VaadinIcon.PIN.create());
 		currentLocation.addClickListener(event ->{
 			Position pos = geoLocation.getValue();
-			if(pos != null) {
+			if(pos != null && fieldBinder.isValid()) {
 				final Double lat = pos.getLatitude();
 				final Double lon = pos.getLongitude();
 				final Integer radius = searchRadius.getValue();

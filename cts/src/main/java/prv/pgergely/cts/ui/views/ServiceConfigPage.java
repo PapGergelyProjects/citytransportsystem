@@ -19,7 +19,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -31,10 +30,10 @@ import prv.pgergely.cts.service.FeedOperationService;
 import prv.pgergely.cts.service.TransitFeedSource;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.FlexSearchLayout;
+import prv.pgergely.cts.ui.utils.StateButton;
 
 @UIScope
 @SpringComponent
-@PreserveOnRefresh
 @PageTitle("CTS - Configuration")
 @Route(value = "configuration", layout = MainLayout.class)
 public class ServiceConfigPage extends VerticalLayout {
@@ -83,15 +82,24 @@ public class ServiceConfigPage extends VerticalLayout {
 		Grid<TransitFeedView> grid = new Grid<>(TransitFeedView.class, false);
 		grid.addComponentColumn(r -> {
 			if(r.isEnabled()) {
-				Button btn = new Button(VaadinIcon.CLOSE.create());
+				if(r.isActive()) {
+					Button btn = new Button(VaadinIcon.PAUSE.create());
+					btn.addClickListener(event -> {
+						operationSrvc.deleteFeed(r.getId());
+						Notification.show(r.getFeedTitle()+" deleted.", 5000, Position.TOP_CENTER);
+						refresh();
+					});
+					return btn;
+				}
+				Button btn = new Button(VaadinIcon.PLAY_CIRCLE.create());
 				btn.addClickListener(event -> {
-					operationSrvc.deleteFeed(r.getId());
-					Notification.show(r.getFeedTitle()+" deleted.", 5000, Position.TOP_CENTER);
+					operationSrvc.startFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
+					Notification.show(r.getFeedTitle()+" started.", 5000, Position.TOP_CENTER);
 					refresh();
 				});
 				return btn;
 			}
-			Button newBtn = new Button(VaadinIcon.DATABASE.create());
+			Button newBtn = new Button(VaadinIcon.DOWNLOAD.create());
 			newBtn.addClickListener(event -> {
 				ResponseData resp = operationSrvc.registerFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
 				Notification.show(resp.getTitle()+" registered.", 5000, Position.TOP_CENTER);
@@ -104,17 +112,12 @@ public class ServiceConfigPage extends VerticalLayout {
 		grid.addColumn("latest").setResizable(true).setWidth("150px").setFlexGrow(0).setHeader("Latest Update");
 		grid.addComponentColumn(r -> {
 			if(r.isEnabled()) {
-				Button btn = new Button("registered");
-				btn.getStyle().set("background", "#009900");
-				btn.getStyle().set("color", "white");
-				
-				return btn;
+				if(r.isActive()) {
+					return StateButton.ACTIVE.get();
+				}
+				return StateButton.STOPPED.get();
 			}
-			Button btn = new Button("unregistered");
-			btn.getStyle().set("background", "#a6a6a6");
-			btn.getStyle().set("color", "white");
-			
-			return btn;
+			return StateButton.UNREGISTERED.get();
 		}).setWidth("200px").setFlexGrow(0).setHeader("Status");
 		grid.addColumn("enabled").setResizable(true).setHeader("Registered");
 		
@@ -123,6 +126,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	
 	private void refresh() {
 		transitFeedGrid.setDataProvider(new ListDataProvider<>(feedSource.getTransitFeeds()));
+		filterGrid();
 	}
 	
 	private void filterGrid() {
