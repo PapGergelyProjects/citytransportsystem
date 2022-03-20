@@ -1,10 +1,14 @@
 package prv.pgergely.cts.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,14 +16,44 @@ import org.springframework.web.client.RestTemplate;
 import prv.pgergely.cts.common.domain.FeedLocationList;
 import prv.pgergely.cts.config.SourceTemplateConfig;
 import prv.pgergely.cts.domain.AvailableLocation;
+import prv.pgergely.cts.domain.ResponseData;
+import prv.pgergely.cts.domain.SelectedFeed;
 import prv.pgergely.cts.domain.TransitFeedView;
 
 @Service
-public class TransitFeedSource {
+public class FeedService {
 	
 	@Autowired
 	@Qualifier(SourceTemplateConfig.DEFAULT_TEMPLATE)
 	private RestTemplate template;
+	
+	public ResponseData registerFeed(SelectedFeed actFeed) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.set("X-Feed", actFeed.getTechnicalTitle());
+		headers.set("X-Mode", "Register");
+		HttpEntity<SelectedFeed> entity = new HttpEntity<>(actFeed, headers);
+		ResponseEntity<ResponseData> resp =  template.postForEntity("https://localhost:9443/cts-country/feed/register", entity, ResponseData.class);//TODO: config file
+		
+		return resp.getBody();
+	}
+	
+	public ResponseData startFeed(SelectedFeed actFeed) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.set("X-Feed", actFeed.getTechnicalTitle());
+		headers.set("X-Mode", "Activate");
+		HttpEntity<SelectedFeed> entity = new HttpEntity<>(actFeed, headers);
+		ResponseData resp = template.patchForObject("https://localhost:9443/cts-country/feed/update", entity, ResponseData.class);
+		
+		return resp;
+	}
+	
+	public void deleteFeed(Long id) {
+		template.delete("https://localhost:9443/cts-country/feed/delete/"+id);
+	}
 	
 	public List<TransitFeedView> getTransitFeeds() {
 		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/feeds/all", FeedLocationList.class);
@@ -43,6 +77,7 @@ public class TransitFeedSource {
 			AvailableLocation loc = new AvailableLocation();
 			loc.setId(m.id);
 			loc.setLocationName(m.title);
+			loc.setDsUrl(m.dsUrl);
 			loc.setLat(m.lat);
 			loc.setLon(m.lon);
 			

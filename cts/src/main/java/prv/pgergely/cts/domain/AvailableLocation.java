@@ -6,6 +6,7 @@ public class AvailableLocation implements IHasDisplayName {
 	
 	private Long id;
 	private String locationName;
+	private String dsUrl;
 	private Double lat;
 	private Double lon;
 	
@@ -23,6 +24,14 @@ public class AvailableLocation implements IHasDisplayName {
 
 	public void setLocationName(String locationName) {
 		this.locationName = locationName;
+	}
+	
+	public String getDsUrl() {
+		return dsUrl;
+	}
+
+	public void setDsUrl(String dsUrl) {
+		this.dsUrl = dsUrl;
 	}
 
 	public Double getLat() {

@@ -26,8 +26,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import prv.pgergely.cts.domain.ResponseData;
 import prv.pgergely.cts.domain.SelectedFeed;
 import prv.pgergely.cts.domain.TransitFeedView;
-import prv.pgergely.cts.service.FeedOperationService;
-import prv.pgergely.cts.service.TransitFeedSource;
+import prv.pgergely.cts.service.FeedService;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.FlexSearchLayout;
 import prv.pgergely.cts.ui.utils.StateButton;
@@ -39,12 +38,9 @@ import prv.pgergely.cts.ui.utils.StateButton;
 public class ServiceConfigPage extends VerticalLayout {
 	
 	private static final long serialVersionUID = 2300113904760437763L;
-
-	@Autowired
-	private TransitFeedSource feedSource;
 	
 	@Autowired
-	private FeedOperationService operationSrvc;
+	private FeedService feedSource;
 	
 	private TextField search;
 	private DatePicker date;
@@ -85,7 +81,7 @@ public class ServiceConfigPage extends VerticalLayout {
 				if(r.isActive()) {
 					Button btn = new Button(VaadinIcon.PAUSE.create());
 					btn.addClickListener(event -> {
-						operationSrvc.deleteFeed(r.getId());
+						feedSource.deleteFeed(r.getId());
 						Notification.show(r.getFeedTitle()+" deleted.", 5000, Position.TOP_CENTER);
 						refresh();
 					});
@@ -93,7 +89,7 @@ public class ServiceConfigPage extends VerticalLayout {
 				}
 				Button btn = new Button(VaadinIcon.PLAY_CIRCLE.create());
 				btn.addClickListener(event -> {
-					operationSrvc.startFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
+					feedSource.startFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
 					Notification.show(r.getFeedTitle()+" started.", 5000, Position.TOP_CENTER);
 					refresh();
 				});
@@ -101,7 +97,7 @@ public class ServiceConfigPage extends VerticalLayout {
 			}
 			Button newBtn = new Button(VaadinIcon.DOWNLOAD.create());
 			newBtn.addClickListener(event -> {
-				ResponseData resp = operationSrvc.registerFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
+				ResponseData resp = feedSource.registerFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
 				Notification.show(resp.getTitle()+" registered.", 5000, Position.TOP_CENTER);
 				refresh();
 			});

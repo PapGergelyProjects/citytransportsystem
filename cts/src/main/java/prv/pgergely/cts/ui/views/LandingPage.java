@@ -32,9 +32,14 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import prv.pgergely.cts.common.domain.Coordinate;
+import prv.pgergely.cts.common.domain.SearchLocation;
 import prv.pgergely.cts.domain.AvailableLocation;
 import prv.pgergely.cts.domain.Radius;
-import prv.pgergely.cts.service.TransitFeedSource;
+import prv.pgergely.cts.domain.StopLocation;
+import prv.pgergely.cts.domain.StopLocationWrapper;
+import prv.pgergely.cts.service.FeedService;
+import prv.pgergely.cts.service.TransportDataService;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.FlexSearchLayout;
 import prv.pgergely.cts.utils.Calculations;
@@ -52,7 +57,10 @@ public class LandingPage extends VerticalLayout {
 	private GoogleMap gMap;
 	
 	@Autowired
-	private TransitFeedSource source;
+	private FeedService source;
+	
+	@Autowired
+	private TransportDataService dataSrvc;
 	
 	private GeoLocation geoLocation;
 	private ComboBox<AvailableLocation> loadedLocations;
@@ -64,11 +72,10 @@ public class LandingPage extends VerticalLayout {
 	private GoogleMapPolygon circle;
 	private GoogleMapMarker centerMarker;
 	private boolean isOpen = false;
-	private ComponentEventListener<ClickEvent<Button>> listener = event -> {
+	private ComponentEventListener<ClickEvent<SplitLayout>> listener = event -> {
 		isOpen = !isOpen;
 		searchLayout.setSplitterPosition(isOpen ? 0 : 15);
 	};
-	
 	
 	@PostConstruct
 	public void init() {
@@ -81,6 +88,7 @@ public class LandingPage extends VerticalLayout {
         searchLayout.setSizeFull();
         searchLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
         searchLayout.setSplitterPosition(0);
+        //searchLayout.addClickListener(listener);
         this.add(searchLayout);
         this.add(location());
 	}
@@ -118,6 +126,7 @@ public class LandingPage extends VerticalLayout {
 				final Double lon = pos.getLongitude();
 				final Integer radius = searchRadius.getValue();
 				setPositionOnMap(lat, lon, radius);
+				setStopMarkersOnMap(lat, lon, radius);
 				gMap.setCenter(new LatLon(lat, lon));
 			} else {
 				Notification.show("The current location is not available.", 5000, com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER);
@@ -172,8 +181,25 @@ public class LandingPage extends VerticalLayout {
 		}
 	}
 	
+	private void setStopMarkersOnMap(final Double lat, final Double lon, final Integer radius) {
+		AvailableLocation selected = loadedLocations.getValue();
+		if(selected != null) {
+			SearchLocation loc = new SearchLocation();
+			loc.setRadius(radius.intValue()/2);
+			loc.setCoordinates(new Coordinate(lat, lon));
+			StopLocationWrapper stops = dataSrvc.getStopsAndTimes(selected.getDsUrl(), loc);
+			for(StopLocation stop : stops.getStopList()) {
+				GoogleMapMarker markMyShit = gMap.addMarker(stop.getStopName(), new LatLon(stop.getStopCoordinate().getLatitude(), stop.getStopCoordinate().getLongitude()), false, "./images/marker_blue.png");
+				gMap.addMarker(markMyShit);
+			}
+			
+		}else {
+			Notification.show("No selected location.", 5000, com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER);
+		}
+	}
+	
 	private void setupSlideBtn() {
-		MainLayout.getMainInstance().getSlideBtn().addClickListener(listener);
+		//MainLayout.getMainInstance().getSlideBtn().addClickListener(listener);
 	}
 	
 	@Override
@@ -181,7 +207,7 @@ public class LandingPage extends VerticalLayout {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
 		loadedLocations.setDataProvider(new ListDataProvider<>(source.getRegisteredLocations()));
-		setupSlideBtn();
+		//setupSlideBtn();
 	}
 	
 }
