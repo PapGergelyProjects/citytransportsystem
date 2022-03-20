@@ -21,7 +21,7 @@ public class StopLocation{
 	private String stopColor;
 	private String stopTextColor;
 	private List<LocalTime> departureTime;
-	private Coordinate stopCoordinate;
+	private Coordinate stopCoordinate = new Coordinate();
 	
 	public long getId() {
 		return id;

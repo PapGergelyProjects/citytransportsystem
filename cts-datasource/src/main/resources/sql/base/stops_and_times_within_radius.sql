@@ -34,7 +34,7 @@ BEGIN
                 point_in_range(center_lat, center_lot, st.stop_lat, st.stop_lon) AS distance,
                 st.route_color, st.route_text_color, st."date", st.departure_time,
                 ROW_NUMBER() OVER (PARTITION BY st.route_short_name, st.stop_name, st.stop_lat, st.stop_lon ORDER BY st.departure_time) AS dep_times
-                FROM static_stops_with_times st
+                FROM <schema_name>.static_stops_with_times st
                 WHERE st.departure_time >= CURRENT_TIME 
                 AND st."date" = CURRENT_DATE 
                 AND route_short_name = route_name

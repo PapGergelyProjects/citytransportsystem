@@ -20,6 +20,7 @@ import prv.pgergely.cts.common.domain.DefaultResponse;
 import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.cts.common.domain.SearchLocation;
 import prv.pgergely.ctsdata.model.StopLocation;
+import prv.pgergely.ctsdata.model.StopLocationWrapper;
 import prv.pgergely.ctsdata.module.DatasourceUpdater;
 import prv.pgergely.ctsdata.service.StopLocationService;
 import prv.pgergely.ctsdata.utility.LocationQuery;
@@ -48,8 +49,8 @@ public class DatasourceApi {
 		return new ResponseEntity<DefaultResponse>(resp, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping(path="/stop_locations/{withWhat}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<StopLocation>> getLocationByCoordinates(@PathVariable String withWhat, @RequestBody SearchLocation searchVals){
+	@PostMapping(path="/stops/{withWhat}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<StopLocationWrapper> getLocationByCoordinates(@PathVariable String withWhat, @RequestBody SearchLocation searchVals){
 		List<StopLocation> res = switch (LocationQuery.getByMethod(withWhat)) {
 			case WITH_TIMES: {
 				yield stopSrvc.getAllStopWithinRadiusWithTime(searchVals);
@@ -62,9 +63,9 @@ public class DatasourceApi {
 			}
 		};
 		if(res.isEmpty()) {
-			return new ResponseEntity<List<StopLocation>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<StopLocationWrapper>(new StopLocationWrapper(res), HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<List<StopLocation>>(res, HttpStatus.OK);
+		return new ResponseEntity<StopLocationWrapper>(new StopLocationWrapper(res), HttpStatus.OK);
 	}
 }

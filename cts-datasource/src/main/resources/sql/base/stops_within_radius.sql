@@ -21,7 +21,7 @@ BEGIN
     (
         SELECT s.route_short_name, s.stop_name, s.stop_lat, s.stop_lon, s.route_color, s.route_text_color,
         point_in_range(center_lat, center_lot, s.stop_lat, s.stop_lon) AS distance
-        FROM static_stops s
+        FROM <schema_name>.static_stops s
         WHERE point_in_range(center_lat, center_lot, s.stop_lat, s.stop_lon) <= radius
     )
     LOOP

@@ -6,6 +6,7 @@ public class FeedLocationsJson {
 	
 	public Long id;
 	public String title;
+	public String dsUrl;
 	public Feed feed;
 	public double lat;
 	public double lon;
@@ -19,7 +20,7 @@ public class FeedLocationsJson {
 
 	@Override
 	public String toString() {
-		return "FeedLocationsJson={id:" + id + ", title:" + title + ", feed:" + feed + ", enabled:" + isEnabled + ", active:"+isActive+"}";
+		return "FeedLocationsJson={id:" + id + ", title:" + title +", datasourceUrl: "+ dsUrl +", feed:" + feed + ", enabled:" + isEnabled + ", active:"+isActive+"}";
 	}
 	
 }

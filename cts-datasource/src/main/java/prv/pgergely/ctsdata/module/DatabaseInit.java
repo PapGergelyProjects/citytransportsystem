@@ -38,23 +38,29 @@ public class DatabaseInit implements ApplicationRunner {
 	public void run(ApplicationArguments args) throws Exception {
 		Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoad).getResources("classpath:sql/*.sql");
 		ResourceDatabasePopulator dataPopOthers = new ResourceDatabasePopulator();
-		dataPopOthers.addScript(getReplacedSchemaWithTables());
+		dataPopOthers.addScripts(getReplacedSchemaWithTable());
 		dataPopOthers.addScripts(resources);
 		dataPopOthers.setSeparator("^;");
 		DatabasePopulatorUtils.execute(dataPopOthers, dataSource);
 	}
 	
-	private Resource getReplacedSchemaWithTables() throws IOException {
-		InputStream ins = resourceLoad.getResource("classpath:sql/base/create_schema_with_tables.sql").getInputStream();
-		StringBuilder sb = new StringBuilder();
-		try(BufferedReader bfr = new BufferedReader(new InputStreamReader(ins))) {
-			while(bfr.ready()) {
-				sb.append(bfr.readLine()+"\n");
+	private Resource[] getReplacedSchemaWithTable() throws IOException {
+		Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoad).getResources("classpath:sql/base/*.sql");
+		Resource[] result = new Resource[resources.length];
+		int idx = 0;
+		for(Resource resource : resources) {
+			InputStream ins = resource.getInputStream();
+			StringBuilder sb = new StringBuilder();
+			try(BufferedReader bfr = new BufferedReader(new InputStreamReader(ins))) {
+				while(bfr.ready()) {
+					sb.append(bfr.readLine()+"\n");
+				}
 			}
+			String sql = sb.toString().replaceAll("<schema_name>", schema.getSchemaName().toLowerCase());
+			Resource convertedResource = new ByteArrayResource(sql.getBytes());
+			result[idx++] = convertedResource;
 		}
-		String sql = sb.toString().replaceAll("<schema_name>", schema.getSchemaName().toLowerCase());
-		Resource resource = new ByteArrayResource(sql.getBytes());
-		return resource;
+		return result;
 	}
 
 }

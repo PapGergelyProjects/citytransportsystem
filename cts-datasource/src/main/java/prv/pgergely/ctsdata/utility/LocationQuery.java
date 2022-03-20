@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 public enum LocationQuery {
 	
-	WITH_TIMES("locations_with_times"),
+	WITH_TIMES("with-times"),
 	ONLY_LOCATIONS("locations"),
 	INVALID("null");
 	

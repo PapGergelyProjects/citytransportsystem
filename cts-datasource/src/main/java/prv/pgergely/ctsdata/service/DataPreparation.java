@@ -42,7 +42,7 @@ public class DataPreparation {
 	
     public void extractZipFile(byte[] zipStream) throws IOException, CannotGetJdbcConnectionException, SQLException{
     	logger.info("Clear tables");
-    	clearTables();
+    	srvc.clearTables();
     	logger.info("Starting extracting files from zip...");
         ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(zipStream));
         ZipEntry zipEntry;
@@ -53,6 +53,9 @@ public class DataPreparation {
             }
         }
         logger.info("File extraction is done!");
+        logger.info("Init view materalization...");
+        srvc.refreshMateralizedViews();
+        logger.info("Materalization complete.");
         zis.closeEntry();
         zis.close();
     }
@@ -71,10 +74,6 @@ public class DataPreparation {
         srvc.vacuumTable(tableName);
         logger.info(tableName+" is done.");
 	}
-    
-    public void clearTables() {
-    	srvc.clearTables();
-    }
     
     public void prepareCsvContentForTest(String fileName, InputStream stream) throws IOException {
     	String tableName = fileName.replace(".txt", "");
