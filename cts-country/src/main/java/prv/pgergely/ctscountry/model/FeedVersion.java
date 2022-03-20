@@ -16,7 +16,8 @@ public class FeedVersion implements Serializable{
 	private LocalDate latestVersion;
 	private boolean recent;
 	private boolean newVersion;
-	private boolean active;
+	private boolean active = false;
+	private String dsUrl = "";
 	
 	public FeedVersion() {}
 	
@@ -81,11 +82,18 @@ public class FeedVersion implements Serializable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	public String getDsUrl() {
+		return dsUrl;
+	}
+	public void setDsUrl(String dsUrl) {
+		this.dsUrl = dsUrl;
+	}
 
 	@Override
 	public String toString() {
 		return "FeedVersion [id=" + id + ", feedId=" + feedId + ", title=" + title + ", technicalTitle="
 				+ technicalTitle + ", latestVersion=" + latestVersion + ", recent=" + recent + ", newVersion="
-				+ newVersion + "]";
+				+ newVersion + ", active=" + active + ", dsUrl=" + dsUrl + "]";
 	}
+	
 }

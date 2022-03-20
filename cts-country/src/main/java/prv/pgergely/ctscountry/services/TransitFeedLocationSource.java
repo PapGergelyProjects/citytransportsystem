@@ -52,14 +52,16 @@ public class TransitFeedLocationSource {
 			return false;
 		}).collect(Collectors.toList());
 		for(Locations loc : refinedLocations) {
+			FeedVersion vers = Optional.ofNullable(versionMap.get(loc.id)).orElse(new FeedVersion());
 			FeedLocationsJson json = new FeedLocationsJson();
 			json.id = loc.id;
 			json.title = loc.rawLocationName;
+			json.dsUrl = vers.getDsUrl();
 			json.lat = loc.lat;
 			json.lon = loc.lng;
 			json.feed = new Feed();
 			json.isEnabled = versionMap.containsKey(json.id);
-			json.isActive = json.isEnabled ? versionMap.get(json.id).isActive() : false;
+			json.isActive = vers.isActive();
 			feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null && p.latest != null)).forEach(e -> {
 				json.feed.title = e.feedTitle;
 				json.feed.latest = Instant.ofEpochMilli(e.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
