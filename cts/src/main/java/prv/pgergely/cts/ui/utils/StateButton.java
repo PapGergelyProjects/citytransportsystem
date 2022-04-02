@@ -7,7 +7,7 @@ public enum StateButton {
 	ACTIVE {
 		@Override
 		public Button get() {
-			Button btn = new Button("active");
+			Button btn = new Button("online");
 			btn.getStyle().set("background", "#009900");
 			btn.getStyle().set("color", "white");
 			btn.setWidth("120px");
@@ -18,7 +18,7 @@ public enum StateButton {
 	STOPPED {
 		@Override
 		public Button get() {
-			Button btn = new Button("stopped");
+			Button btn = new Button("offline");
 			btn.getStyle().set("background", "#990000");
 			btn.getStyle().set("color", "white");
 			btn.setWidth("120px");
@@ -29,7 +29,7 @@ public enum StateButton {
 	PAUSED {
 		@Override
 		public Button get() {
-			Button btn = new Button("paused");
+			Button btn = new Button("updating");
 			btn.getStyle().set("background", "#e68a00");
 			btn.getStyle().set("color", "white");
 			btn.setWidth("120px");
