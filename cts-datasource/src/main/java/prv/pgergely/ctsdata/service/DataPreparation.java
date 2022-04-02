@@ -18,9 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 
+import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.ctsdata.config.CtsDataConfig;
 import prv.pgergely.ctsdata.utility.CsvRefiner;
+import prv.pgergely.ctsdata.utility.Schema;
 import prv.pgergely.ctsdata.utility.TableInsertValues;
+import prv.pgergely.ctsdata.utility.WebSocketSessionHandler;
 
 @Service
 public class DataPreparation {
@@ -36,11 +39,15 @@ public class DataPreparation {
 	@Autowired
 	private CsvRefiner transform;
 	
+	@Autowired
+	private Schema schema;
+	
 	@PostConstruct
 	public void  init() {
 	}
 	
     public void extractZipFile(byte[] zipStream) throws IOException, CannotGetJdbcConnectionException, SQLException{
+    	WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getSchemaName(), "update"));
     	logger.info("Clear tables");
     	srvc.clearTables();
     	logger.info("Starting extracting files from zip...");
@@ -58,6 +65,7 @@ public class DataPreparation {
         logger.info("Materalization complete.");
         zis.closeEntry();
         zis.close();
+        WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getSchemaName(), "ready"));
     }
 	
 	private void copyCsvContent(String fileName, InputStream stream) throws CannotGetJdbcConnectionException, SQLException, IOException {

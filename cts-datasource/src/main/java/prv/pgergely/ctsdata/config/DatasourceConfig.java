@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class DatasourceConfig{
 	
 	@Bean
-	@ConfigurationProperties("spring.datasource-primary")
+	@ConfigurationProperties("spring.datasource-secondary")
 	public DataSource getDatasource() {
 		DataSourceBuilder dsBuild = DataSourceBuilder.create();
 		return dsBuild.build();
