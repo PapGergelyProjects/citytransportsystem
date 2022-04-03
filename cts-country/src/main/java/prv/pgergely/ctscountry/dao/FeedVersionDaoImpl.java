@@ -66,7 +66,7 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 
 	@Override
 	public List<FeedVersion> getFeedVersions() {
-		final String select = "SELECT v.id, v.feed_id, v.title, v.latest_version, v.recent, v.new_version, d.active, d.source_url "
+		final String select = "SELECT v.id, v.feed_id, v.title, v.latest_version, v.recent, v.new_version, d.active, d.source_url, d.schema_name "
 							+ "FROM feed_version v "
 							+ "INNER JOIN datasource_info d USING(feed_id)";
 		List<Map<String, Object>> allFeed = this.getJdbcTemplate().queryForList(select);
@@ -81,6 +81,7 @@ public class FeedVersionDaoImpl extends JdbcDaoSupport implements FeedVersionDao
 			vers.setNewVersion((boolean)feed.get("new_version"));
 			vers.setActive((boolean)feed.get("active"));
 			vers.setDsUrl(feed.get("source_url").toString());
+			vers.setSchemaName(feed.get("schema_name").toString());
 			res.add(vers);
 		});
 		return res;

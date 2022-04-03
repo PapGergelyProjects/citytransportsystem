@@ -49,7 +49,14 @@ public class DatasourceInfoDaoImp extends JdbcDaoSupport implements DatasourceIn
 	public DatasourceInfo getDatasourceInfoById(long id) {
 		final String select = "SELECT id, feed_id, source_name, source_url, schema_name, active FROM datasource_info WHERE feed_id=?";
 		RowMapper<DatasourceInfo> mapper = (rs, rows) ->{
-			DatasourceInfo info = new DatasourceInfo(rs.getLong("id"), rs.getLong("feed_id"), rs.getString("source_name"), rs.getString("source_url"), rs.getString("schema_name"), rs.getBoolean("active"));
+			DatasourceInfo info = new DatasourceInfo(
+										rs.getLong("id"), 
+										rs.getLong("feed_id"), 
+										rs.getString("source_name"), 
+										rs.getString("source_url"), 
+										rs.getString("schema_name"), 
+										rs.getBoolean("active")
+										);
 			return info;
 		};
 		
@@ -57,7 +64,7 @@ public class DatasourceInfoDaoImp extends JdbcDaoSupport implements DatasourceIn
 	}
 
 	@Override
-	public List<DatasourceInfo> getDatasourceInfos() {
+	public List<DatasourceInfo> getAllDatasourceInfo() {
 		final String selectAll = "SELECT id, feed_id, source_name, source_url, schema_name, active FROM datasource_info";
 		List<Map<String, Object>> rawRes = this.getJdbcTemplate().queryForList(selectAll);
 		List<DatasourceInfo> results = rawRes

@@ -18,6 +18,7 @@ public class FeedVersion implements Serializable{
 	private boolean newVersion;
 	private boolean active = false;
 	private String dsUrl = "";
+	private String schemaName;
 	
 	public FeedVersion() {}
 	
@@ -88,12 +89,18 @@ public class FeedVersion implements Serializable{
 	public void setDsUrl(String dsUrl) {
 		this.dsUrl = dsUrl;
 	}
+	public String getSchemaName() {
+		return schemaName;
+	}
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
+	}
 
 	@Override
 	public String toString() {
-		return "FeedVersion [id=" + id + ", feedId=" + feedId + ", title=" + title + ", technicalTitle="
-				+ technicalTitle + ", latestVersion=" + latestVersion + ", recent=" + recent + ", newVersion="
-				+ newVersion + ", active=" + active + ", dsUrl=" + dsUrl + "]";
+		return "FeedVersion {\nid:" + id + ", \nfeedId:" + feedId + ", \ntitle:" + title + ", \ntechnicalTitle:"
+				+ technicalTitle + ", \nlatestVersion:" + latestVersion + ", \nrecent:" + recent + ", \nnewVersion:"
+				+ newVersion + ", \nactive:" + active + ", \ndsUrl:" + dsUrl + ", \nschemaName:" + schemaName + "\n}";
 	}
-	
+
 }

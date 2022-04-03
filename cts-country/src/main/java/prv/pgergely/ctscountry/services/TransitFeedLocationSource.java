@@ -59,9 +59,10 @@ public class TransitFeedLocationSource {
 			json.dsUrl = vers.getDsUrl();
 			json.lat = loc.lat;
 			json.lon = loc.lng;
-			json.feed = new Feed();
 			json.isEnabled = versionMap.containsKey(json.id);
 			json.isActive = vers.isActive();
+			json.schemaName = vers.getSchemaName();
+			json.feed = new Feed();
 			feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null && p.latest != null)).forEach(e -> {
 				json.feed.title = e.feedTitle;
 				json.feed.latest = Instant.ofEpochMilli(e.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();

@@ -33,13 +33,16 @@ public class CountryFeedService {
 	@GetMapping(path="/feeds/{locationState}", produces = "application/json")
 	public ResponseEntity<FeedLocationList> getFeeds(@PathVariable String locationState){
 		try {
-			if("all".equals(locationState)) {
-				return new ResponseEntity<FeedLocationList>(new FeedLocationList(locationSrc.getLocations(false)), HttpStatus.OK);
-			} else if("registered".equals(locationState)) {
-				return new ResponseEntity<FeedLocationList>(new FeedLocationList(locationSrc.getLocations(true)), HttpStatus.OK);
-			} else {
-				throw new IOException();
-			}
+			return switch (locationState) {
+				case "all": {
+					yield new ResponseEntity<FeedLocationList>(new FeedLocationList(locationSrc.getLocations(false)), HttpStatus.OK);
+				}
+				case "registered":{
+					yield new ResponseEntity<FeedLocationList>(new FeedLocationList(locationSrc.getLocations(true)), HttpStatus.OK);
+				}
+				default:
+					throw new IOException();
+				};
 		} catch (IOException e) {
 			return new ResponseEntity<FeedLocationList>(new FeedLocationList(), HttpStatus.NOT_FOUND);
 		}

@@ -1,5 +1,7 @@
 package prv.pgergely.ctscountry.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +58,9 @@ public class DatasourceService {
 	
 	public DatasourceInfo getByFeedId(long id) {
 		return repo.getDatasourceInfoById(id);
+	}
+	
+	public List<DatasourceInfo> getAllInfo(){
+		return repo.getAllDatasourceInfo();
 	}
 }
