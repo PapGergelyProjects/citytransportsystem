@@ -14,8 +14,10 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.web.socket.WebSocketHttpHeaders;
@@ -30,12 +32,16 @@ import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 
+import prv.pgergely.ctsdata.utility.Schema;
 import prv.pgergely.ctsdata.utility.WebSocketSessionHandler;
 
 @Configuration
 @EnableWebSocket
 @EnableWebSocketMessageBroker
 public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  {
+	
+	@Autowired
+	private Schema schema;
 	
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -46,9 +52,11 @@ public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  
 	public StandardWebSocketClient getWsClient() {
 		StandardWebSocketClient client = new StandardWebSocketClient();
 		try {
+			HttpHeaders header = new HttpHeaders();
+			header.set("X-Schema", schema.getSchemaName());
 			WebSocketStompClient stompClient = new WebSocketStompClient(initSSL(client));
 			stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-			stompClient.connect(URI.create("ws://localhost:8080/cts/channel"), new WebSocketHttpHeaders(), new StompHeaders(), new WebSocketSessionHandler());
+			stompClient.connect(URI.create("ws://localhost:8080/cts/channel"), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler());
 		} catch (KeyManagementException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
