@@ -14,11 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.domain.FeedLocationList;
+import prv.pgergely.cts.common.domain.SourceState;
+import prv.pgergely.cts.config.CtsConfig;
 import prv.pgergely.cts.config.SourceTemplateConfig;
 import prv.pgergely.cts.domain.AvailableLocation;
 import prv.pgergely.cts.domain.ResponseData;
 import prv.pgergely.cts.domain.SelectedFeed;
 import prv.pgergely.cts.domain.TransitFeedView;
+import prv.pgergely.cts.utils.SourceStates;
 
 @Service
 public class FeedService {
@@ -27,6 +30,9 @@ public class FeedService {
 	@Qualifier(SourceTemplateConfig.DEFAULT_TEMPLATE)
 	private RestTemplate template;
 	
+	@Autowired
+	private CtsConfig config;
+	
 	public ResponseData registerFeed(SelectedFeed actFeed) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -34,7 +40,7 @@ public class FeedService {
 		headers.set("X-Feed", actFeed.getTechnicalTitle());
 		headers.set("X-Mode", "Register");
 		HttpEntity<SelectedFeed> entity = new HttpEntity<>(actFeed, headers);
-		ResponseEntity<ResponseData> resp =  template.postForEntity("https://localhost:9443/cts-country/feed/register", entity, ResponseData.class);//TODO: config file
+		ResponseEntity<ResponseData> resp =  template.postForEntity(config.getServiceUrl()+"/feed/register", entity, ResponseData.class);//TODO: config file
 		
 		return resp.getBody();
 	}
@@ -46,17 +52,17 @@ public class FeedService {
 		headers.set("X-Feed", actFeed.getTechnicalTitle());
 		headers.set("X-Mode", "Activate");
 		HttpEntity<SelectedFeed> entity = new HttpEntity<>(actFeed, headers);
-		ResponseData resp = template.patchForObject("https://localhost:9443/cts-country/feed/update", entity, ResponseData.class);
+		ResponseData resp = template.patchForObject(config.getServiceUrl()+"/feed/update", entity, ResponseData.class);
 		
 		return resp;
 	}
 	
 	public void deleteFeed(Long id) {
-		template.delete("https://localhost:9443/cts-country/feed/delete/"+id);
+		template.delete(config.getServiceUrl()+"/feed/delete/"+id);
 	}
 	
 	public List<TransitFeedView> getTransitFeeds() {
-		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/feeds/all", FeedLocationList.class);
+		ResponseEntity<FeedLocationList> resp = template.getForEntity(config.getServiceUrl()+"/transit-feed/feeds/all", FeedLocationList.class);
 		FeedLocationList res =  resp.getBody();
 		return res.getFeeds().stream().map(m -> {
 			TransitFeedView view = new TransitFeedView();
@@ -66,13 +72,14 @@ public class FeedService {
 			view.setLatest(m.feed.latest);
 			view.setEnabled(m.isEnabled);
 			view.setActive(m.isActive);
+			view.setState(new SourceState(m.schemaName, SourceStates.getByBooleans(m.isEnabled, m.isActive, false).name()));
 			
 			return view;
 		}).collect(Collectors.toList());
 	}
 	
 	public List<AvailableLocation> getRegisteredLocations(){
-		ResponseEntity<FeedLocationList> resp = template.getForEntity("https://localhost:9443/cts-country/transit-feed/feeds/registered", FeedLocationList.class);
+		ResponseEntity<FeedLocationList> resp = template.getForEntity(config.getServiceUrl()+"/transit-feed/feeds/registered", FeedLocationList.class);
 		return resp.getBody().getFeeds().stream().filter(p -> p.isActive).map(m -> {
 			AvailableLocation loc = new AvailableLocation();
 			loc.setId(m.id);

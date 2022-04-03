@@ -1,12 +1,16 @@
 package prv.pgergely.cts.ui.views;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Queue;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -23,6 +27,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.cts.domain.ResponseData;
 import prv.pgergely.cts.domain.SelectedFeed;
 import prv.pgergely.cts.domain.TransitFeedView;
@@ -30,6 +35,7 @@ import prv.pgergely.cts.service.FeedService;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.FlexSearchLayout;
 import prv.pgergely.cts.ui.utils.StateButton;
+import prv.pgergely.cts.utils.SourceStates;
 
 @UIScope
 @SpringComponent
@@ -41,6 +47,9 @@ public class ServiceConfigPage extends VerticalLayout {
 	
 	@Autowired
 	private FeedService feedSource;
+	
+	@Autowired
+	private Queue<SourceState> messages;
 	
 	private TextField search;
 	private DatePicker date;
@@ -107,13 +116,23 @@ public class ServiceConfigPage extends VerticalLayout {
 		grid.addColumn("feedTitle").setResizable(true).setHeader("Feed Name");
 		grid.addColumn("latest").setResizable(true).setWidth("150px").setFlexGrow(0).setHeader("Latest Update");
 		grid.addComponentColumn(r -> {
-			if(r.isEnabled()) {
-				if(r.isActive()) {
+			switch (SourceStates.getByName(r.getState().getState())) {
+				case ONLINE: {
 					return StateButton.ACTIVE.get();
 				}
-				return StateButton.STOPPED.get();
+				case OFFLINE:{
+					return StateButton.STOPPED.get();
+				}
+				case UPDATING:{
+					return StateButton.PAUSED.get();
+				}
+				case UNREGISTERED:{
+					return StateButton.UNREGISTERED.get();
+				}
+				default:{
+					return StateButton.UNREGISTERED.get();
+				}
 			}
-			return StateButton.UNREGISTERED.get();
 		}).setWidth("200px").setFlexGrow(0).setHeader("Status");
 		grid.addColumn("enabled").setResizable(true).setHeader("Registered");
 		
@@ -128,6 +147,15 @@ public class ServiceConfigPage extends VerticalLayout {
 	private void filterGrid() {
 		ListDataProvider<TransitFeedView> listDataProvider = (ListDataProvider<TransitFeedView>)transitFeedGrid.getDataProvider();
 		listDataProvider.setFilter(getFilter());
+	}
+	
+	public void filterGrid(ListDataProvider<TransitFeedView> data) {
+		transitFeedGrid.setDataProvider(data);
+		data.setFilter(getFilter());
+	}
+	
+	public List<TransitFeedView> getFeedViews(){
+		return feedSource.getTransitFeeds();
 	}
 	
 	private SerializablePredicate<TransitFeedView> getFilter(){
@@ -165,4 +193,33 @@ public class ServiceConfigPage extends VerticalLayout {
 		super.onAttach(attachEvent);
 	}
 	
+//	private class FeedSourceStateRefresh extends Thread {
+//		
+//		private UI currentUI;
+//		private ServiceConfigPage view;
+//		
+//		public FeedSourceStateRefresh(UI currentUI, ServiceConfigPage view) {
+//			this.currentUI = currentUI;
+//			this.view = view;
+//		}
+//
+//		@Override
+//		public void run() {
+//			while(true) {
+//				if(messages.size() > 0) {
+//					currentUI.access(() -> {
+//						SourceState current = messages.poll();
+//						List<TransitFeedView> feeds = view.getFeedViews();
+//						feeds.stream().filter(p -> current.getFrom().equals(p.getState().getFrom())).map(m -> {
+//							SourceState cs = m.getState();
+//							cs.setState(current.getState());
+//							return m;
+//						}).collect(Collectors.toList());
+//						view.filterGrid(new ListDataProvider<>(feeds));
+//					});
+//				}
+//			}
+//		}
+//
+//	}
 }

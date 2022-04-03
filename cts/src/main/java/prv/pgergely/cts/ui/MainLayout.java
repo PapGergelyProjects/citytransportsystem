@@ -1,8 +1,6 @@
 package prv.pgergely.cts.ui;
 
-import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -21,6 +19,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
@@ -33,6 +32,7 @@ import prv.pgergely.cts.ui.views.AboutView;
 import prv.pgergely.cts.ui.views.LandingPage;
 import prv.pgergely.cts.ui.views.ServiceConfigPage;
 
+@Push
 @UIScope
 @SpringComponent
 @PageTitle("Main")

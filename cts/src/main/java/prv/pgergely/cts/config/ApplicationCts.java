@@ -1,7 +1,9 @@
 package prv.pgergely.cts.config;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -15,6 +17,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import prv.pgergely.cts.ApplicationComponents;
 import prv.pgergely.cts.common.CommonComponents;
+import prv.pgergely.cts.common.domain.SourceState;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, ApplicationComponents.class})
@@ -38,5 +41,10 @@ public class ApplicationCts extends SpringBootServletInitializer {
 	@UIScope
 	public GoogleMap mapService() {
 		return new GoogleMap(config.getGoogleApiKey(), "", config.getGoogleMapLang());
+	}
+	
+	@Bean
+	public Queue<SourceState> wsMessages(){
+		return new ConcurrentLinkedQueue<>();
 	}
 }
