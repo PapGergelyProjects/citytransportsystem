@@ -5,6 +5,13 @@ public class SourceState {
 	private String from;
 	private String state;
 	
+	public SourceState() {}
+
+	public SourceState(String from, String state) {
+		this.from = from;
+		this.state = state;
+	}
+	
 	public String getFrom() {
 		return from;
 	}

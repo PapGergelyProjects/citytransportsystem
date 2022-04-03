@@ -12,6 +12,7 @@ public class FeedLocationsJson {
 	public double lon;
 	public boolean isEnabled;
 	public boolean isActive;
+	public String schemaName;
 	
 	public static class Feed{
 		public String title;
@@ -20,7 +21,11 @@ public class FeedLocationsJson {
 
 	@Override
 	public String toString() {
-		return "FeedLocationsJson={id:" + id + ", title:" + title +", datasourceUrl: "+ dsUrl +", feed:" + feed + ", enabled:" + isEnabled + ", active:"+isActive+"}";
+		return "FeedLocationsJson {\nid:" + id + ", \ntitle:" + title + ", \ndsUrl:" + dsUrl + ", \nfeed:" + feed
+				+ ", \nlat:" + lat + ", \nlon:" + lon + ", \nisEnabled:" + isEnabled + ", \nisActive:" + isActive
+				+ ", \nschemaName:" + schemaName + "\n}";
 	}
+
 	
+
 }
