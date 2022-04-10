@@ -1,0 +1,31 @@
+server:
+  port: 8080
+spring:
+  datasource-primary:
+    driver-class-name: org.postgresql.Driver 
+    jdbcUrl: jdbc:postgresql://postgres1:5432/sandbox
+    username: postgres
+    password: home
+    separator: ^;
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 120000
+      connectionTimeout: 300000
+      leakDetectionThreshold: 300000
+---
+configs:
+   threadParams:
+      initDelayed: 30
+      delayBetween: 40
+   tempDirectory: /opt/
+   tables:
+      - agency
+      - feed_info
+      - trips
+      - calendar_dates
+      - routes
+      - stop_times
+      - stops
+      - shapes
+      - pathways
