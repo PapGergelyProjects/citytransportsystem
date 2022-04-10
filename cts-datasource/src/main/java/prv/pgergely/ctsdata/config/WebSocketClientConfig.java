@@ -14,6 +14,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +42,8 @@ import prv.pgergely.ctsdata.utility.WebSocketSessionHandler;
 @EnableWebSocketMessageBroker
 public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  {
 	
+	private Logger logger = LogManager.getLogger(WebSocketClientConfig.class);
+	
 	@Autowired
 	private Schema schema;
 	
@@ -56,9 +60,9 @@ public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  
 			header.set("X-Schema", schema.getSchemaName());
 			WebSocketStompClient stompClient = new WebSocketStompClient(initSSL(client));
 			stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-			stompClient.connect(URI.create("ws://localhost:8080/cts/channel"), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler());
+			stompClient.connect(URI.create("ws://localhost:8080/cts/channel"), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler(stompClient));
 		} catch (KeyManagementException | NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			logger.error(e.toString(), e);
 		}
 		
 		return client;
