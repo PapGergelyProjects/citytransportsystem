@@ -219,8 +219,8 @@ public class ServiceConfigPage extends VerticalLayout {
 								return m;
 							}).collect(Collectors.toList());
 							this.refreshGrid(new ListDataProvider<>(feeds));
-							noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
 						}
+						noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
 					});
 				}
 			}

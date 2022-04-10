@@ -15,7 +15,7 @@ public class CtsNotification {
 		Notification noty = new Notification();
 		noty.setThemeName(variant.getVariantName());
 		noty.setPosition(Position.TOP_CENTER);
-		noty.setDuration(1000);
+		noty.setDuration(2000);
 		VerticalLayout root = new VerticalLayout();
 		for(String text : texts) {
 			root.add(new Span(text));
