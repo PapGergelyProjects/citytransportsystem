@@ -25,7 +25,7 @@ public class FixedThreadPool implements FixedThreadEngine{
 	public void process(String name, Runnable process) {
 		manufactorum.setThreadName(name);
 		cachedThreadPool.execute(process);
-		logger.debug("Process "+name+" has been added to thread pool.");
+		logger.info("Process "+name+" has been added to thread pool.");
 	}
 
 	@Override
