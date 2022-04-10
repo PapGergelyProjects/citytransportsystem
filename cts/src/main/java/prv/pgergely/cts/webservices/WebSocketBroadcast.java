@@ -30,6 +30,6 @@ public class WebSocketBroadcast {
 	public SourceState send(SourceState msg) {
 		logger.info(msg);
 		messages.add(msg);
-		return new SourceState("Server", "Check");
+		return new SourceState("Server", msg.getFrom()+" OK");
 	}
 }

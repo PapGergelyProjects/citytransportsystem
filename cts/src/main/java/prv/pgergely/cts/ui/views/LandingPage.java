@@ -1,8 +1,12 @@
 package prv.pgergely.cts.ui.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestClientException;
 import org.vaadin.elmot.flow.sensors.GeoLocation;
 import org.vaadin.elmot.flow.sensors.Position;
 
@@ -17,7 +21,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
@@ -41,6 +45,7 @@ import prv.pgergely.cts.domain.StopLocationWrapper;
 import prv.pgergely.cts.service.FeedService;
 import prv.pgergely.cts.service.TransportDataService;
 import prv.pgergely.cts.ui.MainLayout;
+import prv.pgergely.cts.ui.utils.CtsNotification;
 import prv.pgergely.cts.ui.utils.FlexSearchLayout;
 import prv.pgergely.cts.utils.Calculations;
 
@@ -61,6 +66,9 @@ public class LandingPage extends VerticalLayout {
 	
 	@Autowired
 	private TransportDataService dataSrvc;
+	
+	@Autowired
+	private CtsNotification noti;
 	
 	private GeoLocation geoLocation;
 	private ComboBox<AvailableLocation> loadedLocations;
@@ -101,7 +109,7 @@ public class LandingPage extends VerticalLayout {
 	}
 	
 	private FlexSearchLayout initSearchBar() {
-		loadedLocations = new ComboBox<>("Available Locations", source.getRegisteredLocations());
+		loadedLocations = new ComboBox<>("Available Locations", getAvailableLocations());
 		loadedLocations.addValueChangeListener(event -> {
 			AvailableLocation selected = event.getValue();
 			if(selected != null) {
@@ -129,7 +137,7 @@ public class LandingPage extends VerticalLayout {
 				setStopMarkersOnMap(lat, lon, radius);
 				gMap.setCenter(new LatLon(lat, lon));
 			} else {
-				Notification.show("The current location is not available.", 5000, com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER);
+				noti.showNotification(NotificationVariant.LUMO_ERROR, "The current location is not available.");
 			}
 		});
 		FlexSearchLayout layout = new FlexSearchLayout(loadedLocations, searchRadius, currentLocation);
@@ -146,6 +154,7 @@ public class LandingPage extends VerticalLayout {
 			final Double lon = event.getLongitude();
 			final Integer radius = searchRadius.getValue();
 			setPositionOnMap(lat, lon, radius);
+			setStopMarkersOnMap(lat, lon, radius);
 		});
 		//gMap.setCenter(new LatLon(47.497913D, 19.040236D));
 		return new HorizontalLayout(gMap);
@@ -177,7 +186,7 @@ public class LandingPage extends VerticalLayout {
 			circle.setClosed(false);
 			centerMarker = gMap.addMarker("You stand here", new LatLon(lat, lon), false, "");
 		} else {
-			Notification.show("Invalid radius value.", 5000, com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER);
+			noti.showNotification(NotificationVariant.LUMO_ERROR, "Invalid radius value.");
 		}
 	}
 	
@@ -194,7 +203,16 @@ public class LandingPage extends VerticalLayout {
 			}
 			
 		}else {
-			Notification.show("No selected location.", 5000, com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER);
+			noti.showNotification(NotificationVariant.LUMO_ERROR, "No selected location.");
+		}
+	}
+	
+	private List<AvailableLocation> getAvailableLocations(){
+		try {
+			return source.getRegisteredLocations();
+		} catch (RestClientException e) {
+			noti.showNotification(NotificationVariant.LUMO_ERROR, "No location available.");
+			return new ArrayList<>();
 		}
 	}
 	
@@ -206,7 +224,7 @@ public class LandingPage extends VerticalLayout {
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
-		loadedLocations.setDataProvider(new ListDataProvider<>(source.getRegisteredLocations()));
+		loadedLocations.setDataProvider(new ListDataProvider<>(getAvailableLocations()));
 		//setupSlideBtn();
 	}
 	

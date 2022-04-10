@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.domain.FeedLocationList;
@@ -61,7 +62,7 @@ public class FeedService {
 		template.delete(config.getServiceUrl()+"/feed/delete/"+id);
 	}
 	
-	public List<TransitFeedView> getTransitFeeds() {
+	public List<TransitFeedView> getTransitFeeds() throws RestClientException {
 		ResponseEntity<FeedLocationList> resp = template.getForEntity(config.getServiceUrl()+"/transit-feed/feeds/all", FeedLocationList.class);
 		FeedLocationList res =  resp.getBody();
 		return res.getFeeds().stream().map(m -> {
@@ -78,7 +79,7 @@ public class FeedService {
 		}).collect(Collectors.toList());
 	}
 	
-	public List<AvailableLocation> getRegisteredLocations(){
+	public List<AvailableLocation> getRegisteredLocations() throws RestClientException{
 		ResponseEntity<FeedLocationList> resp = template.getForEntity(config.getServiceUrl()+"/transit-feed/feeds/registered", FeedLocationList.class);
 		return resp.getBody().getFeeds().stream().filter(p -> p.isActive).map(m -> {
 			AvailableLocation loc = new AvailableLocation();
