@@ -45,6 +45,9 @@ public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  
 	private Logger logger = LogManager.getLogger(WebSocketClientConfig.class);
 	
 	@Autowired
+	private CtsDataConfig config;
+	
+	@Autowired
 	private Schema schema;
 	
 	@Override
@@ -60,7 +63,7 @@ public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  
 			header.set("X-Schema", schema.getSchemaName());
 			WebSocketStompClient stompClient = new WebSocketStompClient(initSSL(client));
 			stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-			stompClient.connect(URI.create("ws://localhost:8080/cts/channel"), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler(stompClient));
+			stompClient.connect(URI.create(config.getWebsocketServer()), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler(stompClient));
 		} catch (KeyManagementException | NoSuchAlgorithmException e) {
 			logger.error(e.toString(), e);
 		}

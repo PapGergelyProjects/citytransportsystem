@@ -11,10 +11,19 @@ import prv.pgergely.ctsdata.utility.ThreadParams;
 @ConfigurationProperties("configs")
 public class CtsDataConfig {
 	
+	private String websocketServer;
 	private ThreadParams threadParams;
 	private String tempDirectory;
 	private List<String> tables;
 	
+	public String getWebsocketServer() {
+		return websocketServer;
+	}
+
+	public void setWebsocketServer(String websocketServer) {
+		this.websocketServer = websocketServer;
+	}
+
 	public String getTempDirectory() {
 		return tempDirectory;
 	}
@@ -41,6 +50,7 @@ public class CtsDataConfig {
 
 	@Override
 	public String toString() {
-		return "CtsDataConfig [threadParams=" + threadParams + ", tempDirectory=" + tempDirectory + ", tables=" + tables+ "]";
+		return "CtsDataConfig {\nwebsocketServer:" + websocketServer + ", \nthreadParams:" + threadParams
+				+ ", \ntempDirectory:" + tempDirectory + ", \ntables:" + tables + "\n}";
 	}
 }
