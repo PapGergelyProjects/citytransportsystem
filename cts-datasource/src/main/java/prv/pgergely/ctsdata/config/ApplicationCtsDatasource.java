@@ -15,6 +15,7 @@ public class ApplicationCtsDatasource {
 	
 	
 	private static String schema = "";
+	private static Long feedId = 0L;
 //    @Override
 //    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 //    	application.addCommandLineProperties(true);
@@ -34,7 +35,9 @@ public class ApplicationCtsDatasource {
 //    }
 	
 	public static void main(String[] args) {
-		schema = args[0];
+		String[] param = args[0].split("#");
+		schema = param[0];
+		feedId = Long.valueOf(param[1]);
 		SpringApplication.run(ApplicationCtsDatasource.class, args);
 	}
 	
@@ -42,6 +45,7 @@ public class ApplicationCtsDatasource {
 	public Schema getSchema() {
 		Schema sc = new Schema();
 		sc.setSchemaName(schema);
+		sc.setFeedId(feedId);
 		return sc;
 	}
 }

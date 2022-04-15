@@ -47,7 +47,7 @@ public class DataPreparation {
 	}
 	
     public void extractZipFile(byte[] zipStream) throws IOException, CannotGetJdbcConnectionException, SQLException{
-    	WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getSchemaName(), "UPDATING"));
+    	WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), "UPDATING"));
     	logger.info("Clear tables");
     	srvc.clearTables();
     	logger.info("Starting extracting files from zip...");
@@ -65,7 +65,7 @@ public class DataPreparation {
         logger.info("Materalization complete.");
         zis.closeEntry();
         zis.close();
-        WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getSchemaName(), "ONLINE"));
+        WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), "ONLINE"));
     }
 	
 	private void copyCsvContent(String fileName, InputStream stream) throws CannotGetJdbcConnectionException, SQLException, IOException {

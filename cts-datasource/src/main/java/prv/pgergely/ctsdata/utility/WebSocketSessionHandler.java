@@ -49,7 +49,7 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 		session.subscribe("/state/current", this);
 		SESSION.set(session);
 		logger.info("subscribe to...");
-		session.send("/app/channel", new SourceState("test_gtfs", "TEST_RUN"));
+		session.send("/app/channel", new SourceState(-1L, "Client", "CheckAlive"));
 	}
 
 	@Override
