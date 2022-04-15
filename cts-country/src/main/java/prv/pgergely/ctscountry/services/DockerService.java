@@ -57,7 +57,7 @@ public class DockerService {
     
     public void createContainer(DatasourceInfo info) {
 		String containerName = "GTFS-"+info.getFeedId();
-		String schema = info.getSchema_name();
+		String schema = info.getSchema_name()+"#"+info.getFeedId();
 		int accesPort = info.getPort();
 		String image = config.getDockerCommands().getImageName();
 		String dockerContainerRun = config.getDockerCommands().getCreateContainer();

@@ -52,6 +52,10 @@ public class TransitFeedLocationSource {
 			return false;
 		}).collect(Collectors.toList());
 		for(Locations loc : refinedLocations) {
+			Feeds actFeed = feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null && p.latest != null)).findFirst().orElse(null);
+			if(actFeed == null) {
+				continue;
+			}
 			FeedVersion vers = Optional.ofNullable(versionMap.get(loc.id)).orElse(new FeedVersion());
 			FeedLocationsJson json = new FeedLocationsJson();
 			json.id = loc.id;
@@ -63,11 +67,9 @@ public class TransitFeedLocationSource {
 			json.isActive = vers.isActive();
 			json.schemaName = vers.getSchemaName();
 			json.feed = new Feed();
-			feeds.stream().filter(p -> (p.location.id == loc.id && p.feedUrl.urlDirectLink != null && p.latest != null)).forEach(e -> {
-				json.feed.title = e.feedTitle;
-				json.feed.latest = Instant.ofEpochMilli(e.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
-				locationList.add(json);
-			});
+			json.feed.title = actFeed.feedTitle;
+			json.feed.latest = Instant.ofEpochMilli(actFeed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+			locationList.add(json);
 		}
 		
 		return locationList;
