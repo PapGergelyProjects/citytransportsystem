@@ -2,16 +2,24 @@ package prv.pgergely.cts.common.domain;
 
 public class SourceState {
 	
+	private Long feedId;
 	private String from;
 	private String state;
 	
 	public SourceState() {}
 
-	public SourceState(String from, String state) {
+	public SourceState(Long feedId, String from, String state) {
+		this.feedId = feedId;
 		this.from = from;
 		this.state = state;
 	}
-	
+
+	public Long getFeedId() {
+		return feedId;
+	}
+	public void setFeedId(Long feedId) {
+		this.feedId = feedId;
+	}
 	public String getFrom() {
 		return from;
 	}
@@ -24,10 +32,10 @@ public class SourceState {
 	public void setState(String state) {
 		this.state = state;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "SourceState{from:" + from + ",\n state:" + state + "}";
+		return "SourceState {\nfeedId:" + feedId + ", \nfrom:" + from + ", \nstate:" + state + "\n}";
 	}
 	
 }

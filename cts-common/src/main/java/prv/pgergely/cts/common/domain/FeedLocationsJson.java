@@ -17,6 +17,10 @@ public class FeedLocationsJson {
 	public static class Feed{
 		public String title;
 		public LocalDate latest;
+		@Override
+		public String toString() {
+			return "Feed {\ntitle:" + title + ", \nlatest:" + latest + "\n}";
+		}
 	}
 
 	@Override
