@@ -73,7 +73,7 @@ public class FeedService {
 			view.setLatest(m.feed.latest);
 			view.setEnabled(m.isEnabled);
 			view.setActive(m.isActive);
-			view.setState(new SourceState(m.schemaName, SourceStates.getByBooleans(m.isEnabled, m.isActive, false).name()));
+			view.setState(new SourceState(m.id, m.schemaName, SourceStates.getByBooleans(m.isEnabled, m.isActive, false).name()));
 			
 			return view;
 		}).collect(Collectors.toList());

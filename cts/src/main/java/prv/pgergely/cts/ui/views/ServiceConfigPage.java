@@ -3,6 +3,7 @@ package prv.pgergely.cts.ui.views;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
@@ -210,15 +211,14 @@ public class ServiceConfigPage extends VerticalLayout {
 			while(true) {
 				if(messages.size() > 0) {
 					attachEvent.getUI().access(() -> {
+						Map<Long, TransitFeedView> feeds = this.getFeedViews().stream().collect(Collectors.toMap(k -> k.getId(), v -> v));
 						while(messages.size() > 0) {
 							SourceState current = messages.poll();
-							List<TransitFeedView> feeds = this.getFeedViews();
-							feeds.stream().filter(p -> current.getFrom().equals(p.getState().getFrom())).map(m -> {
-								SourceState cs = m.getState();
-								cs.setState(current.getState());
-								return m;
-							}).collect(Collectors.toList());
-							this.refreshGrid(new ListDataProvider<>(feeds));
+							TransitFeedView view = feeds.get(current.getFeedId());
+							if(view != null) {
+								feeds.get(current.getFeedId()).getState().setState(current.getState());
+							}
+							this.refreshGrid(new ListDataProvider<>(feeds.values()));
 						}
 						noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
 					});

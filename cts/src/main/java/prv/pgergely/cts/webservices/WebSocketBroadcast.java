@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import prv.pgergely.cts.common.domain.SourceState;
 
 @Controller
-public class WebSocketBroadcast {
+public class WebSocketBroadcast{
 	
 	private Logger logger = LogManager.getLogger(WebSocketBroadcast.class);
 	
@@ -30,6 +30,6 @@ public class WebSocketBroadcast {
 	public SourceState send(SourceState msg) {
 		logger.info(msg);
 		messages.add(msg);
-		return new SourceState("Server", msg.getFrom()+" OK");
+		return new SourceState(-1L, "Server", msg.getFrom()+" OK");
 	}
 }
