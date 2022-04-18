@@ -27,9 +27,11 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 	private AtomicBoolean reconnecting = new AtomicBoolean();
 	
 	private WebSocketStompClient stompClient;
+	private String websocketUrl;
 	
-	public WebSocketSessionHandler(WebSocketStompClient stompClient) {
+	public WebSocketSessionHandler(WebSocketStompClient stompClient, String websocketUrl) {
 		this.stompClient = stompClient;
+		this.websocketUrl = websocketUrl;
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 		while(isDiscon) {
 			try {
 				TimeUnit.SECONDS.sleep(10);
-				stompClient.connect("ws://localhost:8080/cts/channel", this).get();
+				stompClient.connect(websocketUrl, this).get();
 				isDiscon = false;
 				logger.warn("Successful reconnection.");
 			} catch (Exception e) {

@@ -63,7 +63,7 @@ public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  
 			header.set("X-Schema", schema.getSchemaName());
 			WebSocketStompClient stompClient = new WebSocketStompClient(initSSL(client));
 			stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-			stompClient.connect(URI.create(config.getWebsocketServer()), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler(stompClient));
+			stompClient.connect(URI.create(config.getWebsocketServer()), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler(stompClient, config.getWebsocketServer()));
 		} catch (KeyManagementException | NoSuchAlgorithmException e) {
 			logger.error(e.toString(), e);
 		}
