@@ -1,7 +1,7 @@
 package prv.pgergely.cts.config;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -44,7 +44,7 @@ public class ApplicationCts extends SpringBootServletInitializer {
 	}
 	
 	@Bean
-	public Queue<SourceState> wsMessages(){
-		return new ConcurrentLinkedQueue<>();
+	public BlockingQueue<SourceState> wsMessages(){
+		return new LinkedBlockingQueue<>();
 	}
 }

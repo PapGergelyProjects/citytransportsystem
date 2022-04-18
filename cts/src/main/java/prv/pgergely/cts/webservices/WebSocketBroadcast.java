@@ -1,6 +1,6 @@
 package prv.pgergely.cts.webservices;
 
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +18,7 @@ public class WebSocketBroadcast{
 	private Logger logger = LogManager.getLogger(WebSocketBroadcast.class);
 	
 	@Autowired
-	private Queue<SourceState> messages;
+	private BlockingQueue<SourceState> messages;
 	
 	@GetMapping("/channel-broadcast")
 	public String getBroadcast() {
@@ -29,7 +29,11 @@ public class WebSocketBroadcast{
 	@MessageMapping("/channel")
 	public SourceState send(SourceState msg) {
 		logger.info(msg);
-		messages.add(msg);
+		try {
+			messages.put(msg);
+		} catch (InterruptedException e) {
+			logger.error(e.getMessage(), e);
+		}
 		return new SourceState(-1L, "Server", msg.getFrom()+" OK");
 	}
 }

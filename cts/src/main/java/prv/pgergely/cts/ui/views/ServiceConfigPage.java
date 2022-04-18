@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestClientException;
 
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -26,6 +30,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -44,6 +49,7 @@ import prv.pgergely.cts.utils.SourceStates;
 
 @UIScope
 @SpringComponent
+@PreserveOnRefresh
 @PageTitle("CTS - Configuration")
 @Route(value = "configuration", layout = MainLayout.class)
 public class ServiceConfigPage extends VerticalLayout {
@@ -54,7 +60,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	private FeedService feedSource;
 	
 	@Autowired
-	private Queue<SourceState> messages;
+	private BlockingQueue<SourceState> messages;
 	
 	@Autowired
 	private FixedThreadEngine thread;
@@ -66,6 +72,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	private DatePicker date;
 	private Checkbox isRegistered;
 	private Grid<TransitFeedView> transitFeedGrid;
+	private Thread refreshThread;
 	
 	@PostConstruct
 	public void init() {
@@ -207,24 +214,50 @@ public class ServiceConfigPage extends VerticalLayout {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
-		thread.process("FeedRefresh", () -> {
-			while(true) {
-				if(messages.size() > 0) {
-					attachEvent.getUI().access(() -> {
-						Map<Long, TransitFeedView> feeds = this.getFeedViews().stream().collect(Collectors.toMap(k -> k.getId(), v -> v));
-						while(messages.size() > 0) {
-							SourceState current = messages.poll();
-							TransitFeedView view = feeds.get(current.getFeedId());
-							if(view != null) {
-								feeds.get(current.getFeedId()).getState().setState(current.getState());
-							}
-							this.refreshGrid(new ListDataProvider<>(feeds.values()));
+		if(refreshThread == null) {
+			refreshThread = new Thread(() -> {
+				while(true) {
+					if(messages.size() > 0) {
+						AtomicReference<SourceState> state = new AtomicReference<>();
+						SourceState current = null;
+						try {
+							current = messages.take();
+							state.set(current);
+						} catch (InterruptedException e) {
+							//Expected
 						}
-						noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
-					});
+						Optional<UI> ui = attachEvent.getSource().getUI();
+						if(ui.isPresent()) {
+							ui.get().access(() -> {
+								SourceState actState = state.get(); 
+								if(actState != null) {
+									Map<Long, TransitFeedView> feeds = this.getFeedViews().stream().collect(Collectors.toMap(k -> k.getId(), v -> v));
+									TransitFeedView view = feeds.get(actState.getFeedId());
+									if(view != null) {
+										feeds.get(actState.getFeedId()).getState().setState(actState.getState());
+									}
+									this.refreshGrid(new ListDataProvider<>(feeds.values()));
+									noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
+								}
+							});
+						}
+					}
 				}
-			}
-		});
+			});
+			refreshThread.setName("FeedRefresh");
+			refreshThread.start();
+		}
 	}
+
+	@Override
+	protected void onDetach(DetachEvent detachEvent) {
+		super.onDetach(detachEvent);
+		if(refreshThread != null) {
+			refreshThread.interrupt();
+			refreshThread = null;
+		}
+	}
+	
+	
 	
 }
