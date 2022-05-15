@@ -17,7 +17,7 @@ public class FixedThreadPool implements FixedThreadEngine{
 	
 	public FixedThreadPool(){
 		manufactorum = new ThreadManufactorum(Thread.NORM_PRIORITY);
-		cachedThreadPool = Executors.newCachedThreadPool(manufactorum);
+		cachedThreadPool = Executors.newFixedThreadPool(1,manufactorum);
 		logger.info("Fixed Thread pool has been started");
 	}
 	

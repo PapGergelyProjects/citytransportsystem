@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +13,6 @@ import org.springframework.web.client.RestClientException;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -35,12 +31,11 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import prv.pgergely.cts.common.domain.SourceState;
-import prv.pgergely.cts.common.interfaces.FixedThreadEngine;
 import prv.pgergely.cts.domain.ResponseData;
 import prv.pgergely.cts.domain.SelectedFeed;
 import prv.pgergely.cts.domain.TransitFeedView;
 import prv.pgergely.cts.service.FeedService;
+import prv.pgergely.cts.service.MessagingThread;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.CtsNotification;
 import prv.pgergely.cts.ui.utils.FlexSearchLayout;
@@ -60,10 +55,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	private FeedService feedSource;
 	
 	@Autowired
-	private BlockingQueue<SourceState> messages;
-	
-	@Autowired
-	private FixedThreadEngine thread;
+	private MessagingThread msgTh;
 	
 	@Autowired
 	private CtsNotification noti;
@@ -214,48 +206,24 @@ public class ServiceConfigPage extends VerticalLayout {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
-		if(refreshThread == null) {
-			refreshThread = new Thread(() -> {
-				while(true) {
-					if(messages.size() > 0) {
-						AtomicReference<SourceState> state = new AtomicReference<>();
-						SourceState current = null;
-						try {
-							current = messages.take();
-							state.set(current);
-						} catch (InterruptedException e) {
-							//Expected
-						}
-						Optional<UI> ui = attachEvent.getSource().getUI();
-						if(ui.isPresent()) {
-							ui.get().access(() -> {
-								SourceState actState = state.get(); 
-								if(actState != null) {
-									Map<Long, TransitFeedView> feeds = this.getFeedViews().stream().collect(Collectors.toMap(k -> k.getId(), v -> v));
-									TransitFeedView view = feeds.get(actState.getFeedId());
-									if(view != null) {
-										feeds.get(actState.getFeedId()).getState().setState(actState.getState());
-									}
-									this.refreshGrid(new ListDataProvider<>(feeds.values()));
-									noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
-								}
-							});
-						}
-					}
+		msgTh.addFunction("ServiceConfig", state -> { //TODO: Unique thread name
+			attachEvent.getSource().getUI().ifPresent(ui -> ui.access(() -> {
+				Map<Long, TransitFeedView> feeds = this.getFeedViews().stream().collect(Collectors.toMap(k -> k.getId(), v -> v));
+				TransitFeedView view = feeds.get(state.getFeedId());
+				if(view != null) {
+					view.getState().setState(state.getState());
 				}
-			});
-			refreshThread.setName("FeedRefresh");
-			refreshThread.start();
-		}
+				this.refreshGrid(new ListDataProvider<>(feeds.values()));
+				noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
+			}));
+			return null;
+		});
 	}
 
 	@Override
 	protected void onDetach(DetachEvent detachEvent) {
 		super.onDetach(detachEvent);
-		if(refreshThread != null) {
-			refreshThread.interrupt();
-			refreshThread = null;
-		}
+		msgTh.removeFunction("ServiceConfig");
 	}
 	
 	
