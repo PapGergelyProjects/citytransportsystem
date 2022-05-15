@@ -16,10 +16,10 @@ import com.flowingcode.vaadin.addons.googlemaps.GoogleMapMarker;
 import com.flowingcode.vaadin.addons.googlemaps.GoogleMapPolygon;
 import com.flowingcode.vaadin.addons.googlemaps.LatLon;
 import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.details.Details;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -80,10 +80,6 @@ public class LandingPage extends VerticalLayout {
 	private GoogleMapPolygon circle;
 	private GoogleMapMarker centerMarker;
 	private boolean isOpen = false;
-	private ComponentEventListener<ClickEvent<SplitLayout>> listener = event -> {
-		isOpen = !isOpen;
-		searchLayout.setSplitterPosition(isOpen ? 0 : 15);
-	};
 	
 	@PostConstruct
 	public void init() {
@@ -92,20 +88,10 @@ public class LandingPage extends VerticalLayout {
 		this.setMargin(false);
 		this.setSpacing(false);
 		this.setSizeFull();
-		searchLayout = initSplit();
-        searchLayout.setSizeFull();
-        searchLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
-        searchLayout.setSplitterPosition(0);
-        //searchLayout.addClickListener(listener);
-        this.add(searchLayout);
-        this.add(location());
-	}
-	
-	private SplitLayout initSplit() {
+		Details searchPanel = new Details("Search Options", initSearchBar());
         HorizontalLayout mapLayout = createMap();
         mapLayout.setSizeFull();
-		
-		return new SplitLayout(initSearchBar(), mapLayout);
+        this.add(searchPanel, mapLayout, location());
 	}
 	
 	private FlexSearchLayout initSearchBar() {
