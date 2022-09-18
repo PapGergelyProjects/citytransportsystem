@@ -35,6 +35,7 @@ import prv.pgergely.cts.domain.ResponseData;
 import prv.pgergely.cts.domain.SelectedFeed;
 import prv.pgergely.cts.domain.TransitFeedView;
 import prv.pgergely.cts.service.FeedService;
+import prv.pgergely.cts.service.MessageHandler;
 import prv.pgergely.cts.service.MessagingThread;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.CtsNotification;

@@ -48,10 +48,10 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 	@Override
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
 		logger.info("New session established : " + session.getSessionId());
-		session.subscribe("/state/current", this);
+		session.subscribe("/cts-channel/messaging", this);
 		SESSION.set(session);
 		logger.info("subscribe to...");
-		session.send("/app/channel", new SourceState(-1L, "Client", "CheckAlive"));
+		session.send("/app/refreshing", new SourceState(-1L, "Client", "CheckAlive"));
 	}
 
 	@Override
@@ -100,4 +100,7 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 		return SESSION.get();
 	}
 	
+	public static void publish(SourceState message) {
+		getSession().send("/app/refreshing", message);
+	}
 }
