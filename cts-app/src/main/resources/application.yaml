@@ -13,6 +13,6 @@ vaadin:
   enableDevServer: false
 ---
 config:
-   googleApiKey: AIzaSyCI91SGpLQMAy4i5ME_V2_8WvZtg0pJjFU
+   googleApiKey: 
    googleMapLang: en
    serviceUrl: https://localhost:9443/cts-country
