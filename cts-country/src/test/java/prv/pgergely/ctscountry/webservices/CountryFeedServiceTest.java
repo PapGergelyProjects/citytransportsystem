@@ -9,15 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
-import prv.pgergely.ctscountry.ApplicationCountryComponents;
 import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
-import prv.pgergely.ctscountry.domain.TransitFeedJson;
-import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CountryFeedServiceTest {

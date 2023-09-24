@@ -3,20 +3,23 @@ package prv.pgergely.ctscountry.configurations;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContexts;
-import org.apache.http.ssl.TrustStrategy;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.ssl.SSLContexts;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.ctscountry.utils.TemplateQualifier;
@@ -43,27 +46,26 @@ public class TransitFeedsTemplate {
 	
 	
 	@Bean(TemplateQualifier.ZIPFILE_TEMPLATE)
-	public RestTemplate restTemplate() 
-	                throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-	    TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
-
+	public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 	    SSLContext sslContext = SSLContexts.custom()
-	                    .loadTrustMaterial(null, acceptingTrustStrategy)
-	                    .build();
+                .loadTrustMaterial(null, new TrustSelfSignedStrategy())
+                .build();
 
-	    SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-
-	    CloseableHttpClient httpClient = HttpClients.custom()
-	                    .setSSLSocketFactory(csf)
-	                    .build();
-
-	    HttpComponentsClientHttpRequestFactory requestFactory =
-	                    new HttpComponentsClientHttpRequestFactory();
-
-	    requestFactory.setHttpClient(httpClient);
-	    RestTemplate restTemplate = new RestTemplate(requestFactory);
-	    restTemplate.getMessageConverters().add(new ByteArrayHttpMessageConverter());
-	    return restTemplate;
+		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory> create().register("https", csf).register("http", new PlainConnectionSocketFactory()).build();
+		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+		
+		CloseableHttpClient httpClient = HttpClients.custom()
+		                .setConnectionManager(cm)
+		                .build();
+		
+		HttpComponentsClientHttpRequestFactory requestFactory =
+		                new HttpComponentsClientHttpRequestFactory();
+		
+		requestFactory.setHttpClient(httpClient);
+		RestTemplate restTemplate = new RestTemplate(requestFactory);
+		
+		return restTemplate;
 	 }
 	
 }
