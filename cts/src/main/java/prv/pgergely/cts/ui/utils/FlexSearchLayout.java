@@ -19,9 +19,7 @@ public class FlexSearchLayout extends FlexLayout {
 	
 	public void setGap(String px) {
 		for(Component child : children) {
-			if(child instanceof HasStyle e) {
-				e.getStyle().set("padding-right", px);
-			}
+			child.getStyle().set("padding-right", px);
 		}
 	}
 	

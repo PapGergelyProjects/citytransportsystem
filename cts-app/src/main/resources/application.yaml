@@ -1,0 +1,18 @@
+spring:
+  messages:
+    basename: i18n/messages
+    cache-seconds: -1
+    encoding: UTF-8
+
+vaadin:
+  #urlMapping: /*
+  pushURL: context://pushWS
+  whitelisted-packages: com.vaadin,org.vaadin,dev.hilla,com.example.application
+  compatibilityMode: false
+  productionMode: false
+  enableDevServer: false
+---
+config:
+   googleApiKey: AIzaSyCI91SGpLQMAy4i5ME_V2_8WvZtg0pJjFU
+   googleMapLang: en
+   serviceUrl: https://localhost:9443/cts-country

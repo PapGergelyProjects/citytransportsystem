@@ -3,8 +3,6 @@ package prv.pgergely.cts.ui.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestClientException;
 import org.vaadin.elmot.flow.sensors.GeoLocation;
@@ -19,7 +17,6 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -33,9 +30,11 @@ import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SearchLocation;
 import prv.pgergely.cts.domain.AvailableLocation;
@@ -51,7 +50,7 @@ import prv.pgergely.cts.utils.Calculations;
 
 @UIScope
 @SpringComponent
-@PreserveOnRefresh
+//@PreserveOnRefresh
 @PageTitle("CTS - Map")
 @Route(value = "main", layout = MainLayout.class)
 public class LandingPage extends VerticalLayout {
@@ -210,7 +209,7 @@ public class LandingPage extends VerticalLayout {
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
-		loadedLocations.setDataProvider(new ListDataProvider<>(getAvailableLocations()));
+		loadedLocations.setItems(new ListDataProvider<>(getAvailableLocations()));
 		//setupSlideBtn();
 	}
 	

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestClientException;
 
@@ -28,14 +26,15 @@ import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.domain.ResponseData;
 import prv.pgergely.cts.domain.SelectedFeed;
 import prv.pgergely.cts.domain.TransitFeedView;
 import prv.pgergely.cts.service.FeedService;
-import prv.pgergely.cts.service.MessageHandler;
 import prv.pgergely.cts.service.MessagingThread;
 import prv.pgergely.cts.ui.MainLayout;
 import prv.pgergely.cts.ui.utils.CtsNotification;
@@ -45,7 +44,7 @@ import prv.pgergely.cts.utils.SourceStates;
 
 @UIScope
 @SpringComponent
-@PreserveOnRefresh
+//@PreserveOnRefresh
 @PageTitle("CTS - Configuration")
 @Route(value = "configuration", layout = MainLayout.class)
 public class ServiceConfigPage extends VerticalLayout {

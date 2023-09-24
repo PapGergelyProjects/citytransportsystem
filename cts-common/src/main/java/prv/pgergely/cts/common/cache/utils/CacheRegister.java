@@ -1,18 +1,12 @@
 package prv.pgergely.cts.common.cache.utils;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.cache.model.Cache;
 import prv.pgergely.cts.common.cache.model.ShortLiveCacheObject;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
