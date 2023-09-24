@@ -10,14 +10,13 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.ctsdata.config.CtsDataConfig;
 import prv.pgergely.ctsdata.utility.CsvRefiner;

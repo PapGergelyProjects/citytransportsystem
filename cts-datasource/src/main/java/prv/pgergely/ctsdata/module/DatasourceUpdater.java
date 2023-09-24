@@ -7,13 +7,12 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
 import prv.pgergely.ctsdata.service.ZipHandlerService;

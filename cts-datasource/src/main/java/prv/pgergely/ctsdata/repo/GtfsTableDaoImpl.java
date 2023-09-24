@@ -2,23 +2,19 @@ package prv.pgergely.ctsdata.repo;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.postgresql.PGConnection;
 import org.postgresql.copy.CopyManager;
-import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.annotation.PostConstruct;
 import prv.pgergely.ctsdata.interfaces.GtfsTableDao;
 
 @Repository
