@@ -82,7 +82,7 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 		while(isDiscon) {
 			try {
 				TimeUnit.SECONDS.sleep(10);
-				stompClient.connect(websocketUrl, this).get();
+				stompClient.connectAsync(websocketUrl, this).get();
 				isDiscon = false;
 				logger.warn("Successful reconnection.");
 			} catch (Exception e) {
