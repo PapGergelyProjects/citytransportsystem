@@ -3,7 +3,6 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "@flowingcode/google-map": "3.1.0",
     "@polymer/polymer": "3.5.1",
     "@vaadin/a11y-base": "24.1.9",
     "@vaadin/accordion": "24.1.9",
@@ -101,7 +100,6 @@
   },
   "vaadin": {
     "dependencies": {
-      "@flowingcode/google-map": "3.1.0",
       "@polymer/polymer": "3.5.1",
       "@vaadin/a11y-base": "24.1.9",
       "@vaadin/accordion": "24.1.9",
@@ -197,7 +195,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "afddf652a2b99e8b3f990aa8a9be79b32824f2b5d5562915f5634d53c559c02f"
+    "hash": "4f124c3fd20d358f84671fe3bac0453056f078c2ded5d5bef9a94df3eac2b6e5"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -275,7 +273,6 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
-    "mobile-drag-drop": "$mobile-drag-drop",
-    "@flowingcode/google-map": "$@flowingcode/google-map"
+    "mobile-drag-drop": "$mobile-drag-drop"
   }
 }
