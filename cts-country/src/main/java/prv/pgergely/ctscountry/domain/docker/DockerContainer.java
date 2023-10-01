@@ -1,10 +1,11 @@
 package prv.pgergely.ctscountry.domain.docker;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import prv.pgergely.ctscountry.utils.docker.ContainerStatus;
 
-public class DockerContainer {
+public class DockerContainer implements Serializable {
 	
     private String containerId;
     private String imageId;

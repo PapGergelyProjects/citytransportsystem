@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
-import prv.pgergely.ctsdata.interfaces.CoordinateDao;
+import prv.pgergely.ctsdata.interfaces.CoordinateRepo;
 
 @Repository
-public class CoordinateDaoImpl extends JdbcDaoSupport implements CoordinateDao {
+public class CoordinateRepoImpl extends JdbcDaoSupport implements CoordinateRepo {
 	
 	@Autowired
 	private DataSource ds;

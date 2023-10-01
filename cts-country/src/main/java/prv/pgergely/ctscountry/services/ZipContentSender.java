@@ -45,15 +45,15 @@ public class ZipContentSender implements ContentSenderThread {
 			DatasourceInfo info = dsService.getByFeedId(request.getFeedId());
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.set("X-Schema", info.getSchema_name());
+			headers.set("X-Schema", info.getSchemaName());
 			headers.set("X-Feed", info.getFeedId()+"");
 			HttpEntity<DownloadRequest> entity = new HttpEntity<>(request, headers);
 			try {
-				DefaultResponse resp = template.postForObject(info.getSource_url()+"/api/update", entity, DefaultResponse.class);
+				DefaultResponse resp = template.postForObject(info.getSourceUrl()+"/api/update", entity, DefaultResponse.class);
 				logger.info(request);
 				logger.info(resp);
 			} catch (Exception e) {
-				logger.warn("Cannot send request to "+info.getSource_url()+" "+e);
+				logger.warn("Cannot send request to "+info.getSourceUrl()+" "+e);
 			}
 		}
 	}

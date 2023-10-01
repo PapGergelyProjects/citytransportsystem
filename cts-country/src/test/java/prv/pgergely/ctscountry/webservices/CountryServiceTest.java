@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
 import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
-import prv.pgergely.ctscountry.interfaces.FeedVersionDao;
+import prv.pgergely.ctscountry.interfaces.FeedVersionRepo;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
 @TestMethodOrder(OrderAnnotation.class)
@@ -37,7 +37,7 @@ public class CountryServiceTest {
 	private TestRestTemplate temp;
 	
 	@Autowired
-	private FeedVersionDao data;
+	private FeedVersionRepo data;
 	
 	@Test
 	@Order(1)

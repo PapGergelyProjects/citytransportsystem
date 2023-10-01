@@ -34,7 +34,7 @@ public class TransitFeedLocationSource {
 	
 	@Autowired
 	private FeedVersionServiceImpl feedVersion;
-
+	
 	public List<FeedLocationsJson> getLocations(boolean onlyActive) throws IOException {
 		List<FeedLocationsJson> locationList = new ArrayList<>();
 		TransitFeedLocationJson location = feed.getLocations().getBody();
@@ -60,7 +60,7 @@ public class TransitFeedLocationSource {
 			FeedLocationsJson json = new FeedLocationsJson();
 			json.id = loc.id;
 			json.title = loc.rawLocationName;
-			json.dsUrl = vers.getDsUrl();
+			json.dsUrl = vers.getSourceUrl();
 			json.lat = loc.lat;
 			json.lon = loc.lng;
 			json.isEnabled = versionMap.containsKey(json.id);

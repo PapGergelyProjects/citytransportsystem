@@ -6,7 +6,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import prv.pgergely.ctscountry.model.FeedVersion;
 
-public interface FeedVersionDao {
+public interface FeedVersionRepo {
 	
 	public void insert(FeedVersion value);
 	public void update(FeedVersion value);

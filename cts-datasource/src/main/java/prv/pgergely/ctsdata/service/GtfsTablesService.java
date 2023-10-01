@@ -9,13 +9,13 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import prv.pgergely.ctsdata.interfaces.GtfsTableDao;
+import prv.pgergely.ctsdata.interfaces.GtfsTableRepo;
 
 @Service
 public class GtfsTablesService {
 	
 	@Autowired
-	private GtfsTableDao tablesSrv;
+	private GtfsTableRepo tablesSrv;
 	
 	@Transactional
 	public void insertValues(String inserts) {

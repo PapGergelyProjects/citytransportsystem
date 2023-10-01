@@ -6,7 +6,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import prv.pgergely.ctscountry.model.DatasourceInfo;
 
-public interface DatasourceInfoDao {
+public interface DatasourceInfoRepo {
 
 	public void insert(DatasourceInfo value);
 	public void update(DatasourceInfo value);

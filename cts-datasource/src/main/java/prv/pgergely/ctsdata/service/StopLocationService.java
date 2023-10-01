@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import prv.pgergely.cts.common.domain.SearchLocation;
 import prv.pgergely.ctsdata.model.StopLocation;
-import prv.pgergely.ctsdata.repo.StopLocationDaoImpl;
+import prv.pgergely.ctsdata.repo.StopLocationRepoImpl;
 
 @Service
 public class StopLocationService {
 	
 	@Autowired
-	private StopLocationDaoImpl repo;
+	private StopLocationRepoImpl repo;
 	
 	public List<StopLocation> getAllStopWithinRadius(SearchLocation location) {
 		return repo.getAllStopWithinRadius(location);

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.ctscountry.configurations.CtsConfig;
-import prv.pgergely.ctscountry.interfaces.DatasourceInfoDao;
+import prv.pgergely.ctscountry.interfaces.DatasourceInfoRepo;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
@@ -14,7 +14,7 @@ import prv.pgergely.ctscountry.model.FeedVersion;
 public class DatasourceService {
 	
 	@Autowired
-	private DatasourceInfoDao repo;
+	private DatasourceInfoRepo repo;
 	
 	@Autowired
 	private CtsConfig conf;
@@ -27,7 +27,7 @@ public class DatasourceService {
 		int port = createPortNumberFromFeedId(id);
 		String endpoint = url+":"+port;
 		
-		DatasourceInfo info = new DatasourceInfo(id, port, title, endpoint, createSchemaFromData(techTitle), true);
+		DatasourceInfo info = new DatasourceInfo(id, port, title, endpoint, createSchemaFromData(techTitle), version.getState(), true);
 		repo.insert(info);
 		return info;
 	}

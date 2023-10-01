@@ -1,5 +1,6 @@
 package prv.pgergely.ctscountry.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDate;
  * @author Pap Gergely
  *
  */
-public class SelectedFeed{
+public class SelectedFeed implements Serializable{
 	
 	private Long id;
 	private String title;

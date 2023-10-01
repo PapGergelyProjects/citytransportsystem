@@ -15,11 +15,11 @@ import org.springframework.stereotype.Repository;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SearchLocation;
-import prv.pgergely.ctsdata.interfaces.StopLocationDao;
+import prv.pgergely.ctsdata.interfaces.StopLocationRepo;
 import prv.pgergely.ctsdata.model.StopLocation;
 
 @Repository
-public class StopLocationDaoImpl extends JdbcDaoSupport implements StopLocationDao {
+public class StopLocationRepoImpl extends JdbcDaoSupport implements StopLocationRepo {
 	
 	@Autowired
 	private DataSource ds;

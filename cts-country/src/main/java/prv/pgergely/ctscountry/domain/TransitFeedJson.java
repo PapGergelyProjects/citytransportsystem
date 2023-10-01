@@ -1,5 +1,7 @@
 package prv.pgergely.ctscountry.domain;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /*
@@ -50,7 +52,7 @@ INVALIDINPUT - A request parameter was invalid.
  * @author Pap Gergely
  *
  */
-public class TransitFeedJson {
+public class TransitFeedJson implements Serializable {
 
     public String status;
     public long ts;

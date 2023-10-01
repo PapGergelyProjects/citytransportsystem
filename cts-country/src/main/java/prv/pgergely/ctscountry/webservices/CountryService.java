@@ -22,6 +22,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import prv.pgergely.ctscountry.domain.ResponseData;
 import prv.pgergely.ctscountry.domain.SelectedFeed;
+import prv.pgergely.ctscountry.model.DataSourceState;
 import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.services.FeedOperations;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
@@ -49,6 +50,7 @@ public class CountryService {
 	@PostMapping(path="/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> insertVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, true);
+		version.setState(DataSourceState.UPDATING);
 		operation.create(version);
 		ResponseData data = new ResponseData();
 		data.setId(vers.getId());
@@ -61,6 +63,7 @@ public class CountryService {
 	@PatchMapping(path="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> updateVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, false);
+		version.setState(DataSourceState.UPDATING);
 		operation.update(version);
 		ResponseData data = new ResponseData();
 		data.setId(vers.getId());
@@ -74,6 +77,7 @@ public class CountryService {
 	public ResponseEntity<Void> deleteVersion(@PathVariable long feedId) {
 		try {
 			FeedVersion version = new FeedVersion(feedId);
+			version.setState(DataSourceState.UNREGISTERED);
 			operation.delete(version);
 			
 			return ResponseEntity.noContent().build();

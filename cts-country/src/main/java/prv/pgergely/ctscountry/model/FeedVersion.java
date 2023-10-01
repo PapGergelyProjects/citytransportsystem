@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import prv.pgergely.ctscountry.domain.SelectedFeed;
 
-public class FeedVersion implements Serializable{
+public class FeedVersion extends DatasourceInfo implements Serializable{
 
 	private static final long serialVersionUID = 4910263032782960952L;
 	
@@ -16,11 +16,12 @@ public class FeedVersion implements Serializable{
 	private LocalDate latestVersion;
 	private boolean recent;
 	private boolean newVersion;
-	private boolean active = false;
-	private String dsUrl = "";
-	private String schemaName;
 	
 	public FeedVersion() {}
+	
+	public FeedVersion(String sourceUrl, String schemaName, DataSourceState state, boolean active) {
+		super(sourceUrl, schemaName, state, active);
+	}
 	
 	public FeedVersion(SelectedFeed feed, boolean isNewVersion) {
 		this.feedId = feed.getId();
@@ -77,30 +78,12 @@ public class FeedVersion implements Serializable{
 	public void setTechnicalTitle(String technicalTitle) {
 		this.technicalTitle = technicalTitle;
 	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	public String getDsUrl() {
-		return dsUrl;
-	}
-	public void setDsUrl(String dsUrl) {
-		this.dsUrl = dsUrl;
-	}
-	public String getSchemaName() {
-		return schemaName;
-	}
-	public void setSchemaName(String schemaName) {
-		this.schemaName = schemaName;
-	}
 
 	@Override
 	public String toString() {
 		return "FeedVersion {\nid:" + id + ", \nfeedId:" + feedId + ", \ntitle:" + title + ", \ntechnicalTitle:"
 				+ technicalTitle + ", \nlatestVersion:" + latestVersion + ", \nrecent:" + recent + ", \nnewVersion:"
-				+ newVersion + ", \nactive:" + active + ", \ndsUrl:" + dsUrl + ", \nschemaName:" + schemaName + "\n}";
+				+ newVersion + ", \nactive:" + super.isActive() + ", \ndsUrl:" + super.getSourceUrl() + ", \nschemaName:" + super.getSchemaName() + "\n}";
 	}
 
 }

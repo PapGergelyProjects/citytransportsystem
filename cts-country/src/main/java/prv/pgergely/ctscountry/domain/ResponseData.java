@@ -1,6 +1,8 @@
 package prv.pgergely.ctscountry.domain;
 
-public class ResponseData {
+import java.io.Serializable;
+
+public class ResponseData implements Serializable{
 	
 	private Long id;
 	private String title;

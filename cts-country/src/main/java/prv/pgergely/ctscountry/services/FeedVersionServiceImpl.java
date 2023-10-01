@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import prv.pgergely.ctscountry.interfaces.FeedVersionDao;
+import prv.pgergely.ctscountry.interfaces.FeedVersionRepo;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
 @Service
 public class FeedVersionServiceImpl {
 	
 	@Autowired
-	private FeedVersionDao feedVsDao;
+	private FeedVersionRepo feedVsDao;
 	
 	public void insert(FeedVersion value) {
 		feedVsDao.insert(value);

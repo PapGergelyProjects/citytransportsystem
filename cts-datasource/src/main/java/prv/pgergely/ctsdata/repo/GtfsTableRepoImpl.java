@@ -15,10 +15,10 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import jakarta.annotation.PostConstruct;
-import prv.pgergely.ctsdata.interfaces.GtfsTableDao;
+import prv.pgergely.ctsdata.interfaces.GtfsTableRepo;
 
 @Repository
-public class GtfsTableDaoImpl extends JdbcDaoSupport implements GtfsTableDao {
+public class GtfsTableRepoImpl extends JdbcDaoSupport implements GtfsTableRepo {
 	
 	@Autowired
 	private DataSource source;
