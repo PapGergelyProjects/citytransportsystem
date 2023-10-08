@@ -15,8 +15,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 
 import jakarta.annotation.PostConstruct;
+import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.ctscountry.interfaces.DatasourceInfoRepo;
-import prv.pgergely.ctscountry.model.DataSourceState;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
 
 @Repository
@@ -100,6 +100,14 @@ public class DatasourceInfoRepoImp extends JdbcDaoSupport implements DatasourceI
 		if(rows == 0) {
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@Override
+	public void updateState(Long feedId, DataSourceState state) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("st", DataSourceState.ONLINE.toString());
+		params.addValue("id", feedId);
+		this.getJdbcTemplate().update("UPDATE datasource_info SET state=:st WHERE feed_id=:id", params);
 	}
 
 }

@@ -1,14 +1,16 @@
 package prv.pgergely.cts.common.domain;
 
-public class SourceState {
+import java.io.Serializable;
+
+public class SourceState implements Serializable {
 	
 	private Long feedId;
 	private String from;
-	private String state;
+	private DataSourceState state;
 	
 	public SourceState() {}
 
-	public SourceState(Long feedId, String from, String state) {
+	public SourceState(Long feedId, String from, DataSourceState state) {
 		this.feedId = feedId;
 		this.from = from;
 		this.state = state;
@@ -26,10 +28,10 @@ public class SourceState {
 	public void setFrom(String from) {
 		this.from = from;
 	}
-	public String getState() {
+	public DataSourceState getState() {
 		return state;
 	}
-	public void setState(String state) {
+	public void setState(DataSourceState state) {
 		this.state = state;
 	}
 

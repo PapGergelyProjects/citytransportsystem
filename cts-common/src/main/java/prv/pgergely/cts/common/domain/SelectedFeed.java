@@ -1,5 +1,6 @@
-package cts.app.domain;
+package prv.pgergely.cts.common.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -7,19 +8,21 @@ import java.time.LocalDate;
  * @author Pap Gergely
  *
  */
-public class SelectedFeed{
+public class SelectedFeed implements Serializable{
 	
 	private Long id;
 	private String title;
 	private String technicalTitle;
+	private DataSourceState state;
 	private LocalDate latest;
 	
 	public SelectedFeed() {}
-
-	public SelectedFeed(Long id, String title, String technicalTitle, LocalDate latest) {
+	
+	public SelectedFeed(Long id, String title, String technicalTitle, DataSourceState state, LocalDate latest) {
 		this.id = id;
 		this.title = title;
 		this.technicalTitle = technicalTitle;
+		this.state = state;
 		this.latest = latest;
 	}
 
@@ -46,6 +49,14 @@ public class SelectedFeed{
 	public void setTechnicalTitle(String technicalTitle) {
 		this.technicalTitle = technicalTitle;
 	}
+	
+	public DataSourceState getState() {
+		return state;
+	}
+
+	public void setState(DataSourceState state) {
+		this.state = state;
+	}
 
 	public LocalDate getLatest() {
 		return latest;
@@ -57,8 +68,8 @@ public class SelectedFeed{
 
 	@Override
 	public String toString() {
-		return "SelectedFeed [id=" + id + ", title=" + title + ", technicalTitle=" + technicalTitle + ", latest="
-				+ latest + "]";
+		return "SelectedFeed {\nid:" + id + ", \ntitle:" + title + ", \ntechnicalTitle:" + technicalTitle + ", \nstate:"
+				+ state + ", \nlatest:" + latest + "\n}";
 	}
 	
 }

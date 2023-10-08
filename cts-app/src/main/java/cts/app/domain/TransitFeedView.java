@@ -3,6 +3,7 @@ package cts.app.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 
 public class TransitFeedView implements Serializable {
@@ -15,7 +16,7 @@ public class TransitFeedView implements Serializable {
 	private String feedTitle;
 	private LocalDate latest;
 	private boolean isActive;
-	private SourceState state;
+	private DataSourceState state;
 	
 	public Long getId() {
 		return id;
@@ -53,10 +54,10 @@ public class TransitFeedView implements Serializable {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	public SourceState getState() {
+	public DataSourceState getState() {
 		return state;
 	}
-	public void setState(SourceState state) {
+	public void setState(DataSourceState state) {
 		this.state = state;
 	}
 }

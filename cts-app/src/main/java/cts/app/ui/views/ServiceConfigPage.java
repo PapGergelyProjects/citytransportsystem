@@ -29,7 +29,6 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 import cts.app.domain.ResponseData;
-import cts.app.domain.SelectedFeed;
 import cts.app.domain.TransitFeedView;
 import cts.app.service.FeedService;
 import cts.app.service.MessagingThread;
@@ -39,6 +38,8 @@ import cts.app.ui.utils.FlexSearchLayout;
 import cts.app.ui.utils.StateButton;
 import cts.app.utils.SourceStates;
 import jakarta.annotation.PostConstruct;
+import prv.pgergely.cts.common.domain.DataSourceState;
+import prv.pgergely.cts.common.domain.SelectedFeed;
 
 @UIScope
 @SpringComponent
@@ -106,7 +107,7 @@ public class ServiceConfigPage extends VerticalLayout {
 				}
 				Button btn = new Button(VaadinIcon.PLAY_CIRCLE.create());
 				btn.addClickListener(event -> {
-					feedSource.startFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
+					feedSource.startFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), DataSourceState.ONLINE, r.getLatest()));
 					Notification.show(r.getFeedTitle()+" started.", 5000, Position.TOP_CENTER);
 					refresh();
 				});
@@ -114,7 +115,7 @@ public class ServiceConfigPage extends VerticalLayout {
 			}
 			Button newBtn = new Button(VaadinIcon.DOWNLOAD.create());
 			newBtn.addClickListener(event -> {
-				ResponseData resp = feedSource.registerFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), r.getLatest()));
+				ResponseData resp = feedSource.registerFeed(new SelectedFeed(r.getId(), r.getTitle(), r.getFeedTitle(), DataSourceState.UPDATING, r.getLatest()));
 				Notification.show(resp.getTitle()+" registered.", 5000, Position.TOP_CENTER);
 				refresh();
 			});
@@ -124,7 +125,7 @@ public class ServiceConfigPage extends VerticalLayout {
 		grid.addColumn("feedTitle").setResizable(true).setHeader("Feed Name");
 		grid.addColumn("latest").setResizable(true).setWidth("150px").setFlexGrow(0).setHeader("Latest Update");
 		grid.addComponentColumn(r -> {
-			switch (SourceStates.getByName(r.getState().getState())) {
+			switch (r.getState()) {
 				case ONLINE: {
 					return StateButton.ACTIVE.get();
 				}
@@ -206,12 +207,7 @@ public class ServiceConfigPage extends VerticalLayout {
 		super.onAttach(attachEvent);
 		msgTh.addFunction("ServiceConfig", state -> { //TODO: Unique thread name
 			attachEvent.getSource().getUI().ifPresent(ui -> ui.access(() -> {
-				Map<Long, TransitFeedView> feeds = this.getFeedViews().stream().collect(Collectors.toMap(k -> k.getId(), v -> v));
-				TransitFeedView view = feeds.get(state.getFeedId());
-				if(view != null) {
-					view.getState().setState(state.getState());
-				}
-				this.refreshGrid(new ListDataProvider<>(feeds.values()));
+				this.refreshGrid(new ListDataProvider<>(this.getFeedViews()));
 				noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
 			}));
 			return null;

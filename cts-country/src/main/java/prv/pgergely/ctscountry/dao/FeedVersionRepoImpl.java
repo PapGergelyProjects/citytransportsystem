@@ -3,7 +3,6 @@ package prv.pgergely.ctscountry.dao;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +17,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 
 import jakarta.annotation.PostConstruct;
+import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.ctscountry.interfaces.FeedVersionRepo;
 import prv.pgergely.ctscountry.model.FeedVersion;
-import prv.pgergely.ctscountry.model.DataSourceState;
 
 @Repository
 public class FeedVersionRepoImpl extends JdbcDaoSupport implements FeedVersionRepo {

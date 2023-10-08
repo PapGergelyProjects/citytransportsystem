@@ -17,6 +17,7 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.ctsdata.config.CtsDataConfig;
 import prv.pgergely.ctsdata.utility.CsvRefiner;
@@ -46,7 +47,7 @@ public class DataPreparation {
 	}
 	
     public void extractZipFile(byte[] zipStream) throws IOException, CannotGetJdbcConnectionException, SQLException{
-    	WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), "UPDATING"));
+    	WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.UPDATING));
     	logger.info("Clear tables");
     	srvc.clearTables();
     	logger.info("Starting extracting files from zip...");
@@ -64,7 +65,7 @@ public class DataPreparation {
         logger.info("Materalization complete.");
         zis.closeEntry();
         zis.close();
-        WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), "ONLINE"));
+        WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.ONLINE));
     }
 	
 	private void copyCsvContent(String fileName, InputStream stream) throws CannotGetJdbcConnectionException, SQLException, IOException {

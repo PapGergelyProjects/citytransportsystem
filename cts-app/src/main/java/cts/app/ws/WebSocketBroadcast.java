@@ -8,7 +8,10 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import cts.app.service.FeedService;
 import cts.app.service.MessagingThread;
+import prv.pgergely.cts.common.domain.DataSourceState;
+import prv.pgergely.cts.common.domain.SelectedFeed;
 import prv.pgergely.cts.common.domain.SourceState;
 
 @Controller
@@ -18,6 +21,9 @@ public class WebSocketBroadcast{
 	
 	@Autowired
 	private MessagingThread msgTh;
+	
+	@Autowired
+	private FeedService feedSrvc;
 	
 	@GetMapping("/channel-broadcast")
 	public String getBroadcast() {
@@ -29,6 +35,10 @@ public class WebSocketBroadcast{
 	public SourceState send(SourceState msg) {
 		logger.info(msg);
 		msgTh.init(msg);
-		return new SourceState(-1L, "Server", msg.getFrom()+" OK");
+		SelectedFeed feed = new SelectedFeed();
+		feed.setId(msg.getFeedId());
+		feed.setState(msg.getState());
+		feedSrvc.updateState(feed);
+		return new SourceState(-1L, "Server", DataSourceState.TECHNICAL);
 	}
 }

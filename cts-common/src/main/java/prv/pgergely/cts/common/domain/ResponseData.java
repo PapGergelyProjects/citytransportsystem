@@ -1,4 +1,4 @@
-package prv.pgergely.ctscountry.domain;
+package prv.pgergely.cts.common.domain;
 
 import java.io.Serializable;
 

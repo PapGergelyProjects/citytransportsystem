@@ -1,12 +1,14 @@
 package prv.pgergely.cts.common.domain;
 
+import java.io.Serializable;
+
 /**
  * This class represents a download request for each ds service.
  * 
  * @author PapGergely
  *
  */
-public class DownloadRequest {
+public class DownloadRequest implements Serializable {
 
 	private long feedId;
 	private String fileName;

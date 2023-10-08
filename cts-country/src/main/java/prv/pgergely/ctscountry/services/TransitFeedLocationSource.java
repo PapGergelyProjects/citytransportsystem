@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import prv.pgergely.cts.common.domain.Feed;
 import prv.pgergely.cts.common.domain.FeedLocationsJson;
-import prv.pgergely.cts.common.domain.FeedLocationsJson.Feed;
 import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Locations;
@@ -58,17 +58,19 @@ public class TransitFeedLocationSource {
 			}
 			FeedVersion vers = Optional.ofNullable(versionMap.get(loc.id)).orElse(new FeedVersion());
 			FeedLocationsJson json = new FeedLocationsJson();
-			json.id = loc.id;
-			json.title = loc.rawLocationName;
-			json.dsUrl = vers.getSourceUrl();
-			json.lat = loc.lat;
-			json.lon = loc.lng;
-			json.isEnabled = versionMap.containsKey(json.id);
-			json.isActive = vers.isActive();
-			json.schemaName = vers.getSchemaName();
-			json.feed = new Feed();
-			json.feed.title = actFeed.feedTitle;
-			json.feed.latest = Instant.ofEpochMilli(actFeed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+			json.setId(loc.id);
+			json.setTitle(loc.rawLocationName);
+			json.setDsUrl(vers.getSourceUrl());
+			json.setLat(loc.lat);
+			json.setLon(loc.lng);
+			json.setEnabled(versionMap.containsKey(json.getId()));
+			json.setActive(vers.isActive());
+			json.setSchemaName(vers.getSchemaName());
+			json.setState(vers.getState());
+			Feed feed = new Feed();
+			feed.setTitle(actFeed.feedTitle);
+			feed.setLatest(Instant.ofEpochMilli(actFeed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate());
+			json.setFeed(feed);
 			locationList.add(json);
 		}
 		

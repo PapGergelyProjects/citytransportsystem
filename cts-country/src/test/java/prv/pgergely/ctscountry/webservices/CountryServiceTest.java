@@ -20,9 +20,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import prv.pgergely.cts.common.domain.ResponseData;
+import prv.pgergely.cts.common.domain.SelectedFeed;
 import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
-import prv.pgergely.ctscountry.domain.ResponseData;
-import prv.pgergely.ctscountry.domain.SelectedFeed;
 import prv.pgergely.ctscountry.interfaces.FeedVersionRepo;
 import prv.pgergely.ctscountry.model.FeedVersion;
 

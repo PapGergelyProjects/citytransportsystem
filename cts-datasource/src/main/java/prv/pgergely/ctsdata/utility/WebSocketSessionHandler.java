@@ -18,6 +18,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 
 public class WebSocketSessionHandler extends StompSessionHandlerAdapter implements WebSocketConfigurer {
@@ -51,7 +52,7 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 		session.subscribe("/cts-channel/messaging", this);
 		SESSION.set(session);
 		logger.info("subscribe to...");
-		session.send("/app/refreshing", new SourceState(-1L, "Client", "CheckAlive"));
+		session.send("/app/refreshing", new SourceState(-1L, "Client", DataSourceState.TECHNICAL));
 	}
 
 	@Override

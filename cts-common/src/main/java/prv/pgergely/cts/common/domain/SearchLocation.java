@@ -1,6 +1,8 @@
 package prv.pgergely.cts.common.domain;
 
-public class SearchLocation {
+import java.io.Serializable;
+
+public class SearchLocation implements Serializable {
 	
 	private Coordinate coordinates;
 	private double radius;

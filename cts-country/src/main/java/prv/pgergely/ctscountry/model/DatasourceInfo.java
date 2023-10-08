@@ -2,6 +2,8 @@ package prv.pgergely.ctscountry.model;
 
 import java.io.Serializable;
 
+import prv.pgergely.cts.common.domain.DataSourceState;
+
 public class DatasourceInfo implements Serializable {
 	
 	private long id;

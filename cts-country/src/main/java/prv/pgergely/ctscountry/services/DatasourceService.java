@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
 import prv.pgergely.ctscountry.interfaces.DatasourceInfoRepo;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
@@ -62,5 +63,9 @@ public class DatasourceService {
 	
 	public List<DatasourceInfo> getAllInfo(){
 		return repo.getAllDatasourceInfo();
+	}
+	
+	public void updateSource(Long id, DataSourceState state) {
+		repo.updateState(id, state);
 	}
 }

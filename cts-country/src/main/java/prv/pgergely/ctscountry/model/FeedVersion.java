@@ -3,7 +3,8 @@ package prv.pgergely.ctscountry.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import prv.pgergely.ctscountry.domain.SelectedFeed;
+import prv.pgergely.cts.common.domain.DataSourceState;
+import prv.pgergely.cts.common.domain.SelectedFeed;
 
 public class FeedVersion extends DatasourceInfo implements Serializable{
 
@@ -28,6 +29,7 @@ public class FeedVersion extends DatasourceInfo implements Serializable{
 		this.title = feed.getTitle();
 		this.technicalTitle = feed.getTechnicalTitle();
 		this.latestVersion = feed.getLatest();
+		this.setState(feed.getState());
 		this.recent = isNewVersion;
 		this.newVersion = isNewVersion;
 	}

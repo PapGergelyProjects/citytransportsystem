@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import prv.pgergely.ctscountry.domain.ResponseData;
-import prv.pgergely.ctscountry.domain.SelectedFeed;
-import prv.pgergely.ctscountry.model.DataSourceState;
+import prv.pgergely.cts.common.domain.DataSourceState;
+import prv.pgergely.cts.common.domain.ResponseData;
+import prv.pgergely.cts.common.domain.SelectedFeed;
 import prv.pgergely.ctscountry.model.FeedVersion;
 import prv.pgergely.ctscountry.services.FeedOperations;
 import prv.pgergely.ctscountry.services.FeedVersionServiceImpl;
@@ -63,7 +62,6 @@ public class CountryService {
 	@PatchMapping(path="/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseData> updateVersion(@RequestBody SelectedFeed vers) {
 		FeedVersion version = new FeedVersion(vers, false);
-		version.setState(DataSourceState.UPDATING);
 		operation.update(version);
 		ResponseData data = new ResponseData();
 		data.setId(vers.getId());

@@ -1,8 +1,9 @@
 package prv.pgergely.cts.common.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DefaultResponse {
+public class DefaultResponse implements Serializable {
 	
 	public String message;
 	public String urlPart;
