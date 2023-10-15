@@ -10,36 +10,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 
-import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.ctscountry.interfaces.DatasourceInfoRepo;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
 
 @Repository
-public class DatasourceInfoRepoImp extends JdbcDaoSupport implements DatasourceInfoRepo {
+public class DatasourceInfoRepoImp extends NamedParameterJdbcTemplate implements DatasourceInfoRepo {
 	
 	@Autowired
-	private DataSource dataSrc;
-	
-	@PostConstruct
-	public void init() {
-		super.setDataSource(dataSrc);
+	public DatasourceInfoRepoImp(DataSource dataSrc) {
+		super(dataSrc);
 	}
 	
 	@Override
 	public void insert(DatasourceInfo value) {
-		final String insert = "INSERT INTO datasource_info (feed_id, source_name, source_url, schema_name, state, active) VALUES (?,?,?,?,?,?)";
-		this.getJdbcTemplate().update(insert, value.getFeedId(), value.getSourceName(), value.getSourceUrl(), value.getSchemaName(), value.getState().toString(), true);
+		final String insert = "INSERT INTO datasource_info (feed_id, source_name, source_url, schema_name, state, active) VALUES (:feedId, :sourceName, :sourceUrl, :schemaName, :st, :ac)";
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("feedId", value.getFeedId());
+		params.addValue("sourceName", value.getSourceName());
+		params.addValue("sourceUrl", value.getSourceUrl());
+		params.addValue("schemaName", value.getSchemaName());
+		params.addValue("st", value.getState().toString());
+		params.addValue("ac", true);
+		this.update(insert, params);
 	}
 
 	@Override
 	public void update(DatasourceInfo value) {
-		final String update = "UPDATE datasource_info SET feed_id=? source_name=?, source_url=?, schema_name=?, state=?, active=? WHERE id=?";
-		this.getJdbcTemplate().update(update, value.getFeedId(), value.getSourceName(), value.getSourceUrl(), value.getSchemaName(), value.getState().toString(), value.isActive(), value.getId());
+		final String update = "UPDATE datasource_info SET feed_id=:feedId source_name=:sourceName, source_url=:sourceUrl, schema_name=:schemaName, state=:st, active=:ac WHERE id=:ID";
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("feedId", value.getFeedId());
+		params.addValue("sourceName", value.getSourceName());
+		params.addValue("sourceUrl", value.getSourceUrl());
+		params.addValue("schemaName", value.getSchemaName());
+		params.addValue("st", value.getState().toString());
+		params.addValue("ac", value.isActive());
+		params.addValue("ID", value.getId());
+		this.update(update, params);
 	}
 	
 	@Override
@@ -48,12 +59,14 @@ public class DatasourceInfoRepoImp extends JdbcDaoSupport implements DatasourceI
 		params.addValue("act", true);
 		params.addValue("st", DataSourceState.ONLINE.toString());
 		params.addValue("id", feedId);
-		this.getJdbcTemplate().update("UPDATE datasource_info SET active=:act, state=:st WHERE feed_id=:id", params);
+		this.update("UPDATE datasource_info SET active=:act, state=:st WHERE feed_id=:id", params);
 	}
 
 	@Override
 	public DatasourceInfo getDatasourceInfoById(long id) {
 		final String select = "SELECT id, feed_id, source_name, source_url, schema_name, state, active FROM datasource_info WHERE feed_id=?";
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("feedId", id);
 		RowMapper<DatasourceInfo> mapper = (rs, rows) ->{
 			DatasourceInfo info = new DatasourceInfo(
 										rs.getLong("id"), 
@@ -66,8 +79,7 @@ public class DatasourceInfoRepoImp extends JdbcDaoSupport implements DatasourceI
 										);
 			return info;
 		};
-		
-		return this.getJdbcTemplate().queryForObject(select, mapper, id);
+		return this.queryForObject(select, params, mapper);
 	}
 
 	@Override
@@ -96,7 +108,9 @@ public class DatasourceInfoRepoImp extends JdbcDaoSupport implements DatasourceI
 
 	@Override
 	public void deleteDatasourceInfo(long feedId) throws HttpClientErrorException {
-		int rows = this.getJdbcTemplate().update("UPDATE datasource_info SET active=FALSE WHERE feed_id=?", feedId);
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("id", feedId);
+		int rows = this.update("DELETE FROM datasource_info WHERE feed_id=:id", params);
 		if(rows == 0) {
 			throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
 		}
@@ -107,7 +121,7 @@ public class DatasourceInfoRepoImp extends JdbcDaoSupport implements DatasourceI
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("st", DataSourceState.ONLINE.toString());
 		params.addValue("id", feedId);
-		this.getJdbcTemplate().update("UPDATE datasource_info SET state=:st WHERE feed_id=:id", params);
+		this.update("UPDATE datasource_info SET state=:st WHERE feed_id=:id", params);
 	}
 
 }

@@ -7,19 +7,19 @@
     
   <artifactId>citytransportsystem</artifactId>
     
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-CTS</version>
     
   <packaging>pom</packaging>
     
   <modules>
       	
-    <module>cts</module>
+    <module>cts-common</module>
+
+<!--    <module>cts</module>-->
       	
     <module>cts-datasource</module>
       	
     <module>cts-country</module>
-      	
-    <module>cts-common</module>
         
     <module>cts-app</module>
       

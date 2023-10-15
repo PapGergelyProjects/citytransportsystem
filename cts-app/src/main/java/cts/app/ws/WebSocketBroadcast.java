@@ -34,11 +34,11 @@ public class WebSocketBroadcast{
 	@MessageMapping("/refreshing")
 	public SourceState send(SourceState msg) {
 		logger.info(msg);
-		msgTh.init(msg);
 		SelectedFeed feed = new SelectedFeed();
 		feed.setId(msg.getFeedId());
 		feed.setState(msg.getState());
 		feedSrvc.updateState(feed);
+		msgTh.init(msg);
 		return new SourceState(-1L, "Server", DataSourceState.TECHNICAL);
 	}
 }

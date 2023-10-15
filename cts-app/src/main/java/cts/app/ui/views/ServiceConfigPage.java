@@ -3,8 +3,6 @@ package cts.app.ui.views;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestClientException;
@@ -36,7 +34,6 @@ import cts.app.ui.MainLayout;
 import cts.app.ui.utils.CtsNotification;
 import cts.app.ui.utils.FlexSearchLayout;
 import cts.app.ui.utils.StateButton;
-import cts.app.utils.SourceStates;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SelectedFeed;
@@ -70,7 +67,8 @@ public class ServiceConfigPage extends VerticalLayout {
 		this.setSizeFull();
 		this.setSpacing(false);
 		transitFeedGrid = initGrid();
-		transitFeedGrid.setDataProvider(new ListDataProvider<>(getFeedViews()));
+		transitFeedGrid.setItems(getFeedViews());
+		//transitFeedGrid.setDataProvider(new ListDataProvider<>(getFeedViews()));
 		this.add(initSearchBar());
 		this.add(transitFeedGrid);
 	}
@@ -94,6 +92,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	
 	private Grid<TransitFeedView> initGrid(){
 		Grid<TransitFeedView> grid = new Grid<>(TransitFeedView.class, false);
+		
 		grid.addComponentColumn(r -> {
 			if(r.isEnabled()) {
 				if(r.isActive()) {
@@ -149,7 +148,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	}
 	
 	private void refresh() {
-		transitFeedGrid.setDataProvider(new ListDataProvider<>(getFeedViews()));
+		refreshGrid(this.getFeedViews());
 		filterGrid();
 	}
 	
@@ -158,8 +157,8 @@ public class ServiceConfigPage extends VerticalLayout {
 		listDataProvider.setFilter(getFilter());
 	}
 	
-	public void refreshGrid(ListDataProvider<TransitFeedView> data) {
-		transitFeedGrid.setDataProvider(data);
+	public void refreshGrid(List<TransitFeedView> data) {
+		transitFeedGrid.setItems(data);
 		filterGrid();
 	}
 	
@@ -207,7 +206,7 @@ public class ServiceConfigPage extends VerticalLayout {
 		super.onAttach(attachEvent);
 		msgTh.addFunction("ServiceConfig", state -> { //TODO: Unique thread name
 			attachEvent.getSource().getUI().ifPresent(ui -> ui.access(() -> {
-				this.refreshGrid(new ListDataProvider<>(this.getFeedViews()));
+				this.refresh();
 				noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
 			}));
 			return null;
@@ -219,7 +218,5 @@ public class ServiceConfigPage extends VerticalLayout {
 		super.onDetach(detachEvent);
 		msgTh.removeFunction("ServiceConfig");
 	}
-	
-	
 	
 }

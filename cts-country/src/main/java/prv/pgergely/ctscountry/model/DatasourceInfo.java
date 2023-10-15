@@ -12,7 +12,7 @@ public class DatasourceInfo implements Serializable {
     private String sourceName;
     private String sourceUrl;
     private String schemaName;
-    private DataSourceState state;
+    private DataSourceState state = DataSourceState.UNREGISTERED;
     private boolean active;
     
     protected DatasourceInfo() {}
