@@ -9,7 +9,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import jakarta.annotation.PostConstruct;
@@ -19,21 +20,18 @@ import prv.pgergely.ctsdata.interfaces.StopLocationRepo;
 import prv.pgergely.ctsdata.model.StopLocation;
 
 @Repository
-public class StopLocationRepoImpl extends JdbcDaoSupport implements StopLocationRepo {
+public class StopLocationRepoImpl extends NamedParameterJdbcTemplate implements StopLocationRepo {
 	
 	@Autowired
-	private DataSource ds;
+	public StopLocationRepoImpl(DataSource dataSource) {
+		super(dataSource);
+	}
 	
 	private DecimalFormat doubleFormat = new DecimalFormat(".#");
 	
-	@PostConstruct
-	public void init() {
-		super.setDataSource(ds);
-	}
-	
 	@Override
 	public List<StopLocation> getAllStopWithinRadius(SearchLocation location) {
-		final String sql = "SELECT * FROM stops_within_radius(?, ?, ?) "
+		final String sql = "SELECT * FROM stops_within_radius(:lat, :lon, :rad) "
 							+ "GROUP BY stop_name, stop_lat, stop_lon, route_name, stop_distance, stop_color, text_color ";
 							//+ "ORDER BY route_name ";
 		
@@ -50,17 +48,22 @@ public class StopLocationRepoImpl extends JdbcDaoSupport implements StopLocation
 			return stopLocation;
 		};
 		Coordinate coordinate = location.getCoordinates();
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue(":lat", coordinate.getLatitude()); 
+		params.addValue(":lon", coordinate.getLongitude()); 
+		params.addValue(":rad", location.getRadius()); 
 		
-		return this.getJdbcTemplate().query(sql, mapLocation, coordinate.getLatitude(), coordinate.getLongitude(), location.getRadius());
+		return this.query(sql, params, mapLocation);
 	}
 
 	@Override
 	public List<StopLocation> getAllStopWithinRadiusWithTime(SearchLocation location) {
-		final String sql = "SELECT route_name, stop_names, stop_latitude, stop_longitude, "
-							+ "stop_color, text_color, stop_distance, depart_time "
-							+ "FROM stop_and_times_within_range(?, ?, ?) "
-							+ "GROUP BY route_name, stop_names, stop_latitude, stop_longitude, stop_color, text_color, stop_distance, depart_time ";
-							//+ "ORDER BY route_name ";
+		final String sql = """
+				SELECT route_name, stop_names, stop_latitude, stop_longitude, 
+					   stop_color, text_color, stop_distance, depart_time 
+				FROM stop_and_times_within_range(:lat, :lon, :rad) 
+				GROUP BY route_name, stop_names, stop_latitude, stop_longitude, stop_color, text_color, stop_distance, depart_time 
+				""";
 		
 		RowMapper<StopLocation> mapLocation = (rs, rows) -> {
 			StopLocation stopLocation = new StopLocation();
@@ -76,8 +79,12 @@ public class StopLocationRepoImpl extends JdbcDaoSupport implements StopLocation
 			return stopLocation; 
 		};
 		Coordinate coordinate = location.getCoordinates();
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue(":lat", coordinate.getLatitude()); 
+		params.addValue(":lon", coordinate.getLongitude()); 
+		params.addValue(":rad", location.getRadius()); 
 		
-		return this.getJdbcTemplate().query(sql, mapLocation, coordinate.getLatitude(), coordinate.getLongitude(), location.getRadius());
+		return this.query(sql, params, mapLocation);
 	}
 
 	private List<LocalTime> getRefinedArray(String rawArr){

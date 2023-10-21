@@ -14,7 +14,7 @@ spring:
     max-request-size: 50MB
 ---
 configs:
-   websocketServer: ws://localhost:742/cts/channel
+   websocketServer: ws://localhost:742/cts-app/channel
    threadParams:
       initDelayed: 30
       delayBetween: 40

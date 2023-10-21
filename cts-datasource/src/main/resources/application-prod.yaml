@@ -15,7 +15,7 @@ spring:
       leakDetectionThreshold: 300000
 ---
 configs:
-   websocketServer: ws://internal-network:742/cts/channel
+   websocketServer: ws://internal-network:742/cts-app/channel
    threadParams:
       initDelayed: 30
       delayBetween: 40
