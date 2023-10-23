@@ -29,7 +29,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import cts.app.domain.ResponseData;
 import cts.app.domain.TransitFeedView;
 import cts.app.service.FeedService;
-import cts.app.service.MessagingThread;
 import cts.app.ui.MainLayout;
 import cts.app.ui.utils.CtsNotification;
 import cts.app.ui.utils.FlexSearchLayout;
@@ -37,6 +36,8 @@ import cts.app.ui.utils.StateButton;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SelectedFeed;
+import prv.pgergely.cts.common.domain.SourceState;
+import prv.pgergely.cts.common.observable.ObservableObject;
 
 @UIScope
 @SpringComponent
@@ -51,16 +52,15 @@ public class ServiceConfigPage extends VerticalLayout {
 	private FeedService feedSource;
 	
 	@Autowired
-	private MessagingThread msgTh;
+	private CtsNotification noti;
 	
 	@Autowired
-	private CtsNotification noti;
+	private ObservableObject<SourceState> observe;
 	
 	private TextField search;
 	private DatePicker date;
 	private Checkbox isRegistered;
 	private Grid<TransitFeedView> transitFeedGrid;
-	private Thread refreshThread;
 	
 	@PostConstruct
 	public void init() {
@@ -149,7 +149,6 @@ public class ServiceConfigPage extends VerticalLayout {
 	
 	private void refresh() {
 		refreshGrid(this.getFeedViews());
-		filterGrid();
 	}
 	
 	private void filterGrid() {
@@ -204,19 +203,18 @@ public class ServiceConfigPage extends VerticalLayout {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
-		msgTh.addFunction("ServiceConfig", state -> { //TODO: Unique thread name
+		observe.subscribe("StatusUpdate", state -> {
 			attachEvent.getSource().getUI().ifPresent(ui -> ui.access(() -> {
 				this.refresh();
 				noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
 			}));
-			return null;
 		});
 	}
 
 	@Override
 	protected void onDetach(DetachEvent detachEvent) {
 		super.onDetach(detachEvent);
-		msgTh.removeFunction("ServiceConfig");
+		observe.unsubscribe("StatusUpdate");
 	}
 	
 }

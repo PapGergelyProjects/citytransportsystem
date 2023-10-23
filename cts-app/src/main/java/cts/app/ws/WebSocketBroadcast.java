@@ -5,13 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import cts.app.service.MessagingThread;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
+import prv.pgergely.cts.common.observable.ObservableObject;
 
 @Controller
 public class WebSocketBroadcast{
@@ -19,10 +18,7 @@ public class WebSocketBroadcast{
 	private Logger logger = LogManager.getLogger(WebSocketBroadcast.class);
 	
 	@Autowired
-	private MessagingThread msgTh;
-	
-	@Autowired
-	private SimpMessagingTemplate template;
+	private ObservableObject<SourceState> observed;
 	
 	@GetMapping("/channel-broadcast")
 	public String getBroadcast() {
@@ -33,7 +29,7 @@ public class WebSocketBroadcast{
 	@MessageMapping("/refreshing")
 	public SourceState send(SourceState msg) {
 		logger.info(msg);
-		msgTh.init(msg);
+		observed.next(msg);
 		return new SourceState(-1L, "Server", DataSourceState.TECHNICAL);
 	}
 }
