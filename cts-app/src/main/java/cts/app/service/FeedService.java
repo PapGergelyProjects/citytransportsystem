@@ -92,16 +92,4 @@ public class FeedService {
 			return loc;
 		}).collect(Collectors.toList());
 	}
-	
-	public ResponseData updateState(SelectedFeed actFeed) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.set("X-Feed", actFeed.getTechnicalTitle());
-		headers.set("X-State", actFeed.getState().toString());
-		HttpEntity<SelectedFeed> entity = new HttpEntity<>(actFeed, headers);
-		ResponseData resp = template.patchForObject(config.getServiceUrl()+"/feed/update-state", entity, ResponseData.class);
-		
-		return resp;
-	}
 }

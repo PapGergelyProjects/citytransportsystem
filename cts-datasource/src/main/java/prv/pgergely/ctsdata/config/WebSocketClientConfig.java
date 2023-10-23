@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -54,21 +56,21 @@ public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/channel");
 	}
-
+	
 	@Bean
-	public StandardWebSocketClient getWsClient() {
+	public StompSession getWsClient() {
 		StandardWebSocketClient client = new StandardWebSocketClient();
 		try {
 			HttpHeaders header = new HttpHeaders();
 			header.set("X-Schema", schema.getSchemaName());
 			WebSocketStompClient stompClient = new WebSocketStompClient(initSSL(client));
 			stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-			stompClient.connectAsync(URI.create(config.getWebsocketServer()), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler(stompClient, config.getWebsocketServer()));
-		} catch (KeyManagementException | NoSuchAlgorithmException e) {
+			return stompClient.connectAsync(URI.create(config.getWebsocketServer()), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler()).get();
+		} catch (KeyManagementException | NoSuchAlgorithmException | InterruptedException | ExecutionException e) {
 			logger.error(e.toString(), e);
 		}
 		
-		return client;
+		return null;
 	}
 	
 	private SockJsClient initSSL(StandardWebSocketClient client) throws NoSuchAlgorithmException, KeyManagementException {

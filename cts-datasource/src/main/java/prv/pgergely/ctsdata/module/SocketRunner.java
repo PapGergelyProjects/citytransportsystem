@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
+import prv.pgergely.ctsdata.service.MessagePublisher;
 import prv.pgergely.ctsdata.utility.Schema;
-import prv.pgergely.ctsdata.utility.WebSocketSessionHandler;
 
 @Component
 public class SocketRunner implements ApplicationRunner {
@@ -22,16 +22,22 @@ public class SocketRunner implements ApplicationRunner {
 	@Autowired
 	private ScheduledThreadEngine threadEng;
 	
+	@Autowired
+	private MessagePublisher sender;
+	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		threadEng.process(1, 30, TimeUnit.SECONDS, "TestSocketUpdate", () -> {
-			WebSocketSessionHandler.publish(new SourceState(schema.getFeedId(),"BKK_GTFS", DataSourceState.UPDATING));
+			DataSourceState state = DataSourceState.UPDATING;
+			sender.publish(new SourceState(schema.getFeedId(),"BKK_GTFS", state));
 		});
 		threadEng.process(15, 30, TimeUnit.SECONDS, "TestSocketOnline", () -> {
-			WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), "BKK_GTFS", DataSourceState.ONLINE));
+			DataSourceState state = DataSourceState.ONLINE;
+			sender.publish(new SourceState(schema.getFeedId(),"BKK_GTFS", state));
 		});
 		threadEng.process(20, 30, TimeUnit.SECONDS, "TestSocketOffline", () -> {
-			WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), "BKK_GTFS", DataSourceState.OFFLINE));
+			DataSourceState state = DataSourceState.OFFLINE;
+			sender.publish(new SourceState(schema.getFeedId(),"BKK_GTFS", state));
 		});
 	}
 

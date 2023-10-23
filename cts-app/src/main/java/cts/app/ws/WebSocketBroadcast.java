@@ -5,13 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import cts.app.service.FeedService;
 import cts.app.service.MessagingThread;
 import prv.pgergely.cts.common.domain.DataSourceState;
-import prv.pgergely.cts.common.domain.SelectedFeed;
 import prv.pgergely.cts.common.domain.SourceState;
 
 @Controller
@@ -23,7 +22,7 @@ public class WebSocketBroadcast{
 	private MessagingThread msgTh;
 	
 	@Autowired
-	private FeedService feedSrvc;
+	private SimpMessagingTemplate template;
 	
 	@GetMapping("/channel-broadcast")
 	public String getBroadcast() {
@@ -34,10 +33,6 @@ public class WebSocketBroadcast{
 	@MessageMapping("/refreshing")
 	public SourceState send(SourceState msg) {
 		logger.info(msg);
-		SelectedFeed feed = new SelectedFeed();
-		feed.setId(msg.getFeedId());
-		feed.setState(msg.getState());
-		feedSrvc.updateState(feed);
 		msgTh.init(msg);
 		return new SourceState(-1L, "Server", DataSourceState.TECHNICAL);
 	}

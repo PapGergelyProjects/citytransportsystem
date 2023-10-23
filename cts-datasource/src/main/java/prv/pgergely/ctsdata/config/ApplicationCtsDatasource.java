@@ -13,9 +13,9 @@ import prv.pgergely.ctsdata.utility.Schema;
 @ComponentScan(basePackageClasses= {CommonComponents.class, CtsDsComponents.class})
 public class ApplicationCtsDatasource {
 	
-	
 	private static String schema = "";
 	private static Long feedId = 0L;
+	
 //    @Override
 //    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 //    	application.addCommandLineProperties(true);

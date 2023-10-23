@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
@@ -42,12 +43,11 @@ public class DataPreparation {
 	@Autowired
 	private Schema schema;
 	
-	@PostConstruct
-	public void  init() {
-	}
+	@Autowired
+	private MessagePublisher sender;
 	
     public void extractZipFile(byte[] zipStream) throws IOException, CannotGetJdbcConnectionException, SQLException{
-    	WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.UPDATING));
+    	sender.publish(new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.UPDATING));
     	logger.info("Clear tables");
     	srvc.clearTables();
     	logger.info("Starting extracting files from zip...");
@@ -65,7 +65,7 @@ public class DataPreparation {
         logger.info("Materalization complete.");
         zis.closeEntry();
         zis.close();
-        WebSocketSessionHandler.getSession().send("/app/channel", new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.ONLINE));
+        sender.publish(new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.ONLINE));
     }
 	
 	private void copyCsvContent(String fileName, InputStream stream) throws CannotGetJdbcConnectionException, SQLException, IOException {
