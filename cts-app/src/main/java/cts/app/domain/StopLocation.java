@@ -1,5 +1,6 @@
 package cts.app.domain;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import prv.pgergely.cts.common.domain.Coordinate;
  * @author Pap Gergely
  *
  */
-public class StopLocation{
+public class StopLocation implements Serializable{
 	
 	private long id;
 	private String stopName;

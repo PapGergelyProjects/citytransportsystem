@@ -203,7 +203,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
-		observe.subscribe("StatusUpdate", state -> {
+		observe.subscribe(state -> {
 			attachEvent.getSource().getUI().ifPresent(ui -> ui.access(() -> {
 				this.refresh();
 				noti.showNotification(NotificationVariant.LUMO_SUCCESS, "Feed statues refreshed");
@@ -214,7 +214,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	@Override
 	protected void onDetach(DetachEvent detachEvent) {
 		super.onDetach(detachEvent);
-		observe.unsubscribe("StatusUpdate");
+		observe.unsubscribe();
 	}
 	
 }

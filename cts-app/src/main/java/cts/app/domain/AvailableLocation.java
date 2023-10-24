@@ -1,8 +1,10 @@
 package cts.app.domain;
 
+import java.io.Serializable;
+
 import com.helger.commons.name.IHasDisplayName;
 
-public class AvailableLocation implements IHasDisplayName {
+public class AvailableLocation implements IHasDisplayName, Serializable {
 	
 	private Long id;
 	private String locationName;

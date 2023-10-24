@@ -4,6 +4,7 @@ import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
+import static java.lang.Math.toDegrees;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Calculations {
 			double bear = toRadians(i);
 			double calcLat = asin(sin(radianLat) * cos(calcDistance) + cos(radianLat) * sin(calcDistance) * cos(bear));
 			double calcLon = radianLon + atan2(sin(bear) * sin(calcDistance) * cos(radianLat), cos(calcDistance) - sin(radianLat) * sin(calcLat));
-			arcPoints.add(new GoogleMapPoint(Math.toDegrees(calcLat), Math.toDegrees(calcLon)));
+			arcPoints.add(new GoogleMapPoint(toDegrees(calcLat), toDegrees(calcLon)));
 		}
 		
 		return arcPoints;
