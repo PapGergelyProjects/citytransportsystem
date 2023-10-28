@@ -49,9 +49,9 @@ public class StopLocationRepoImpl extends NamedParameterJdbcTemplate implements 
 		};
 		Coordinate coordinate = location.getCoordinates();
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue(":lat", coordinate.getLatitude()); 
-		params.addValue(":lon", coordinate.getLongitude()); 
-		params.addValue(":rad", location.getRadius()); 
+		params.addValue("lat", coordinate.getLatitude()); 
+		params.addValue("lon", coordinate.getLongitude()); 
+		params.addValue("rad", location.getRadius()); 
 		
 		return this.query(sql, params, mapLocation);
 	}
@@ -80,9 +80,9 @@ public class StopLocationRepoImpl extends NamedParameterJdbcTemplate implements 
 		};
 		Coordinate coordinate = location.getCoordinates();
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue(":lat", coordinate.getLatitude()); 
-		params.addValue(":lon", coordinate.getLongitude()); 
-		params.addValue(":rad", location.getRadius()); 
+		params.addValue("lat", coordinate.getLatitude()); 
+		params.addValue("lon", coordinate.getLongitude()); 
+		params.addValue("rad", location.getRadius()); 
 		
 		return this.query(sql, params, mapLocation);
 	}

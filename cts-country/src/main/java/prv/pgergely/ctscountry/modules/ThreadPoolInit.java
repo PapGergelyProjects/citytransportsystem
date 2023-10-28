@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
-import prv.pgergely.ctscountry.services.ZipContentSender;
+import prv.pgergely.ctscountry.interfaces.ContentSenderThread;
+import prv.pgergely.ctscountry.interfaces.VersionHandlerThread;
 
 @Order(2)
 @Component
@@ -20,10 +21,10 @@ public class ThreadPoolInit implements ApplicationRunner {
 	private ScheduledThreadEngine threadEng;
 	
 	@Autowired
-	private FeedVersionHandler versionHandler;
+	private VersionHandlerThread versionHandler;
 	
 	@Autowired
-	private ZipContentSender zipSender;
+	private ContentSenderThread zipSender;
 	
 	@Autowired
 	private CtsConfig config;

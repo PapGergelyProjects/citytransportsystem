@@ -64,7 +64,7 @@ public class DatasourceInfoRepoImp extends NamedParameterJdbcTemplate implements
 
 	@Override
 	public DatasourceInfo getDatasourceInfoById(long id) {
-		final String select = "SELECT id, feed_id, source_name, source_url, schema_name, state, active FROM datasource_info WHERE feed_id=?";
+		final String select = "SELECT id, feed_id, source_name, source_url, schema_name, state, active FROM datasource_info WHERE feed_id=:feedId";
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("feedId", id);
 		RowMapper<DatasourceInfo> mapper = (rs, rows) ->{

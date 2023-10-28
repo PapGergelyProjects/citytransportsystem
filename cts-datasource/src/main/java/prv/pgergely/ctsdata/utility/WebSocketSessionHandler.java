@@ -19,7 +19,6 @@ import prv.pgergely.cts.common.domain.SourceState;
 public class WebSocketSessionHandler extends StompSessionHandlerAdapter implements WebSocketConfigurer {
 	
 	private Logger logger = LogManager.getLogger(WebSocketSessionHandler.class);
-	private AtomicReference<StompSession> SESSION = new AtomicReference<>(); 
 
 	@Override
 	public Type getPayloadType(StompHeaders headers) {
@@ -36,7 +35,6 @@ public class WebSocketSessionHandler extends StompSessionHandlerAdapter implemen
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
 		logger.info("New session established : " + session.getSessionId());
 		session.subscribe("/cts-channel/messaging", this);
-		SESSION.set(session);
 		logger.info("subscribe to...");
 		session.send("/app/refreshing", new SourceState(-1L, "Client", DataSourceState.TECHNICAL));
 	}

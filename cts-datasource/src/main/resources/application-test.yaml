@@ -1,13 +1,20 @@
+server:
+  port: 8090
 spring:
-  datasource-primary:
-    driver-class-name: org.postgresql.Driver 
-    jdbcUrl: jdbc:postgresql://localhost:5434/sandbox
-    schema: test_gtfs
-    username: postgres
-    password: home
-    separator: ^;
+  datasource-devel:
+   driver-class-name: org.postgresql.Driver 
+   jdbcUrl: jdbc:postgresql://localhost:5432/sandbox
+   username: postgres
+   password: home
+   schema: test_gtfs
+   separator: ^;
+  servlet: 
+   multipart:
+    max-file-size: 50MB
+    max-request-size: 50MB
 ---
 configs:
+   websocketServer: ws://localhost:742/cts-app/channel
    threadParams:
       initDelayed: 30
       delayBetween: 40

@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.domain.DataSourceState;
@@ -14,6 +15,7 @@ import prv.pgergely.ctsdata.service.MessagePublisher;
 import prv.pgergely.ctsdata.utility.Schema;
 
 @Component
+@Profile("test")
 public class SocketRunner implements ApplicationRunner {
 	
 	@Autowired
