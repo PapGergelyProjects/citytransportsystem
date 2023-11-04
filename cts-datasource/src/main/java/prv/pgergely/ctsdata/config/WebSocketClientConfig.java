@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -65,7 +67,8 @@ public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  
 			header.set("X-Schema", schema.getSchemaName());
 			WebSocketStompClient stompClient = new WebSocketStompClient(initSSL(client));
 			stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-			return stompClient.connectAsync(URI.create(config.getWebsocketServer()), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler()).get();
+			CompletableFuture<StompSession> session = stompClient.connectAsync(URI.create(config.getWebsocketServer()), new WebSocketHttpHeaders(header), new StompHeaders(), new WebSocketSessionHandler());
+			return session.get();
 		} catch (KeyManagementException | NoSuchAlgorithmException | InterruptedException | ExecutionException e) {
 			logger.error(e.toString(), e);
 		}

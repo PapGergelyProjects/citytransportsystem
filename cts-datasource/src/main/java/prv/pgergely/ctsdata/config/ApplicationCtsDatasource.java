@@ -1,5 +1,6 @@
 package prv.pgergely.ctsdata.config;
 
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,9 +13,7 @@ import prv.pgergely.ctsdata.utility.Schema;
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, CtsDsComponents.class})
 public class ApplicationCtsDatasource {
-	
-	private static String schema = "";
-	private static Long feedId = 0L;
+
 	
 //    @Override
 //    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -35,17 +34,19 @@ public class ApplicationCtsDatasource {
 //    }
 	
 	public static void main(String[] args) {
-		String[] param = args[0].split("#");
-		schema = param[0];
-		feedId = Long.valueOf(param[1]);
 		SpringApplication.run(ApplicationCtsDatasource.class, args);
 	}
 	
 	@Bean
-	public Schema getSchema() {
-		Schema sc = new Schema();
-		sc.setSchemaName(schema);
-		sc.setFeedId(feedId);
-		return sc;
+	public Schema getSchema(ApplicationArguments arguments) {
+		String[] param = arguments.getSourceArgs()[0].split("#");
+		String schema = param[0];
+		Long feedId = Long.valueOf(param[1]);
+		Schema actSchema = new Schema();
+		actSchema.setSchemaName(schema);
+		actSchema.setFeedId(feedId);
+		
+		return actSchema;
 	}
+
 }

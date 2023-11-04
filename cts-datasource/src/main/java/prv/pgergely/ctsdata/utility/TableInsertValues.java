@@ -307,6 +307,7 @@ public enum TableInsertValues {
 	 * @param records The map which contains the actual values.
 	 * @return An insert value group
 	 */
+	@Deprecated
     public abstract String getInsertValue(List<String> columns, Map<String, String> records);
     
     /**
@@ -316,6 +317,7 @@ public enum TableInsertValues {
      * @param rawCols
      * @return
      */
+	@Deprecated
     public abstract List<String> getColNames(List<String> rawCols);
     public abstract List<String> getColNames();
     

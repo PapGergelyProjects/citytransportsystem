@@ -14,17 +14,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.ctsdata.config.CtsDataConfig;
 import prv.pgergely.ctsdata.utility.CsvRefiner;
 import prv.pgergely.ctsdata.utility.Schema;
 import prv.pgergely.ctsdata.utility.TableInsertValues;
-import prv.pgergely.ctsdata.utility.WebSocketSessionHandler;
 
 @Service
 public class DataPreparation {

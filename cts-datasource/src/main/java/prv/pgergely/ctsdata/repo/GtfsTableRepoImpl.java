@@ -31,7 +31,6 @@ public class GtfsTableRepoImpl extends JdbcDaoSupport implements GtfsTableRepo {
 	@Override
 	public void insert(String insertValues) {
 		int[] array = this.getJdbcTemplate().batchUpdate(insertValues);
-		System.out.println(Arrays.toString(array));//DELETE
 	}
 	
 	@Override
