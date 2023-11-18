@@ -76,6 +76,7 @@
     "@vaadin/virtual-list": "24.1.9",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
+    "google-maps": "4.3.3",
     "lit": "2.7.6",
     "mobile-drag-drop": "2.3.0-rc.2",
     "proj4": "2.9.0"
@@ -173,6 +174,7 @@
       "@vaadin/virtual-list": "24.1.9",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
+      "google-maps": "4.3.3",
       "lit": "2.7.6",
       "mobile-drag-drop": "2.3.0-rc.2",
       "proj4": "2.9.0"
@@ -195,7 +197,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "4f124c3fd20d358f84671fe3bac0453056f078c2ded5d5bef9a94df3eac2b6e5"
+    "hash": "afb2ad446c3cc27ad3947ed4beeca19c51444ef279ea457e7d53f28a0599435b"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -273,6 +275,7 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
-    "mobile-drag-drop": "$mobile-drag-drop"
+    "mobile-drag-drop": "$mobile-drag-drop",
+    "google-maps": "$google-maps"
   }
 }

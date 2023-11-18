@@ -74,6 +74,7 @@
   "@vaadin/virtual-list": "24.1.9",
   "construct-style-sheets-polyfill": "3.1.0",
   "date-fns": "2.29.3",
+  "google-maps": "4.3.3",
   "lit": "2.7.6",
   "mobile-drag-drop": "2.3.0-rc.2",
   "proj4": "2.9.0"
@@ -157,6 +158,7 @@
   "construct-style-sheets-polyfill": "3.1.0",
   "cookieconsent": "3.1.1",
   "date-fns": "2.29.3",
+  "google-maps": "4.3.3",
   "highcharts": "9.2.2",
   "is-regexp": "3.1.0",
   "lit-element": "3.3.3",
@@ -274,9 +276,13 @@
   "Frontend/generated/jar-resources/vaadin-grid-flow-selection-column.js",
   "Frontend/generated/jar-resources/vaadin-map/mapConnector.js",
   "Frontend/generated/jar-resources/vaadin-time-picker/timepickerConnector.js",
-  "Frontend/generated/jar-resources/virtualListConnector.js"
+  "Frontend/generated/jar-resources/virtualListConnector.js",
+  "Frontend/src/cts-google-map.ts",
+  "Frontend/src/test-comp.ts"
  ],
  "frontendHashes": {
+  "src/cts-google-map.ts": "532e878e0394b9f3361a5d51e95790efd0f4b38a41f315c147768f5b619f68f1",
+  "src/test-comp.ts": "1e9e74cff093038d22b89c01edb087bb838914acaf4610fc84bd8cb24e0a03a6",
   "buttonFunctions.js": "c852123f9b2c44eb75e555119d3e05a7dbe78b91d0ab616feb9df1654474707d",
   "comboBoxConnector.js": "1d004c3dae9c76f8bcc68678abe1b8f7bdc8b456f5c9c4c7f190df8ed25d66cd",
   "contextMenuConnector.js": "25a200f8086461635ddd92316ebeb5a868294c8650a190efbae120edb1088f4f",
@@ -304,7 +310,7 @@
   "cts": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
  },
  "entryScripts": [
-  "VAADIN/build/indexhtml-9f174b33.js"
+  "VAADIN/build/indexhtml-2e3bee58.js"
  ],
  "webComponents": [],
  "cvdlModules": {
@@ -337,8 +343,8 @@
    "version": "24.1.9"
   }
  },
- "packageJsonHash": "afddf652a2b99e8b3f990aa8a9be79b32824f2b5d5562915f5634d53c559c02f",
+ "packageJsonHash": "a430925c2c8fa9848988ca376594300b80e0562c64759787dd359dbc142ce8ee",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-9f174b33.js\"></script>"
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-2e3bee58.js\"></script>"
  ]
 }
