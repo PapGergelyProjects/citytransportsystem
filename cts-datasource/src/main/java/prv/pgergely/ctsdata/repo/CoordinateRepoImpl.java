@@ -27,12 +27,7 @@ public class CoordinateRepoImpl extends JdbcDaoSupport implements CoordinateRepo
 	@Override
 	public Coordinate getCoordinate(long id) {
 		final String sql = "SELECT stop_lat, stop_lon FROM stops WHERE id=?;";
-		RowMapper<Coordinate> mapper = (rs, rows) -> {
-			Coordinate coor = new Coordinate();
-			coor.setLatitude(rs.getDouble("stop_lat"));
-			coor.setLongitude(rs.getDouble("stop_lon"));
-			return coor;
-		};
+		RowMapper<Coordinate> mapper = (rs, rows) -> new Coordinate(rs.getDouble("stop_lat"), rs.getDouble("stop_lon"));
 		
 		return this.getJdbcTemplate().queryForObject(sql, mapper, new Object[]{id});
 	}
@@ -40,12 +35,7 @@ public class CoordinateRepoImpl extends JdbcDaoSupport implements CoordinateRepo
 	@Override
 	public List<Coordinate> getRadiusCoordinates(double lat, double lon, int radius) {
 		final String sql = "SELECT * FROM stops_within_radius(?, ?, ?)";
-		RowMapper<Coordinate> mapper = (rs, rows) -> {
-			Coordinate coor = new Coordinate();
-			coor.setLatitude(rs.getDouble("stop_lat"));
-			coor.setLongitude(rs.getDouble("stop_lon"));
-			return coor;
-		};
+		RowMapper<Coordinate> mapper = (rs, rows) -> new Coordinate(rs.getDouble("stop_lat"), rs.getDouble("stop_lon"));
 		
 		return this.getJdbcTemplate().query(sql, mapper, new Object[] {lat, lon, radius});
 	}

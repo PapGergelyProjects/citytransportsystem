@@ -1,11 +1,14 @@
 package prv.pgergely.cts.common.domain;
 
-public class Coordinate {
+import java.io.Serializable;
+
+import elemental.json.Json;
+import elemental.json.JsonObject;
+
+public class Coordinate implements Serializable {
 	
-	private double latitude;
-	private double longitude;
-	
-	public Coordinate() {}
+	private final double latitude;
+	private final double longitude;
 	
 	public Coordinate(double latitude, double longitude) {
 		this.latitude = latitude;
@@ -16,16 +19,16 @@ public class Coordinate {
 		return latitude;
 	}
 	
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-	
 	public double getLongitude() {
 		return longitude;
 	}
 	
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+	public JsonObject getAsJson() {
+		JsonObject obj = Json.createObject();
+		obj.put("lat", this.latitude);
+		obj.put("lng", this.longitude);
+		
+		return obj;
 	}
 	
 	@Override

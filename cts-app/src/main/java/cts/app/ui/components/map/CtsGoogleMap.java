@@ -1,9 +1,11 @@
-package cts.app.ui.components;
+package cts.app.ui.components.map;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
+
+import prv.pgergely.cts.common.domain.Coordinate;
 
 @Tag("cts-google-map")
 @JsModule("./src/cts-google-map.ts")
@@ -16,7 +18,15 @@ public class CtsGoogleMap extends Component {
 		this.getElement().setProperty("apiKey", apiKey);
 	}
 	
-	public void initMap() {
-		this.getElement().callJsFunction("initMap");
+	public void initMap(InitMapData data) {
+		this.getElement().callJsFunction("initMap", data.getAsJson());
+	}
+	
+	public void addMarker(String title, Coordinate coordinate) {
+		this.getElement().callJsFunction("addMarker", title, coordinate.getAsJson());
+	}
+	
+	public void removeMarkers() {
+		this.getElement().callJsFunction("removeMarkers");
 	}
 }

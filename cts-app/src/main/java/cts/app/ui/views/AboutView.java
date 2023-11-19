@@ -1,9 +1,9 @@
 package cts.app.ui.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -15,9 +15,11 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import cts.app.config.CtsConfig;
 import cts.app.ui.MainLayout;
-import cts.app.ui.components.CtsGoogleMap;
 import cts.app.ui.components.DummyComps;
+import cts.app.ui.components.map.CtsMap;
+import cts.app.ui.components.map.InitMapData;
 import jakarta.annotation.PostConstruct;
+import prv.pgergely.cts.common.domain.Coordinate;
 
 @UIScope
 @SpringComponent
@@ -31,7 +33,7 @@ public class AboutView extends VerticalLayout {
 	@Autowired
 	private CtsConfig config;
 	
-	private CtsGoogleMap map;
+	private CtsMap map;
 	
 	@PostConstruct
 	public void init() {
@@ -46,7 +48,11 @@ public class AboutView extends VerticalLayout {
         DummyComps cmp = new DummyComps();
         cmp.setName("Modified w/ function");
         add(cmp);
-        map = new CtsGoogleMap(config.getGoogleApiKey());
+        Button clear = new Button("Clear Map");
+        map = new CtsMap();
+        map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey()));
+        clear.addClickListener(e -> map.removeMarkers());
+        add(clear);
         add(map);
 
         setSizeFull();
@@ -58,7 +64,7 @@ public class AboutView extends VerticalLayout {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
-		map.initMap();
+		map.addMarker("Margit island", new Coordinate(47.517088, 19.043892));
 	}
 	
 	
