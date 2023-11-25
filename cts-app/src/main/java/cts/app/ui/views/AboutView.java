@@ -1,9 +1,13 @@
 package cts.app.ui.views;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -13,11 +17,9 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import cts.app.config.CtsConfig;
 import cts.app.ui.MainLayout;
 import cts.app.ui.components.DummyComps;
-import cts.app.ui.components.map.CtsMap;
-import cts.app.ui.components.map.InitMapData;
+import cts.app.ui.components.map.CtsGoogleMap;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
 
@@ -29,11 +31,9 @@ import prv.pgergely.cts.common.domain.Coordinate;
 public class AboutView extends VerticalLayout {
 
 	private static final long serialVersionUID = -487630249371220520L;
-	
+
 	@Autowired
-	private CtsConfig config;
-	
-	private CtsMap map;
+	private CtsGoogleMap map;
 	
 	@PostConstruct
 	public void init() {
@@ -49,11 +49,18 @@ public class AboutView extends VerticalLayout {
         cmp.setName("Modified w/ function");
         add(cmp);
         Button clear = new Button("Clear Map");
-        map = new CtsMap();
-        map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey()));
         clear.addClickListener(e -> map.removeMarkers());
         add(clear);
-        add(map);
+        Div mapDiv = new Div();
+        mapDiv.setHeight("500px");
+        mapDiv.setWidth("800px");
+        mapDiv.add(map);
+        map.subscribe(event -> {
+        	Coordinate c =  event.getIncomingCoord();
+        	event.setOutputCoord(new Coordinate(0.D,0.D));
+        	event.setOutputCoord(new Coordinate(1.D,1.D));
+        });
+        add(mapDiv);
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -64,8 +71,7 @@ public class AboutView extends VerticalLayout {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
-		map.addMarker("Margit island", new Coordinate(47.517088, 19.043892));
+		//map.addMarker("Margit island", new Coordinate(47.517088, 19.043892));
 	}
-	
-	
+
 }

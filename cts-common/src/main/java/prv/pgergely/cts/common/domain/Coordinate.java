@@ -31,6 +31,10 @@ public class Coordinate implements Serializable {
 		return obj;
 	}
 	
+	public static Coordinate getFromJson(JsonObject obj) {
+		return new Coordinate(obj.get("lat").asNumber(), obj.get("lng").asNumber());
+	}
+	
 	@Override
 	public String toString() {
 		return "Coordinate(latitude=" + latitude + ", longitude=" + longitude + ")";

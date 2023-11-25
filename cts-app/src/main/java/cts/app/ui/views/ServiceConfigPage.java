@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.client.RestClientException;
 
 import com.vaadin.flow.component.AttachEvent;
@@ -26,6 +27,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import cts.app.config.ApplicationCts;
 import cts.app.domain.ResponseData;
 import cts.app.domain.TransitFeedView;
 import cts.app.service.FeedService;
@@ -55,6 +57,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	private CtsNotification noti;
 	
 	@Autowired
+	@Qualifier(ApplicationCts.CHANGE_ON_UI_OBSERVABLE)
 	private ObservableObject<SourceState> observe;
 	
 	private TextField search;

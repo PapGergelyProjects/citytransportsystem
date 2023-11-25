@@ -16,9 +16,13 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.Theme;
 
 import cts.app.CtsAppComponent;
+import cts.app.domain.ClickOnMapEvent;
+import cts.app.ui.components.map.CtsGoogleMap;
+import cts.app.ui.components.map.InitMapData;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import prv.pgergely.cts.common.CommonComponents;
+import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.cts.common.observable.ObservableObject;
 
@@ -28,7 +32,10 @@ import prv.pgergely.cts.common.observable.ObservableObject;
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, CtsAppComponent.class})
 public class ApplicationCts extends SpringBootServletInitializer implements AppShellConfigurator {//SpringBootServletInitializer
-		
+	
+	public static final String CHANGE_ON_UI_OBSERVABLE = "change-on-ui-event";
+	public static final String CLICK_ON_MAP_OBSERVABLE = "click-on-map-event";
+	
 	@Autowired
 	private CtsConfig config;
 	
@@ -44,11 +51,26 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 	@Bean
 	@UIScope
 	public GoogleMap mapService() {
-		return new GoogleMap(config.getGoogleApiKey(), "", config.getGoogleMapLang());
+		//config.getGoogleApiKey()
+		return new GoogleMap("", "", config.getGoogleMapLang());
 	}
 	
 	@Bean
+	@UIScope
+	public CtsGoogleMap initMapService() {
+		CtsGoogleMap map = new CtsGoogleMap(config.getGoogleApiKey(), getEventObj());
+		map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey()));
+		
+		return map;
+	}
+	
+	@Bean(CHANGE_ON_UI_OBSERVABLE)
 	public ObservableObject<SourceState> getObsObj(){
+		return new ObservableObject<>();
+	}
+	
+	@Bean(CLICK_ON_MAP_OBSERVABLE)
+	public ObservableObject<ClickOnMapEvent> getEventObj(){
 		return new ObservableObject<>();
 	}
 	

@@ -282,7 +282,7 @@
  ],
  "frontendHashes": {
   "src/test-comp.ts": "caa753f48ff174c6ca8904b8c49660c0ce05252f2636f9bafd314abdf939138a",
-  "src/cts-google-map.ts": "9045e43c3d5b0a10b6fe200ba6898b099b8128aa3f5d5a47936338618ac1de47",
+  "src/cts-google-map.ts": "5a8ee8203d61fa5f436f2b81d7463688123d2d2bb34b5e624755e23d5b1027dd",
   "buttonFunctions.js": "c852123f9b2c44eb75e555119d3e05a7dbe78b91d0ab616feb9df1654474707d",
   "comboBoxConnector.js": "1d004c3dae9c76f8bcc68678abe1b8f7bdc8b456f5c9c4c7f190df8ed25d66cd",
   "contextMenuConnector.js": "25a200f8086461635ddd92316ebeb5a868294c8650a190efbae120edb1088f4f",
@@ -310,7 +310,7 @@
   "cts": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
  },
  "entryScripts": [
-  "VAADIN/build/indexhtml-33a178cd.js"
+  "VAADIN/build/indexhtml-e7491745.js"
  ],
  "webComponents": [],
  "cvdlModules": {
@@ -345,6 +345,6 @@
  },
  "packageJsonHash": "a430925c2c8fa9848988ca376594300b80e0562c64759787dd359dbc142ce8ee",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-33a178cd.js\"></script>"
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-e7491745.js\"></script>"
  ]
 }
