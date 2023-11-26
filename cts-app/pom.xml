@@ -155,11 +155,11 @@
             <version>5.0.3</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-           <groupId>com.flowingcode.vaadin.addons</groupId>
-           <artifactId>google-maps</artifactId>
-           <version>1.6.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--           <groupId>com.flowingcode.vaadin.addons</groupId>-->
+<!--           <artifactId>google-maps</artifactId>-->
+<!--           <version>1.6.0</version>-->
+<!--        </dependency>-->
         <dependency>
            <groupId>org.vaadin.elmot</groupId>
            <artifactId>vaadin-geo-location-flow-v14</artifactId>

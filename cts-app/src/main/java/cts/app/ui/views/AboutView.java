@@ -55,7 +55,7 @@ public class AboutView extends VerticalLayout {
         mapDiv.setHeight("500px");
         mapDiv.setWidth("800px");
         mapDiv.add(map);
-        map.subscribe(event -> {
+        map.addClickListener(event -> {
         	Coordinate c =  event.getIncomingCoord();
         	event.setOutputCoord(new Coordinate(0.D,0.D));
         	event.setOutputCoord(new Coordinate(1.D,1.D));

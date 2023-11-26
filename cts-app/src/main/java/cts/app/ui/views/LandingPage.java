@@ -8,15 +8,11 @@ import org.springframework.web.client.RestClientException;
 import org.vaadin.elmot.flow.sensors.GeoLocation;
 import org.vaadin.elmot.flow.sensors.Position;
 
-import com.flowingcode.vaadin.addons.googlemaps.GoogleMap;
-import com.flowingcode.vaadin.addons.googlemaps.GoogleMap.MapType;
-import com.flowingcode.vaadin.addons.googlemaps.GoogleMapMarker;
-import com.flowingcode.vaadin.addons.googlemaps.GoogleMapPolygon;
-import com.flowingcode.vaadin.addons.googlemaps.LatLon;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.details.Details;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -39,9 +35,9 @@ import cts.app.domain.StopLocationWrapper;
 import cts.app.service.FeedService;
 import cts.app.service.TransportDataService;
 import cts.app.ui.MainLayout;
+import cts.app.ui.components.map.CtsGoogleMap;
 import cts.app.ui.utils.CtsNotification;
 import cts.app.ui.utils.FlexSearchLayout;
-import cts.app.utils.Calculations;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SearchLocation;
@@ -54,9 +50,9 @@ import prv.pgergely.cts.common.domain.SearchLocation;
 public class LandingPage extends VerticalLayout {
 	
 	private static final long serialVersionUID = -4689904492954301366L;
-
+	
 	@Autowired
-	private GoogleMap gMap;
+	private CtsGoogleMap map;
 	
 	@Autowired
 	private FeedService source;
@@ -74,8 +70,6 @@ public class LandingPage extends VerticalLayout {
 	private Binder<Radius> fieldBinder;
 	private Radius radiusBean;
 	
-	private GoogleMapPolygon circle;
-	private GoogleMapMarker centerMarker;
 	private boolean isOpen = false;
 	
 	@PostConstruct
@@ -88,6 +82,7 @@ public class LandingPage extends VerticalLayout {
 		Details searchPanel = new Details("Search Options", initSearchBar());
         HorizontalLayout mapLayout = createMap();
         mapLayout.setSizeFull();
+        mapLayout.setWidth("100%");
         this.add(searchPanel, mapLayout, location());
 	}
 	
@@ -96,7 +91,7 @@ public class LandingPage extends VerticalLayout {
 		loadedLocations.addValueChangeListener(event -> {
 			AvailableLocation selected = event.getValue();
 			if(selected != null) {
-				gMap.setCenter(new LatLon(selected.getLat(), selected.getLon()));
+				map.setCenter(new Coordinate(selected.getLat(), selected.getLon()));
 			}
 		});
 		searchRadius = new IntegerField("Search Radius");
@@ -118,7 +113,7 @@ public class LandingPage extends VerticalLayout {
 				final Integer radius = searchRadius.getValue();
 				setPositionOnMap(lat, lon, radius);
 				setStopMarkersOnMap(lat, lon, radius);
-				gMap.setCenter(new LatLon(lat, lon));
+				//gMap.setCenter(new LatLon(lat, lon));
 			} else {
 				noti.showNotification(NotificationVariant.LUMO_ERROR, "The current location is not available.");
 			}
@@ -130,17 +125,19 @@ public class LandingPage extends VerticalLayout {
 	}
 	
 	private HorizontalLayout createMap() {
-		gMap.setSizeFull();
-		gMap.setMapType(MapType.ROADMAP);
-		gMap.addClickListener(event -> {
-			final Double lat = event.getLatitude();
-			final Double lon = event.getLongitude();
+		map.addClickListener(event -> {
+			Coordinate c =  event.getIncomingCoord();
+			final Double lat = c.getLatitude();
+			final Double lon = c.getLongitude();
 			final Integer radius = searchRadius.getValue();
 			setPositionOnMap(lat, lon, radius);
 			setStopMarkersOnMap(lat, lon, radius);
 		});
-		//gMap.setCenter(new LatLon(47.497913D, 19.040236D));
-		return new HorizontalLayout(gMap);
+		Div mapDiv = new Div();
+		mapDiv.add(map);
+		mapDiv.setHeight("100%");
+		mapDiv.setWidth("100%");
+		return new HorizontalLayout(mapDiv);
 	}
 	
 	private GeoLocation location() {
@@ -159,21 +156,18 @@ public class LandingPage extends VerticalLayout {
 		return geoLocation;
 	}
 	
-	private void setPositionOnMap(final Double lat, final Double lon, final Integer radius) {
+	private void setPositionOnMap(final Double lat, final Double lon, final Integer radius) {//TODO refact params 
 		if(fieldBinder.isValid()) {
-			if(circle != null && centerMarker != null) {
-				gMap.removePolygon(circle);
-				gMap.removeMarker(centerMarker);
-			}
-			circle = gMap.addPolygon(Calculations.calcArcPoints(lat, lon, radius/2));
-			circle.setClosed(false);
-			centerMarker = gMap.addMarker("You stand here", new LatLon(lat, lon), false, "");
+			Coordinate coords = new Coordinate(lat, lon, (radius/2));
+			map.removeMarkers();
+			map.setCenter(coords);
+			map.drawCircle(coords);
 		} else {
 			noti.showNotification(NotificationVariant.LUMO_ERROR, "Invalid radius value.");
 		}
 	}
 	
-	private void setStopMarkersOnMap(final Double lat, final Double lon, final Integer radius) {
+	private void setStopMarkersOnMap(final Double lat, final Double lon, final Integer radius) {//TODO refact params 
 		AvailableLocation selected = loadedLocations.getValue();
 		if(selected != null) {
 			SearchLocation loc = new SearchLocation();
@@ -181,10 +175,9 @@ public class LandingPage extends VerticalLayout {
 			loc.setCoordinates(new Coordinate(lat, lon));
 			StopLocationWrapper stops = dataSrvc.getStopsAndTimes(selected.getDsUrl(), loc);
 			for(StopLocation stop : stops.getStopList()) {
-				GoogleMapMarker markMyShit = gMap.addMarker(stop.getStopName(), new LatLon(stop.getStopCoordinate().getLatitude(), stop.getStopCoordinate().getLongitude()), false, "./images/marker_blue.png");
-				gMap.addMarker(markMyShit);
+				Coordinate stopCoord = stop.getStopCoordinate();
+				map.addCustomMarker(stop.getStopName(), stop.getStopColor(), stopCoord);
 			}
-			
 		}else {
 			noti.showNotification(NotificationVariant.LUMO_ERROR, "No selected location.");
 		}

@@ -1,7 +1,6 @@
 package cts.app.ui.components.map;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import com.vaadin.flow.component.ClientCallable;
@@ -33,22 +32,33 @@ public class CtsGoogleMap extends Component {
 		this.getElement().callJsFunction("initMap", data.getAsJson());
 	}
 	
+	public void setCenter(Coordinate coordinate) {
+		this.getElement().callJsFunction("setCenter", coordinate.getAsJson());
+	}
+	
 	public void addMarker(String title, Coordinate coordinate) {
 		this.getElement().callJsFunction("addMarker", title, coordinate.getAsJson());
+	}
+	
+	public void addCustomMarker(String title, String colorCode, Coordinate coordinate) {
+		this.getElement().callJsFunction("addCustomMarker", title, colorCode, coordinate.getAsJson());
 	}
 	
 	public void removeMarkers() {
 		this.getElement().callJsFunction("removeMarkers");
 	}
 	
-	@ClientCallable
-	private String clickOnMapEvent(JsonObject event) {
-		ClickOnMapEvent mapEvent = new ClickOnMapEvent(Coordinate.getFromJson(event), new ArrayList<>());
-		clickObsv.next(mapEvent);
-		return event+" received.";
+	public void drawCircle(Coordinate coordinate) {
+		this.getElement().callJsFunction("drawCircle", coordinate.getAsJson());
 	}
 	
-	public void subscribe(Consumer<ClickOnMapEvent> funct) {
+	@ClientCallable
+	private void clickOnMapEvent(JsonObject event) {
+		ClickOnMapEvent mapEvent = new ClickOnMapEvent(Coordinate.getFromJson(event), new ArrayList<>());
+		clickObsv.next(mapEvent);
+	}
+	
+	public void addClickListener(Consumer<ClickOnMapEvent> funct) {
 		clickObsv.subscribe(funct);
 	}
 	

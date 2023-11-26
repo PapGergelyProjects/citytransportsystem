@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.flowingcode.vaadin.addons.googlemaps.GoogleMap;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.spring.annotation.EnableVaadin;
@@ -48,12 +47,12 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 		SpringApplication.run(ApplicationCts.class, args);
 	}
 	
-	@Bean
-	@UIScope
-	public GoogleMap mapService() {
-		//config.getGoogleApiKey()
-		return new GoogleMap("", "", config.getGoogleMapLang());
-	}
+//	@Bean
+//	@UIScope
+//	public GoogleMap mapService() {
+//		//config.getGoogleApiKey()
+//		return new GoogleMap("", "", config.getGoogleMapLang());
+//	}
 	
 	@Bean
 	@UIScope

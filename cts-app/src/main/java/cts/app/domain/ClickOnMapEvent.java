@@ -21,7 +21,12 @@ public class ClickOnMapEvent implements Serializable {
 	public List<Coordinate> getOutputCoords() {
 		return outputCoords;
 	}
-
+	
+	/*
+	 * 
+	 * @deprecated don't use this
+	 */
+	@Deprecated
 	public void setOutputCoord(Coordinate outputCoords) {
 		this.outputCoords.add(outputCoords);
 	}
