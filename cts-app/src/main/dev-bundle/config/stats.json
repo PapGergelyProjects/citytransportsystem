@@ -1,6 +1,5 @@
 {
  "packageJsonDependencies": {
-  "@flowingcode/google-map": "3.1.0",
   "@polymer/polymer": "3.5.1",
   "@vaadin/a11y-base": "24.1.9",
   "@vaadin/accordion": "24.1.9",
@@ -80,12 +79,8 @@
   "proj4": "2.9.0"
  },
  "npmModules": {
-  "@flowingcode/google-map": "3.1.0",
-  "@johnriv/google-apis": "3.0.0",
   "@lit/reactive-element": "1.6.3",
   "@open-wc/dedupe-mixin": "1.3.1",
-  "@polymer/iron-jsonp-library": "3.0.1",
-  "@polymer/iron-resizable-behavior": "3.0.1",
   "@polymer/polymer": "3.5.1",
   "@vaadin/a11y-base": "24.1.9",
   "@vaadin/accordion": "24.1.9",
@@ -154,7 +149,6 @@
   "@vaadin/vaadin-usage-statistics": "2.1.2",
   "@vaadin/vertical-layout": "24.1.9",
   "@vaadin/virtual-list": "24.1.9",
-  "@webcomponents/shadycss": "1.11.2",
   "construct-style-sheets-polyfill": "3.1.0",
   "cookieconsent": "3.1.1",
   "date-fns": "2.29.3",
@@ -174,10 +168,6 @@
   "wkt-parser": "1.3.3"
  },
  "bundleImports": [
-  "@flowingcode/google-map/google-map-marker.js",
-  "@flowingcode/google-map/google-map-point.js",
-  "@flowingcode/google-map/google-map-poly.js",
-  "@flowingcode/google-map/google-map.js",
   "@vaadin/accordion/theme/lumo/vaadin-accordion-panel.js",
   "@vaadin/accordion/theme/lumo/vaadin-accordion.js",
   "@vaadin/app-layout/theme/lumo/vaadin-app-layout.js",
@@ -263,7 +253,6 @@
   "Frontend/generated/jar-resources/datepickerConnector.js",
   "Frontend/generated/jar-resources/dndConnector.js",
   "Frontend/generated/jar-resources/flow-component-renderer.js",
-  "Frontend/generated/jar-resources/googlemaps/geolocation.js",
   "Frontend/generated/jar-resources/gridConnector.js",
   "Frontend/generated/jar-resources/gridProConnector.js",
   "Frontend/generated/jar-resources/lit-renderer.ts",
@@ -282,7 +271,7 @@
  ],
  "frontendHashes": {
   "src/test-comp.ts": "caa753f48ff174c6ca8904b8c49660c0ce05252f2636f9bafd314abdf939138a",
-  "src/cts-google-map.ts": "5a8ee8203d61fa5f436f2b81d7463688123d2d2bb34b5e624755e23d5b1027dd",
+  "src/cts-google-map.ts": "11cc4524629fd9100f2479bf6746fde51303c9d5160969b96b3e6c050187f215",
   "buttonFunctions.js": "c852123f9b2c44eb75e555119d3e05a7dbe78b91d0ab616feb9df1654474707d",
   "comboBoxConnector.js": "1d004c3dae9c76f8bcc68678abe1b8f7bdc8b456f5c9c4c7f190df8ed25d66cd",
   "contextMenuConnector.js": "25a200f8086461635ddd92316ebeb5a868294c8650a190efbae120edb1088f4f",
@@ -291,7 +280,6 @@
   "datepickerConnector.js": "84d25236e1e478c2e181a7881464ad75228a30ccd99d60f78186f0804b6a4a37",
   "dndConnector.js": "9805235aec2ff3302fcd6e65151fcab1c2fb6944d57281b48d4f5e3b3d06ff4e",
   "flow-component-renderer.js": "f45de3d78e4719c2eb7aa09b48ec758e1e44e171cd4ad545ac9e33c3623dcfb1",
-  "googlemaps/geolocation.js": "4e7ab037e53e52e735ab13938757f9a2602ca45c08065de0d82ea27aaf0428b3",
   "gridConnector.js": "8649f4d9b54b728900474be227074a41334c08d677903501220ce5a188492a14",
   "gridProConnector.js": "bda2f830ef5a534e672457a633787dad9d7e69467b90330d1f5310d01dcbb61f",
   "lit-renderer.ts": "afefa9f5fcb38260a0ff08bc044a5f591f242689ca3c7905130ad32df0476e7c",
@@ -310,7 +298,7 @@
   "cts": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
  },
  "entryScripts": [
-  "VAADIN/build/indexhtml-e7491745.js"
+  "VAADIN/build/indexhtml-1e43acc1.js"
  ],
  "webComponents": [],
  "cvdlModules": {
@@ -343,8 +331,8 @@
    "version": "24.1.9"
   }
  },
- "packageJsonHash": "a430925c2c8fa9848988ca376594300b80e0562c64759787dd359dbc142ce8ee",
+ "packageJsonHash": "afb2ad446c3cc27ad3947ed4beeca19c51444ef279ea457e7d53f28a0599435b",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-e7491745.js\"></script>"
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-1e43acc1.js\"></script>"
  ]
 }

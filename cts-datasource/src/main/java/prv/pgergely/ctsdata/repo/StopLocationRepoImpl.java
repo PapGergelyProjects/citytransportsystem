@@ -18,6 +18,7 @@ import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SearchLocation;
 import prv.pgergely.ctsdata.interfaces.StopLocationRepo;
 import prv.pgergely.ctsdata.model.StopLocation;
+import prv.pgergely.ctsdata.utility.DataUtils;
 
 @Repository
 public class StopLocationRepoImpl extends NamedParameterJdbcTemplate implements StopLocationRepo {
@@ -42,8 +43,8 @@ public class StopLocationRepoImpl extends NamedParameterJdbcTemplate implements 
 			stopLocation.setStopCoordinate(new Coordinate(rs.getDouble("stop_lat"), rs.getDouble("stop_lon")));
 			double dist = Double.valueOf(doubleFormat.format(rs.getDouble("stop_distance")).replace(",", "."));
 			stopLocation.setStopDistance(dist);
-			stopLocation.setStopColor(rs.getString("stop_color"));
-			stopLocation.setStopTextColor(rs.getString("text_color"));
+			stopLocation.setStopColor(DataUtils.refineColorCode(rs.getString("stop_color")));
+			stopLocation.setStopTextColor(DataUtils.refineColorCode(rs.getString("text_color")));
 
 			return stopLocation;
 		};
@@ -72,8 +73,8 @@ public class StopLocationRepoImpl extends NamedParameterJdbcTemplate implements 
 			stopLocation.setStopCoordinate(new Coordinate(rs.getDouble("stop_latitude"), rs.getDouble("stop_longitude")));
 			double dist = Double.valueOf(doubleFormat.format(rs.getDouble("stop_distance")).replace(",", "."));
 			stopLocation.setStopDistance(dist);
-			stopLocation.setStopColor(rs.getString("stop_color"));
-			stopLocation.setStopTextColor(rs.getString("text_color"));
+			stopLocation.setStopColor(DataUtils.refineColorCode(rs.getString("stop_color")));
+			stopLocation.setStopTextColor(DataUtils.refineColorCode(rs.getString("text_color")));
 			stopLocation.setDepartureTime(getRefinedArray(rs.getString("depart_time")));
 			
 			return stopLocation; 
