@@ -154,7 +154,6 @@
   "date-fns": "2.29.3",
   "google-maps": "4.3.3",
   "highcharts": "9.2.2",
-  "is-regexp": "3.1.0",
   "lit-element": "3.3.3",
   "lit-html": "2.8.0",
   "mgrs": "1.0.0",
@@ -163,7 +162,6 @@
   "proj4": "2.9.0",
   "quickselect": "2.0.0",
   "rbush": "3.0.1",
-  "strip-css-comments": "5.0.0",
   "tslib": "2.6.2",
   "wkt-parser": "1.3.3"
  },
@@ -266,12 +264,14 @@
   "Frontend/generated/jar-resources/vaadin-map/mapConnector.js",
   "Frontend/generated/jar-resources/vaadin-time-picker/timepickerConnector.js",
   "Frontend/generated/jar-resources/virtualListConnector.js",
+  "Frontend/src/cts-geo-location.ts",
   "Frontend/src/cts-google-map.ts",
   "Frontend/src/test-comp.ts"
  ],
  "frontendHashes": {
   "src/test-comp.ts": "caa753f48ff174c6ca8904b8c49660c0ce05252f2636f9bafd314abdf939138a",
-  "src/cts-google-map.ts": "11cc4524629fd9100f2479bf6746fde51303c9d5160969b96b3e6c050187f215",
+  "src/cts-geo-location.ts": "f8808a80a341d5806e796f2932a56d9acc503796da51601355e58d44fd62cba9",
+  "src/cts-google-map.ts": "46727ce5887f3f74da7210df141e5054f308a5dad3feca8450e3804bc94364ba",
   "buttonFunctions.js": "c852123f9b2c44eb75e555119d3e05a7dbe78b91d0ab616feb9df1654474707d",
   "comboBoxConnector.js": "1d004c3dae9c76f8bcc68678abe1b8f7bdc8b456f5c9c4c7f190df8ed25d66cd",
   "contextMenuConnector.js": "25a200f8086461635ddd92316ebeb5a868294c8650a190efbae120edb1088f4f",
@@ -298,7 +298,7 @@
   "cts": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
  },
  "entryScripts": [
-  "VAADIN/build/indexhtml-1e43acc1.js"
+  "VAADIN/build/indexhtml-3b1d58bb.js"
  ],
  "webComponents": [],
  "cvdlModules": {
@@ -333,6 +333,6 @@
  },
  "packageJsonHash": "afb2ad446c3cc27ad3947ed4beeca19c51444ef279ea457e7d53f28a0599435b",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-1e43acc1.js\"></script>"
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-3b1d58bb.js\"></script>"
  ]
 }

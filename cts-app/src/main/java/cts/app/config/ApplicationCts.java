@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.server.AppShellSettings;
 import com.vaadin.flow.spring.annotation.EnableVaadin;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.Theme;
@@ -47,13 +48,12 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 		SpringApplication.run(ApplicationCts.class, args);
 	}
 	
-//	@Bean
-//	@UIScope
-//	public GoogleMap mapService() {
-//		//config.getGoogleApiKey()
-//		return new GoogleMap("", "", config.getGoogleMapLang());
-//	}
-	
+	@Override
+	public void configurePage(AppShellSettings settings) {
+		settings.addLink("shortcut icon", "favicon.png");
+		settings.addFavIcon("icon", "favicon.png", "18x18");
+	}
+
 	@Bean
 	@UIScope
 	public CtsGoogleMap initMapService() {

@@ -1,11 +1,8 @@
 package cts.app.ui.views;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -19,6 +16,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import cts.app.ui.MainLayout;
 import cts.app.ui.components.DummyComps;
+import cts.app.ui.components.location.CtsGeoLocation;
 import cts.app.ui.components.map.CtsGoogleMap;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
@@ -60,7 +58,16 @@ public class AboutView extends VerticalLayout {
         	event.setOutputCoord(new Coordinate(0.D,0.D));
         	event.setOutputCoord(new Coordinate(1.D,1.D));
         });
+        Div location = new Div();
+        location.setWidth("800px");
+        location.setHeight("250px");
+        CtsGeoLocation loc = new CtsGeoLocation();
+        location.add(loc);
         add(mapDiv);
+        Button pos = new Button("Act Position");
+        pos.addClickListener(e -> loc.updateActualLocation());
+        add(pos);
+        add(location);
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
