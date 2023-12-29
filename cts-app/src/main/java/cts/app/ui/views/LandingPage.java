@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestClientException;
-import org.vaadin.elmot.flow.sensors.GeoLocation;
-import org.vaadin.elmot.flow.sensors.Position;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.button.Button;
@@ -17,7 +15,6 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -29,12 +26,14 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 import cts.app.domain.AvailableLocation;
+import cts.app.domain.Position;
 import cts.app.domain.Radius;
 import cts.app.domain.StopLocation;
 import cts.app.domain.StopLocationWrapper;
 import cts.app.service.FeedService;
 import cts.app.service.TransportDataService;
 import cts.app.ui.MainLayout;
+import cts.app.ui.components.location.CtsGeoLocation;
 import cts.app.ui.components.map.CtsGoogleMap;
 import cts.app.ui.utils.CtsNotification;
 import cts.app.ui.utils.FlexSearchLayout;
@@ -63,14 +62,11 @@ public class LandingPage extends VerticalLayout {
 	@Autowired
 	private CtsNotification noti;
 	
-	private GeoLocation geoLocation;
+	private CtsGeoLocation ctsGeoLoc;
 	private ComboBox<AvailableLocation> loadedLocations;
 	private IntegerField searchRadius;
-	private SplitLayout searchLayout;
 	private Binder<Radius> fieldBinder;
 	private Radius radiusBean;
-	
-	private boolean isOpen = false;
 	
 	@PostConstruct
 	public void init() {
@@ -83,7 +79,8 @@ public class LandingPage extends VerticalLayout {
         HorizontalLayout mapLayout = createMap();
         mapLayout.setSizeFull();
         mapLayout.setWidth("100%");
-        this.add(searchPanel, mapLayout, location());
+        ctsGeoLoc = new CtsGeoLocation();
+        this.add(searchPanel, mapLayout, ctsGeoLoc);
 	}
 	
 	private FlexSearchLayout initSearchBar() {
@@ -106,14 +103,13 @@ public class LandingPage extends VerticalLayout {
 		}).bind("radius");
 		Button currentLocation = new Button("Current Location", VaadinIcon.PIN.create());
 		currentLocation.addClickListener(event ->{
-			Position pos = geoLocation.getValue();
+			Position pos = ctsGeoLoc.getLastPosition();
 			if(pos != null && fieldBinder.isValid()) {
 				final Double lat = pos.getLatitude();
 				final Double lon = pos.getLongitude();
 				final Integer radius = searchRadius.getValue();
 				setPositionOnMap(lat, lon, radius);
 				setStopMarkersOnMap(lat, lon, radius);
-				//gMap.setCenter(new LatLon(lat, lon));
 			} else {
 				noti.showNotification(NotificationVariant.LUMO_ERROR, "The current location is not available.");
 			}
@@ -138,22 +134,6 @@ public class LandingPage extends VerticalLayout {
 		mapDiv.setHeight("100%");
 		mapDiv.setWidth("100%");
 		return new HorizontalLayout(mapDiv);
-	}
-	
-	private GeoLocation location() {
-		geoLocation = new GeoLocation();
-		geoLocation.setWatch(true);
-		geoLocation.setHighAccuracy(true);
-		geoLocation.setTimeout(100000);
-		geoLocation.setMaxAge(200000);
-		geoLocation.addValueChangeListener( e->{
-			//Position pos = e.getValue();
-		});
-		geoLocation.addErrorListener( e->{
-			
-		});
-		
-		return geoLocation;
 	}
 	
 	private void setPositionOnMap(final Double lat, final Double lon, final Integer radius) {//TODO refact params 
@@ -192,16 +172,11 @@ public class LandingPage extends VerticalLayout {
 		}
 	}
 	
-	private void setupSlideBtn() {
-		//MainLayout.getMainInstance().getSlideBtn().addClickListener(listener);
-	}
-	
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
 		loadedLocations.setItems(new ListDataProvider<>(getAvailableLocations()));
-		//setupSlideBtn();
 	}
 	
 }

@@ -12,13 +12,16 @@ import elemental.json.JsonObject;
 @JsModule("./src/cts-geo-location.ts")
 public class CtsGeoLocation extends Component {
 	
-	public void updateActualLocation() {
-		this.getElement().callJsFunction("updateLocation");
-	}
+	private Position lastPosition;
 	
 	@ClientCallable
 	private void obtainPosition(JsonObject event) {
 		Position actPos = Position.getFromJson(event);
-		System.out.println("Act pos: "+actPos);
+		this.lastPosition = actPos; 
 	}
+
+	public Position getLastPosition() {
+		return lastPosition;
+	}
+	
 }

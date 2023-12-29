@@ -65,7 +65,6 @@ public class AboutView extends VerticalLayout {
         location.add(loc);
         add(mapDiv);
         Button pos = new Button("Act Position");
-        pos.addClickListener(e -> loc.updateActualLocation());
         add(pos);
         add(location);
 
