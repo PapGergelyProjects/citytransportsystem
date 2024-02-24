@@ -170,17 +170,49 @@
                 </execution>
             </executions>
       </plugin>
+      <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.2.0</version>
+          <executions>
+              <execution>
+                  <id>docker-clean</id>
+                  <phase>install</phase>
+                  <goals>
+                      <goal>exec</goal>
+                  </goals>
+                  <configuration>
+                      <executable>docker</executable>
+                      <workingDirectory>${project.basedir}</workingDirectory>
+                      <arguments>
+                          <argument>rmi</argument>
+                          <argument>${project.artifactId}</argument>
+                      </arguments>
+                      <successCodes>
+                          <successCode>0</successCode>
+                          <successCode>1</successCode>
+                      </successCodes>
+                  </configuration>
+              </execution>
+              <execution>
+                  <id>docker-build</id>
+                  <phase>install</phase>
+                  <goals>
+                      <goal>exec</goal>
+                  </goals>
+                  <configuration>
+                      <executable>docker</executable>
+                      <workingDirectory>${project.basedir}</workingDirectory>
+                      <arguments>
+                          <argument>build</argument>
+                          <argument>-t</argument>
+                          <argument>${project.artifactId}</argument>
+                          <argument>.</argument>
+                      </arguments>
+                  </configuration>
+              </execution>
+          </executions>
+      </plugin>
     </plugins>
-<!--     <resources> -->
-<!--         <resource> -->
-<!--             <directory>src/main/resources/docker_files</directory> -->
-<!--             <includes> -->
-<!--                 <include>context.xml</include> -->
-<!--                 <include>Dockerfile</include> -->
-<!--                 <include>server.xml</include> -->
-<!--             </includes> -->
-<!--             <targetPath>${basedir}/target/docker_files</targetPath> -->
-<!--         </resource> -->
-<!--     </resources> -->
   </build>
 </project>
