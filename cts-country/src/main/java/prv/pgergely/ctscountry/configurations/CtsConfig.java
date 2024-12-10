@@ -10,25 +10,49 @@ import prv.pgergely.ctscountry.utils.docker.DockerCommands;
 @Configuration
 @ConfigurationProperties("config")
 public class CtsConfig {
-	
+	// Deprecated
 	private String transitFeedSource;
 	private String transitFeedKey;
+	
+	private String mobilityApiUrl;
+	private String mobilityApiTokenUrl;
+	private String mobilityApiRefreshToken;
 	private String tempDirectory;
 	private ThreadParams threadParams;
 	private Datasource datasource;
 	private DockerCommands dockerCommands;
 	
+	@Deprecated
 	public String getTransitFeedSource() {
 		return transitFeedSource;
 	}
 	public void setTransitFeedSource(String transitFeedSource) {
 		this.transitFeedSource = transitFeedSource;
 	}
+	@Deprecated
 	public String getTransitFeedKey() {
 		return transitFeedKey;
 	}
 	public void setTransitFeedKey(String transitFeedKey) {
 		this.transitFeedKey = transitFeedKey;
+	}
+	public String getMobilityApiUrl() {
+		return mobilityApiUrl;
+	}
+	public void setMobilityApiUrl(String mobilityApiUrl) {
+		this.mobilityApiUrl = mobilityApiUrl;
+	}
+	public String getMobilityApiTokenUrl() {
+		return mobilityApiTokenUrl;
+	}
+	public void setMobilityApiTokenUrl(String mobilityApiTokenUrl) {
+		this.mobilityApiTokenUrl = mobilityApiTokenUrl;
+	}
+	public String getMobilityApiRefreshToken() {
+		return mobilityApiRefreshToken;
+	}
+	public void setMobilityApiRefreshToken(String mobilityApiRefreshToken) {
+		this.mobilityApiRefreshToken = mobilityApiRefreshToken;
 	}
 	public String getTempDirectory() {
 		return tempDirectory;

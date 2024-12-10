@@ -2,6 +2,7 @@ package prv.pgergely.ctscountry.configurations;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import prv.pgergely.cts.common.CommonComponents;
 import prv.pgergely.cts.common.domain.DownloadRequest;
 import prv.pgergely.ctscountry.ApplicationCountryComponents;
+import prv.pgergely.ctscountry.domain.mobility.token.AuthToken;
 import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @EnableCaching
@@ -39,6 +41,11 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer{
 	@Bean
 	public Queue<DownloadRequest> getInternalQueue() {
 		return new LinkedBlockingQueue<DownloadRequest>();
+	}
+	
+	@Bean
+	public AtomicReference<AuthToken> getToken(){
+		return new AtomicReference<>(null);
 	}
 	
 }

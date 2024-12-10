@@ -17,7 +17,7 @@
   	<start-class>prv.pgergely.cts.ApplicationCts</start-class>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <vaadin.version>24.1.10</vaadin.version>
-    <java.version>17</java.version>
+    <java.version>21</java.version>
   </properties>
 
     <repositories>

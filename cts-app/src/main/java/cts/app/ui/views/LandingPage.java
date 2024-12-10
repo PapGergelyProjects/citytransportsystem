@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.client.RestClientException;
 
 import com.vaadin.flow.component.AttachEvent;
@@ -21,11 +22,15 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import cts.app.config.ApplicationCts;
+import cts.app.config.CtsConfig;
 import cts.app.domain.AvailableLocation;
+import cts.app.domain.ClickOnMapEvent;
 import cts.app.domain.Position;
 import cts.app.domain.Radius;
 import cts.app.domain.StopLocation;
@@ -35,11 +40,13 @@ import cts.app.service.TransportDataService;
 import cts.app.ui.MainLayout;
 import cts.app.ui.components.location.CtsGeoLocation;
 import cts.app.ui.components.map.CtsGoogleMap;
+import cts.app.ui.components.map.InitMapData;
 import cts.app.ui.utils.CtsNotification;
 import cts.app.ui.utils.FlexSearchLayout;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SearchLocation;
+import prv.pgergely.cts.common.observable.ObservableObject;
 
 @UIScope
 @SpringComponent
@@ -62,11 +69,14 @@ public class LandingPage extends VerticalLayout {
 	@Autowired
 	private CtsNotification noti;
 	
+	
 	private CtsGeoLocation ctsGeoLoc;
 	private ComboBox<AvailableLocation> loadedLocations;
 	private IntegerField searchRadius;
 	private Binder<Radius> fieldBinder;
 	private Radius radiusBean;
+	
+	Div mapDiv = new Div();
 	
 	@PostConstruct
 	public void init() {
@@ -75,6 +85,7 @@ public class LandingPage extends VerticalLayout {
 		this.setMargin(false);
 		this.setSpacing(false);
 		this.setSizeFull();
+		//map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey())); // TODO: refact coords to comes from config
 		Details searchPanel = new Details("Search Options", initSearchBar());
         HorizontalLayout mapLayout = createMap();
         mapLayout.setSizeFull();
@@ -121,6 +132,7 @@ public class LandingPage extends VerticalLayout {
 	}
 	
 	private HorizontalLayout createMap() {
+		//map = new CtsGoogleMap(config.getGoogleApiKey(), getEventObj);
 		map.addClickListener(event -> {
 			Coordinate c =  event.getIncomingCoord();
 			final Double lat = c.getLatitude();
@@ -129,7 +141,6 @@ public class LandingPage extends VerticalLayout {
 			setPositionOnMap(lat, lon, radius);
 			setStopMarkersOnMap(lat, lon, radius);
 		});
-		Div mapDiv = new Div();
 		mapDiv.add(map);
 		mapDiv.setHeight("100%");
 		mapDiv.setWidth("100%");
@@ -177,6 +188,7 @@ public class LandingPage extends VerticalLayout {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
 		loadedLocations.setItems(new ListDataProvider<>(getAvailableLocations()));
+		//map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey())); // TODO: refact coords to comes from config
 	}
 	
 }

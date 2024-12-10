@@ -272,7 +272,7 @@
  "frontendHashes": {
   "src/test-comp.ts": "caa753f48ff174c6ca8904b8c49660c0ce05252f2636f9bafd314abdf939138a",
   "src/cts-geo-location.ts": "252bf626b86abcbf0355a7c01c42f3e29d84839532b9014eb785ed3375df79ca",
-  "src/cts-google-map.ts": "46727ce5887f3f74da7210df141e5054f308a5dad3feca8450e3804bc94364ba",
+  "src/cts-google-map.ts": "b6da8a258393f6b1130fea7b6a772789395411c3233fcae5b6576d2cb2a1a630",
   "buttonFunctions.js": "c852123f9b2c44eb75e555119d3e05a7dbe78b91d0ab616feb9df1654474707d",
   "comboBoxConnector.js": "1d004c3dae9c76f8bcc68678abe1b8f7bdc8b456f5c9c4c7f190df8ed25d66cd",
   "contextMenuConnector.js": "25a200f8086461635ddd92316ebeb5a868294c8650a190efbae120edb1088f4f",
@@ -298,7 +298,7 @@
   "cts": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
  },
  "entryScripts": [
-  "VAADIN/build/indexhtml-147fd98a.js"
+  "VAADIN/build/indexhtml-77eb6f68.js"
  ],
  "webComponents": [],
  "cvdlModules": {
@@ -333,6 +333,6 @@
  },
  "packageJsonHash": "afb2ad446c3cc27ad3947ed4beeca19c51444ef279ea457e7d53f28a0599435b",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-147fd98a.js\"></script>"
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-77eb6f68.js\"></script>"
  ]
 }

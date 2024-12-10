@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import prv.pgergely.cts.common.domain.FeedLocationList;
 import prv.pgergely.cts.common.domain.ResponseData;
 import prv.pgergely.cts.common.domain.SelectedFeed;
-import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.services.DatasourceService;
 import prv.pgergely.ctscountry.services.FeedSource;
 import prv.pgergely.ctscountry.services.TransitFeedLocationSource;

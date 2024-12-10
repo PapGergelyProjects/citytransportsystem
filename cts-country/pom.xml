@@ -33,7 +33,7 @@
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
-        <version>[3.1.0]</version>
+        <version>[3.2.0]</version>
         <scope>test</scope>
     </dependency>
     <dependency>
@@ -65,17 +65,22 @@
 	<dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-web</artifactId>
-	    <version>[3.1.0]</version>
+	    <version>[3.2.0]</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-jdbc</artifactId>
-	    <version>[3.1.0]</version>
+	    <version>[3.2.0]</version>
 	</dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-cache</artifactId>
-        <version>[3.1.0]</version>
+        <version>[3.2.0]</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+        <version>[3.2.0]</version>
     </dependency>
     <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
@@ -102,6 +107,11 @@
         <artifactId>httpclient5</artifactId>
         <version>5.2.1</version>
     </dependency>
+    <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>2.2</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>cts-country</finalName>
@@ -120,8 +130,8 @@
         <artifactId>maven-war-plugin</artifactId>
         <version>3.3.2</version>
         <configuration>
-          <source>17</source>
-          <target>17</target>
+          <source>21</source>
+          <target>21</target>
         </configuration>
       </plugin>
 	  <plugin>

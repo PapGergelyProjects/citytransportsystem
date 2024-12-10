@@ -1,5 +1,8 @@
 package cts.app.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,8 +53,12 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 	
 	@Override
 	public void configurePage(AppShellSettings settings) {
-		settings.addLink("shortcut icon", "./icons/favicon.png");
-		settings.addFavIcon("image/png", "./icons/favicon.png", "24");
+//		settings.addLink("shortcut icon", "icons/icon.png");
+//		settings.addFavIcon("image/png", "icons/icon.png", "24x24");
+        Map<String, String> attributes = new HashMap<>();
+        attributes.put("rel", "shortcut icon");
+        attributes.put("type", "image/png");
+        settings.addLink("icons/icon.png", attributes);
 	}
 
 	@Bean

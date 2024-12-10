@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.cts.common.domain.DownloadRequest;
-import prv.pgergely.ctscountry.domain.TransitFeedJson.FeedURL;
-import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
-import prv.pgergely.ctscountry.domain.TransitFeedJson.Latest;
-import prv.pgergely.ctscountry.domain.TransitFeedJson.Location;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.FeedURL;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Latest;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Location;
 import prv.pgergely.ctscountry.interfaces.VersionHandlerThread;
 import prv.pgergely.ctscountry.model.FeedVersion;
 

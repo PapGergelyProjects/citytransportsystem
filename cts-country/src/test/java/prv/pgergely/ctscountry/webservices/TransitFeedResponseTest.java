@@ -12,8 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
-import prv.pgergely.ctscountry.domain.TransitFeedJson;
-import prv.pgergely.ctscountry.modules.TransitFeedApi;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson;
+import prv.pgergely.ctscountry.services.TransitFeedApi;
 
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TransitFeedResponseTest {

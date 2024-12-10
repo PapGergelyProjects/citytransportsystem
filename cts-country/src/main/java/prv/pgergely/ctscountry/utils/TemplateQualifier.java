@@ -7,4 +7,7 @@ public class TemplateQualifier {
 	public static final String RESPONSE_ACCEPTED = "RESPONSE_ACCEPTED";
 	public static final String ZIPFILE_TEMPLATE = "ZIPFILE_TEMPLATE";
 	
+	public static final String MOBILITY_API = "MOBILITY_API";
+	public static final String MOBILITY_API_TOKEN = "MOBILITY_API_TOKEN";
+	
 }

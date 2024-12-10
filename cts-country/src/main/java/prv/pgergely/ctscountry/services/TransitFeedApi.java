@@ -1,4 +1,4 @@
-package prv.pgergely.ctscountry.modules;
+package prv.pgergely.ctscountry.services;
 
 import java.util.Arrays;
 
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.ctscountry.configurations.CtsConfig;
-import prv.pgergely.ctscountry.domain.TransitFeedJson;
-import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @Component

@@ -27,7 +27,7 @@ public class Calculations {
 	 * @param lat Center point's latitude
 	 * @param lon Center point's longitude
 	 * @param distanceInMeter The radius of the circle
-	 * @return 
+	 * @return List of coordinates which are represent a circle
 	 */
 	public static List<Coordinate> calcArcPoints(double lat, double lon, int distanceInMeter) {
 		double calcDistance = distanceInMeter / EARTH_RADIUS;

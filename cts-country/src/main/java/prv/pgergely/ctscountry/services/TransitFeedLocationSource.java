@@ -16,12 +16,11 @@ import org.springframework.stereotype.Service;
 
 import prv.pgergely.cts.common.domain.Feed;
 import prv.pgergely.cts.common.domain.FeedLocationsJson;
-import prv.pgergely.ctscountry.domain.TransitFeedJson.Feeds;
-import prv.pgergely.ctscountry.domain.TransitFeedLocationJson;
-import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Locations;
-import prv.pgergely.ctscountry.domain.TransitFeedLocationJson.Results;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson.Locations;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson.Results;
 import prv.pgergely.ctscountry.model.FeedVersion;
-import prv.pgergely.ctscountry.modules.TransitFeedApi;
 
 @Service
 public class TransitFeedLocationSource {
