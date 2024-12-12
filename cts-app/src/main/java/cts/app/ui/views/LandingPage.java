@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.client.RestClientException;
 
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.details.Details;
@@ -50,7 +51,7 @@ import prv.pgergely.cts.common.observable.ObservableObject;
 
 @UIScope
 @SpringComponent
-//@PreserveOnRefresh
+@PreserveOnRefresh
 @PageTitle("CTS - Map")
 @Route(value = "main", layout = MainLayout.class)
 public class LandingPage extends VerticalLayout {
@@ -69,14 +70,11 @@ public class LandingPage extends VerticalLayout {
 	@Autowired
 	private CtsNotification noti;
 	
-	
 	private CtsGeoLocation ctsGeoLoc;
 	private ComboBox<AvailableLocation> loadedLocations;
 	private IntegerField searchRadius;
 	private Binder<Radius> fieldBinder;
 	private Radius radiusBean;
-	
-	Div mapDiv = new Div();
 	
 	@PostConstruct
 	public void init() {
@@ -85,7 +83,6 @@ public class LandingPage extends VerticalLayout {
 		this.setMargin(false);
 		this.setSpacing(false);
 		this.setSizeFull();
-		//map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey())); // TODO: refact coords to comes from config
 		Details searchPanel = new Details("Search Options", initSearchBar());
         HorizontalLayout mapLayout = createMap();
         mapLayout.setSizeFull();
@@ -96,6 +93,7 @@ public class LandingPage extends VerticalLayout {
 	
 	private FlexSearchLayout initSearchBar() {
 		loadedLocations = new ComboBox<>("Available Locations", getAvailableLocations());
+		//loadedLocations.setItems(new ListDataProvider<>(getAvailableLocations()));
 		loadedLocations.addValueChangeListener(event -> {
 			AvailableLocation selected = event.getValue();
 			if(selected != null) {
@@ -116,11 +114,9 @@ public class LandingPage extends VerticalLayout {
 		currentLocation.addClickListener(event ->{
 			Position pos = ctsGeoLoc.getLastPosition();
 			if(pos != null && fieldBinder.isValid()) {
-				final Double lat = pos.getLatitude();
-				final Double lon = pos.getLongitude();
-				final Integer radius = searchRadius.getValue();
-				setPositionOnMap(lat, lon, radius);
-				setStopMarkersOnMap(lat, lon, radius);
+				pos.setRadius(searchRadius.getValue()/2);
+				setPositionOnMap(pos);
+				setStopMarkersOnMap(pos);
 			} else {
 				noti.showNotification(NotificationVariant.LUMO_ERROR, "The current location is not available.");
 			}
@@ -132,38 +128,37 @@ public class LandingPage extends VerticalLayout {
 	}
 	
 	private HorizontalLayout createMap() {
-		//map = new CtsGoogleMap(config.getGoogleApiKey(), getEventObj);
 		map.addClickListener(event -> {
-			Coordinate c =  event.getIncomingCoord();
-			final Double lat = c.getLatitude();
-			final Double lon = c.getLongitude();
-			final Integer radius = searchRadius.getValue();
-			setPositionOnMap(lat, lon, radius);
-			setStopMarkersOnMap(lat, lon, radius);
+			Coordinate c = event.getIncomingCoord();
+			c.setRadius(searchRadius.getValue());
+			setPositionOnMap(c);
+			setStopMarkersOnMap(c);
 		});
-		mapDiv.add(map);
+		Div mapDiv = new Div();
+		mapDiv.setId("googleMapDiv");
 		mapDiv.setHeight("100%");
 		mapDiv.setWidth("100%");
+		mapDiv.add(map);
+		
 		return new HorizontalLayout(mapDiv);
 	}
 	
-	private void setPositionOnMap(final Double lat, final Double lon, final Integer radius) {//TODO refact params 
+	private void setPositionOnMap(final Coordinate actPosition) {
 		if(fieldBinder.isValid()) {
-			Coordinate coords = new Coordinate(lat, lon, (radius/2));
 			map.removeMarkers();
-			map.setCenter(coords);
-			map.drawCircle(coords);
+			map.setCenter(actPosition);
+			map.drawCircle(actPosition);
 		} else {
 			noti.showNotification(NotificationVariant.LUMO_ERROR, "Invalid radius value.");
 		}
 	}
 	
-	private void setStopMarkersOnMap(final Double lat, final Double lon, final Integer radius) {//TODO refact params 
+	private void setStopMarkersOnMap(final Coordinate actPosition) {
 		AvailableLocation selected = loadedLocations.getValue();
 		if(selected != null) {
 			SearchLocation loc = new SearchLocation();
-			loc.setRadius(radius.intValue()/2);
-			loc.setCoordinates(new Coordinate(lat, lon));
+			loc.setRadius(actPosition.getRadius());
+			loc.setCoordinates(actPosition);
 			StopLocationWrapper stops = dataSrvc.getStopsAndTimes(selected.getDsUrl(), loc);
 			for(StopLocation stop : stops.getStopList()) {
 				Coordinate stopCoord = stop.getStopCoordinate();
@@ -187,8 +182,6 @@ public class LandingPage extends VerticalLayout {
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
-		loadedLocations.setItems(new ListDataProvider<>(getAvailableLocations()));
-		//map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey())); // TODO: refact coords to comes from config
 	}
 	
 }

@@ -12,13 +12,11 @@ public class InitMapData implements Serializable {
 	private final String title;
 	private final Coordinate coordinate;
 	private final Integer zoomMagnitude;
-	private final String apiKey;
 	
-	public InitMapData(String title, Coordinate coordinate, Integer zoomMagnitude, String apiKey) {
+	public InitMapData(String title, Coordinate coordinate, Integer zoomMagnitude) {
 		this.title = title;
 		this.coordinate = coordinate;
 		this.zoomMagnitude = zoomMagnitude;
-		this.apiKey = apiKey;
 	}
 	
 	public String getTitle() {
@@ -31,10 +29,6 @@ public class InitMapData implements Serializable {
 
 	public Integer getZoomMagnitude() {
 		return zoomMagnitude;
-	}
-
-	public String getApiKey() {
-		return apiKey;
 	}
 
 	public JsonObject getAsJson() {

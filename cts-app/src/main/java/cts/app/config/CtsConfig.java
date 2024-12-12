@@ -9,6 +9,7 @@ public class CtsConfig {
 	
 	private String googleApiKey;
 	private String googleMapLang;
+	private String googleMapId;
 	private String serviceUrl;
 	
 	public String getGoogleApiKey() {
@@ -21,6 +22,14 @@ public class CtsConfig {
 
 	public String getGoogleMapLang() {
 		return googleMapLang;
+	}
+	
+	public String getGoogleMapId() {
+		return googleMapId;
+	}
+
+	public void setGoogleMapId(String googleMapId) {
+		this.googleMapId = googleMapId;
 	}
 
 	public void setGoogleMapLang(String googleMapLang) {

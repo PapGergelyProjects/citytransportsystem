@@ -30,7 +30,7 @@ public class AboutView extends VerticalLayout {
 
 	private static final long serialVersionUID = -487630249371220520L;
 
-	@Autowired
+	//@Autowired
 	private CtsGoogleMap map;
 	
 	@PostConstruct
@@ -47,17 +47,17 @@ public class AboutView extends VerticalLayout {
         cmp.setName("Modified w/ function");
         add(cmp);
         Button clear = new Button("Clear Map");
-        clear.addClickListener(e -> map.removeMarkers());
+        //clear.addClickListener(e -> map.removeMarkers());
         add(clear);
         Div mapDiv = new Div();
         mapDiv.setHeight("500px");
         mapDiv.setWidth("800px");
-        mapDiv.add(map);
-        map.addClickListener(event -> {
+        //mapDiv.add(map);
+        /*map.addClickListener(event -> {
         	Coordinate c =  event.getIncomingCoord();
         	event.setOutputCoord(new Coordinate(0.D,0.D));
         	event.setOutputCoord(new Coordinate(1.D,1.D));
-        });
+        });*/
         Div location = new Div();
         location.setWidth("800px");
         location.setHeight("250px");

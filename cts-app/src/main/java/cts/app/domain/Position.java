@@ -16,6 +16,12 @@ public class Position extends Coordinate implements Serializable{
 		this.speed = speed;
 	}
 	
+	public Position(Double lat, Double lon, Integer radius, Double accuracy, Double speed) {
+		super(lat, lon, radius);
+		this.accuracy = accuracy;
+		this.speed = speed;
+	}
+	
 	public static Position getFromJson(JsonObject event) {
 		return new Position(event.get("lat").asNumber(), event.get("lon").asNumber(), event.get("accuracy").asNumber(), event.get("speed")==null ? null : event.get("speed").asNumber());
 	}

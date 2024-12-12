@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.AppShellSettings;
+import com.vaadin.flow.server.LoadDependenciesOnStartup;
 import com.vaadin.flow.spring.annotation.EnableVaadin;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.Theme;
@@ -33,6 +34,7 @@ import prv.pgergely.cts.common.observable.ObservableObject;
 @Theme(value = "cts")
 @EnableVaadin("cts.app.ui")
 @SpringBootApplication
+@LoadDependenciesOnStartup
 @ComponentScan(basePackageClasses= {CommonComponents.class, CtsAppComponent.class})
 public class ApplicationCts extends SpringBootServletInitializer implements AppShellConfigurator {//SpringBootServletInitializer
 	
@@ -53,8 +55,8 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 	
 	@Override
 	public void configurePage(AppShellSettings settings) {
-//		settings.addLink("shortcut icon", "icons/icon.png");
-//		settings.addFavIcon("image/png", "icons/icon.png", "24x24");
+		settings.addLink("shortcut icon", "icons/icon.png");
+		settings.addFavIcon("image/png", "icons/icon.png", "24x24");
         Map<String, String> attributes = new HashMap<>();
         attributes.put("rel", "shortcut icon");
         attributes.put("type", "image/png");
@@ -62,10 +64,8 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 	}
 
 	@Bean
-	@UIScope
 	public CtsGoogleMap initMapService() {
-		CtsGoogleMap map = new CtsGoogleMap(config.getGoogleApiKey(), getEventObj());
-		map.initMap(new InitMapData("Center", new Coordinate(47.497912, 19.040235), 11, config.getGoogleApiKey())); // TODO: refact coords to comes from config
+		CtsGoogleMap map = new CtsGoogleMap(config, getEventObj());
 		
 		return map;
 	}
