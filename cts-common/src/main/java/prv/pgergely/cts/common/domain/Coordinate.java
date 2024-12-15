@@ -58,7 +58,7 @@ public class Coordinate implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Coordinate {\nlatitude:" + latitude + ", \nlongitude:" + longitude + ", \nradius:" + radius + "\n}";
+		return "{\nlatitude:" + latitude + ", \nlongitude:" + longitude + ", \nradius:" + radius + "\n}";
 	}
 
 	@Override

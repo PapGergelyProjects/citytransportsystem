@@ -11,8 +11,15 @@ export interface Coordinate {
     radius?: number;
 }
 
+export interface MapMarker{
+    title: string;
+    colorCode?: string;
+    coordinate: Coordinate;
+}
+
 export interface ClientToServerEvents{
     clickOnMapEvent(event: Coordinate): void;
+    saveMarker(marker: MapMarker): void;
 }
 
 export class InitMapData {
@@ -34,6 +41,9 @@ export class CtsGoogleMap extends LitElement{
 
     @property()
     protected initialData!: string;
+    
+    @property()
+    protected previousMarkers: string = "";
     
     @query("#ctsMap")
     protected mapDivElement!: HTMLElement;
@@ -72,42 +82,44 @@ export class CtsGoogleMap extends LitElement{
             region: 'HU'
         }).importLibrary('marker');
         this.googleMarkerLoader = markerLib;
-        this.addMarker(data.title, {lat:data.coordinate.lat, lng:data.coordinate.lng});
+        this.addMarker({title:data.title, coordinate: {lat:data.coordinate.lat, lng:data.coordinate.lng}});
         this.googleMap = map;
     }
     
     protected async setCenter(coord: Coordinate){
         this.googleMap!.setCenter({lat: coord.lat, lng: coord.lng});
-        await this.addMarker("", coord);
+        await this.addMarker({title: "", coordinate: coord});
     }
     
     private async clickOnMap(event: Coordinate){
         return this.$server!.clickOnMapEvent(event);
     }
     
-    protected async addMarker(title: string, coordinate: Coordinate) {
+    protected async addMarker(mark: MapMarker) {
         let pinElement: google.maps.marker.PinElement = new google.maps.marker.PinElement({
             background: "#ff0000"
         });
         let marker = new this.googleMarkerLoader.AdvancedMarkerElement({
-            position: {lat:coordinate.lat, lng:coordinate.lng},
+            position: {lat:mark.coordinate.lat, lng:mark.coordinate.lng},
             map: this.googleMap,
-            title: title,
+            title: mark.title,
             content: pinElement.element
         });
+        this.$server!.saveMarker(mark);
         this.markerList.push(marker);
     }
     
-    protected async addCustomMarker(title: string, colorCode: string, coordinate: Coordinate) {
+    protected async addCustomMarker(mark: MapMarker) {
         let pinElement: google.maps.marker.PinElement = new google.maps.marker.PinElement({
-            background: colorCode
+            background: mark.colorCode
         });
         let marker = new this.googleMarkerLoader.AdvancedMarkerElement({
-            position: {lat:coordinate.lat, lng:coordinate.lng},
+            position: {lat:mark.coordinate.lat, lng:mark.coordinate.lng},
             map: this.googleMap,
-            title: title,
+            title: mark.title,
             content: pinElement.element,
         });
+        this.$server!.saveMarker(mark);
         this.markerList.push(marker);
     }
     
@@ -135,7 +147,19 @@ export class CtsGoogleMap extends LitElement{
     connectedCallback(): void {
         super.connectedCallback();
         let initObj: InitMapData = JSON.parse(this.initialData);
-        this.initMap(initObj);
+        this.initMap(initObj).then((non) => {
+            let markerList: MapMarker[] = JSON.parse(this.previousMarkers);
+            markerList.forEach(marker => {
+                if(marker.colorCode){
+                    this.addCustomMarker(marker);
+                } else {
+                    this.addMarker(marker);
+                    if(marker.coordinate.radius){
+                        this.drawCircle(marker.coordinate);
+                    }
+                }
+            });
+        });
     }
 
     disconnectedCallback(): void {

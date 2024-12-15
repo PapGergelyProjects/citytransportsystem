@@ -55,12 +55,8 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 	
 	@Override
 	public void configurePage(AppShellSettings settings) {
-		settings.addLink("shortcut icon", "icons/icon.png");
-		settings.addFavIcon("image/png", "icons/icon.png", "24x24");
-        Map<String, String> attributes = new HashMap<>();
-        attributes.put("rel", "shortcut icon");
-        attributes.put("type", "image/png");
-        settings.addLink("icons/icon.png", attributes);
+		settings.addFavIcon("icon", "favicon.png", "24x24");
+		settings.addLink("shortcut icon", "favicon.png");
 	}
 
 	@Bean

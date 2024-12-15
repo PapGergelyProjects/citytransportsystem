@@ -1,7 +1,10 @@
 package cts.app.ui.components.map;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Component;
@@ -12,6 +15,8 @@ import com.vaadin.flow.router.PreserveOnRefresh;
 
 import cts.app.config.CtsConfig;
 import cts.app.domain.ClickOnMapEvent;
+import elemental.json.Json;
+import elemental.json.JsonArray;
 import elemental.json.JsonObject;
 import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.observable.ObservableObject;
@@ -24,6 +29,7 @@ import prv.pgergely.cts.common.observable.ObservableObject;
 public class CtsGoogleMap extends Component {
 	
 	private  ObservableObject<ClickOnMapEvent> clickObsv;
+	private Set<MapMarker> markers = new HashSet<>();
 	
 	public CtsGoogleMap() {}
 	
@@ -42,12 +48,12 @@ public class CtsGoogleMap extends Component {
 		this.getElement().callJsFunction("setCenter", coordinate.getAsJson());
 	}
 	
-	public void addMarker(String title, Coordinate coordinate) {
-		this.getElement().callJsFunction("addMarker", title, coordinate.getAsJson());
+	public void addMarker(MapMarker marker) {
+		this.getElement().callJsFunction("addMarker", marker.getAsJson());
 	}
 	
-	public void addCustomMarker(String title, String colorCode, Coordinate coordinate) {
-		this.getElement().callJsFunction("addCustomMarker", title, colorCode, coordinate.getAsJson());
+	public void addCustomMarker(MapMarker marker) {
+		this.getElement().callJsFunction("addCustomMarker", marker.getAsJson());
 	}
 	
 	public void removeMarkers() {
@@ -58,10 +64,20 @@ public class CtsGoogleMap extends Component {
 		this.getElement().callJsFunction("drawCircle", coordinate.getAsJson());
 	}
 	
+	public void restoreMarkers() {
+		final String markerVals = markers.stream().map(m -> m.getAsJson()).collect(Collectors.toList()).toString();
+		this.getElement().setProperty("previousMarkers", markerVals);
+	}
+	
 	@ClientCallable
 	private void clickOnMapEvent(JsonObject event) {
 		ClickOnMapEvent mapEvent = new ClickOnMapEvent(Coordinate.getFromJson(event), new ArrayList<>());
 		clickObsv.next(mapEvent);
+	}
+	
+	@ClientCallable
+	private void saveMarker(JsonObject marker) {
+		markers.add(new MapMarker(marker));
 	}
 	
 	public void addClickListener(Consumer<ClickOnMapEvent> funct) {

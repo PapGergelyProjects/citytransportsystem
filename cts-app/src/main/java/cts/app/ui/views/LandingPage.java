@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.client.RestClientException;
 
 import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.details.Details;
@@ -21,17 +19,13 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationResult;
-import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import cts.app.config.ApplicationCts;
-import cts.app.config.CtsConfig;
 import cts.app.domain.AvailableLocation;
-import cts.app.domain.ClickOnMapEvent;
 import cts.app.domain.Position;
 import cts.app.domain.Radius;
 import cts.app.domain.StopLocation;
@@ -41,13 +35,12 @@ import cts.app.service.TransportDataService;
 import cts.app.ui.MainLayout;
 import cts.app.ui.components.location.CtsGeoLocation;
 import cts.app.ui.components.map.CtsGoogleMap;
-import cts.app.ui.components.map.InitMapData;
+import cts.app.ui.components.map.MapMarker;
 import cts.app.ui.utils.CtsNotification;
 import cts.app.ui.utils.FlexSearchLayout;
 import jakarta.annotation.PostConstruct;
 import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SearchLocation;
-import prv.pgergely.cts.common.observable.ObservableObject;
 
 @UIScope
 @SpringComponent
@@ -162,7 +155,7 @@ public class LandingPage extends VerticalLayout {
 			StopLocationWrapper stops = dataSrvc.getStopsAndTimes(selected.getDsUrl(), loc);
 			for(StopLocation stop : stops.getStopList()) {
 				Coordinate stopCoord = stop.getStopCoordinate();
-				map.addCustomMarker(stop.getStopName(), stop.getStopColor(), stopCoord);
+				map.addCustomMarker(new MapMarker(stop.getStopName(), stop.getStopColor(), stopCoord));
 			}
 		}else {
 			noti.showNotification(NotificationVariant.LUMO_ERROR, "No selected location.");
@@ -182,6 +175,7 @@ public class LandingPage extends VerticalLayout {
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
 		fieldBinder.readBean(radiusBean);
+		map.restoreMarkers();
 	}
 	
 }
