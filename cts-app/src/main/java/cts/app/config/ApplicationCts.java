@@ -56,10 +56,11 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 	@Override
 	public void configurePage(AppShellSettings settings) {
 		settings.addFavIcon("icon", "favicon.png", "24x24");
-		settings.addLink("shortcut icon", "favicon.png");
+		//settings.addLink("shortcut icon", "favicon.png");
 	}
 
 	@Bean
+	@UIScope
 	public CtsGoogleMap initMapService() {
 		CtsGoogleMap map = new CtsGoogleMap(config, getEventObj());
 		

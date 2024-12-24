@@ -1,0 +1,31 @@
+{
+  "Configuration": {
+    "Properties": {
+        "Property": [
+            {
+                "name": "app.name",
+                "value": "cts-app"
+            }
+        ]
+    },
+    "Appenders": {
+      "Console": { 
+        "name": "CONSOLE",
+        "target": "SYSTEM_OUT",
+        "PatternLayout": {
+          "pattern": "[${app.name}] | %-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{10} (%F:%L) - %m%n"
+        }
+      }
+    },
+    "Loggers": {
+      "Root": { 
+        "level": "INFO",
+        "AppenderRef": [
+          {
+            "ref": "CONSOLE"
+          }
+        ]
+      }
+    }
+  }
+}
