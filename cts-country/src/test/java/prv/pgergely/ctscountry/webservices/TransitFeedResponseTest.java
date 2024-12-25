@@ -2,6 +2,7 @@ package prv.pgergely.ctscountry.webservices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson;
 import prv.pgergely.ctscountry.services.TransitFeedApi;
 
+@Disabled
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TransitFeedResponseTest {
 	

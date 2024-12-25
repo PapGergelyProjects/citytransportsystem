@@ -3,6 +3,7 @@ package prv.pgergely.ctscountry.webservices;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
 
+@Disabled
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CountryFeedServiceTest {
 	

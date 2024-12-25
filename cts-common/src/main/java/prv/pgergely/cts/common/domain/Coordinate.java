@@ -12,11 +12,6 @@ public class Coordinate implements Serializable {
 	private final double longitude;
 	private Integer radius;
 	
-	public Coordinate() {
-		this.latitude = 0.D;
-		this.longitude = 0.D;
-	}
-	
 	public Coordinate(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;

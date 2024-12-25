@@ -45,7 +45,7 @@ public class ApplicationCtsCountry extends SpringBootServletInitializer{
 	
 	@Bean
 	public AtomicReference<AuthToken> getToken(){
-		return new AtomicReference<>(null);
+		return new AtomicReference<>(new AuthToken());
 	}
 	
 }

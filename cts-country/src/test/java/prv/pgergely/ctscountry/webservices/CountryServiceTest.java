@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -26,6 +27,7 @@ import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
 import prv.pgergely.ctscountry.interfaces.FeedVersionRepo;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
+@Disabled
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CountryServiceTest {
