@@ -13,6 +13,7 @@ import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
 
 @Service
+@Deprecated
 public class FeedSource {
 	
 	@Autowired

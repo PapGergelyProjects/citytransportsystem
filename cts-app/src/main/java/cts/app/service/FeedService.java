@@ -18,11 +18,9 @@ import cts.app.config.CtsConfig;
 import cts.app.config.SourceTemplateConfig;
 import cts.app.domain.AvailableLocation;
 import cts.app.domain.ResponseData;
-import cts.app.domain.TransitFeedView;
-import prv.pgergely.cts.common.domain.DataSourceState;
-import prv.pgergely.cts.common.domain.FeedLocationList;
+import cts.app.domain.GtfsFeedView;
 import prv.pgergely.cts.common.domain.SelectedFeed;
-import prv.pgergely.cts.common.domain.SourceState;
+import prv.pgergely.cts.common.domain.transitfeed.FeedLocationList;
 
 @Service
 public class FeedService {
@@ -62,15 +60,15 @@ public class FeedService {
 		template.delete(config.getServiceUrl()+"/feed/delete/"+id);
 	}
 	
-	public List<TransitFeedView> getTransitFeeds() throws RestClientException {
+	public List<GtfsFeedView> getTransitFeeds() throws RestClientException {
 		ResponseEntity<FeedLocationList> resp = template.getForEntity(config.getServiceUrl()+"/transit-feed/feeds/all", FeedLocationList.class);
 		FeedLocationList res =  resp.getBody();
 		return res.getFeeds().stream().map(m -> {
-			TransitFeedView view = new TransitFeedView();
+			GtfsFeedView view = new GtfsFeedView();
 			view.setId(m.getId());
 			view.setTitle(m.getTitle());
-			view.setFeedTitle(m.getFeed().getTitle());
-			view.setLatest(m.getFeed().getLatest());
+			view.setFeedTitle(m.getFeedTitle());
+			view.setLatest(m.getLatestVersion());
 			view.setEnabled(m.isEnabled());
 			view.setActive(m.isActive());
 			view.setState(m.getState());

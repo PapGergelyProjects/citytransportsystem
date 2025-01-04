@@ -1,10 +1,10 @@
-package prv.pgergely.cts.common.domain;
+package prv.pgergely.cts.common.domain.transitfeed;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import prv.pgergely.cts.common.domain.FeedLocationsJson;
+import prv.pgergely.cts.common.domain.transitfeed.FeedLocationsJson;
 
 public class FeedLocationList implements Serializable {
 	

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 
-public class TransitFeedView implements Serializable {
+public class GtfsFeedView implements Serializable {
 	
 	private static final long serialVersionUID = -1661190667055352079L;
 	

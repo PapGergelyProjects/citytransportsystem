@@ -6,6 +6,9 @@ import java.util.Optional;
 import elemental.json.Json;
 import elemental.json.JsonObject;
 
+/*
+ * Representation of coordinates
+ */
 public class Coordinate implements Serializable {
 	
 	private final double latitude;

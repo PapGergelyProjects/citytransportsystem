@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import prv.pgergely.ctscountry.domain.mobility.feeds.MobilityFeeds;
+import prv.pgergely.ctscountry.domain.mobility.feeds.MobilityFeed;
 
-public class MobilityGtfsFeeds extends MobilityFeeds implements Serializable {
+public class MobilityGtfsFeed extends MobilityFeed implements Serializable {
 	
 	private List<Location> locations;
 	
@@ -32,8 +32,8 @@ public class MobilityGtfsFeeds extends MobilityFeeds implements Serializable {
 
 	@Override
 	public String toString() {
-		String superToString = super.toString().replace("MobilityFeeds", "").replace("{","").replace("}","");
-		return "MobilityGtfsFeeds {"+superToString+", \nlocations:" + locations + ", \nlatestData:" + latestData + "\n}";
+		String superToString = super.toString().replace("MobilityFeed", "").replace("{","").replace("}","");
+		return "MobilityGtfsFeed {"+superToString+", \nlocations:" + locations + ", \nlatestData:" + latestData + "\n}";
 	}
 	
 }

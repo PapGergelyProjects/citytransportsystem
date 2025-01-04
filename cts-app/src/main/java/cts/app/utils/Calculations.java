@@ -43,4 +43,11 @@ public class Calculations {
 		
 		return arcPoints;
 	}
+	
+	public static Coordinate getCenterOfCoords(double latMin, double lonMin, double latMax, double lonMax) {
+		
+		
+		
+		return new Coordinate(0, 0);
+	}
 }

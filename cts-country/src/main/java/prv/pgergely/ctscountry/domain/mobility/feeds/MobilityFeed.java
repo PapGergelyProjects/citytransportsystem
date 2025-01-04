@@ -6,14 +6,19 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class MobilityFeeds implements Serializable{
+public class MobilityFeed implements Serializable {
 	
 	private String id;
 	
 	@JsonProperty("data_type")
 	private String dataType;
 	
+	private String features;
+	
 	private String status;
+	
+	@JsonProperty("created_at")
+	private String createdAt;
 	
 	@JsonProperty("external_ids")
 	private List<ExternalIds> externalId;
@@ -48,6 +53,14 @@ public class MobilityFeeds implements Serializable{
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
+	
+	public String getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(String features) {
+		this.features = features;
+	}
 
 	public String getStatus() {
 		return status;
@@ -55,6 +68,14 @@ public class MobilityFeeds implements Serializable{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public List<ExternalIds> getExternalId() {
@@ -115,7 +136,7 @@ public class MobilityFeeds implements Serializable{
 
 	@Override
 	public String toString() {
-		return "MobilityFeeds {\nid:" + id + ", \ndataType:" + dataType + ", \nstatus:" + status + ", \nexternalId:"
+		return "MobilityFeed {\nid:" + id + ", \ndataType:" + dataType + ", \nstatus:" + status + ", \nexternalId:"
 				+ externalId + ", \nprovider:" + provider + ", \nfeedName:" + feedName + ", \nnote:" + note
 				+ ", \ncontactMail:" + contactMail + ", \nsourceInfo:" + sourceInfo + ", \nredirects:" + redirects
 				+ "\n}";

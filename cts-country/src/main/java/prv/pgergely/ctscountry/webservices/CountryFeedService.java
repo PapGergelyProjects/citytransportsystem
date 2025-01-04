@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import prv.pgergely.cts.common.domain.FeedLocationList;
 import prv.pgergely.cts.common.domain.ResponseData;
 import prv.pgergely.cts.common.domain.SelectedFeed;
+import prv.pgergely.cts.common.domain.transitfeed.FeedLocationList;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.services.DatasourceService;
 import prv.pgergely.ctscountry.services.FeedSource;
@@ -64,6 +64,8 @@ public class CountryFeedService {
 			return new ResponseEntity<Feeds>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	
 	
 	@PatchMapping(path="/feeds/update-state")
 	public ResponseEntity<ResponseData> updateSource(@RequestBody SelectedFeed feed){

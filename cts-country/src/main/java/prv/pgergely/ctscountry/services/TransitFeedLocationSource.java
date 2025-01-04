@@ -14,15 +14,15 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import prv.pgergely.cts.common.domain.Feed;
-import prv.pgergely.cts.common.domain.FeedLocationsJson;
-import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson;
+import prv.pgergely.cts.common.domain.transitfeed.FeedLocationsJson;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
+import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson.Locations;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson.Results;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
 @Service
+@Deprecated
 public class TransitFeedLocationSource {
 	
 	@Autowired
@@ -66,10 +66,8 @@ public class TransitFeedLocationSource {
 			json.setActive(vers.isActive());
 			json.setSchemaName(vers.getSchemaName());
 			json.setState(vers.getState());
-			Feed feed = new Feed();
-			feed.setTitle(actFeed.feedTitle);
-			feed.setLatest(Instant.ofEpochMilli(actFeed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate());
-			json.setFeed(feed);
+			json.setFeedTitle(actFeed.feedTitle);
+			json.setLatestVersion(Instant.ofEpochMilli(actFeed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate());
 			locationList.add(json);
 		}
 		

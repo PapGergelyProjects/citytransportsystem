@@ -16,7 +16,7 @@ import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson;
 import prv.pgergely.ctscountry.services.TransitFeedApi;
 
-@Disabled
+@Disabled("Deprecated api")
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TransitFeedResponseTest {
 	

@@ -29,7 +29,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import cts.app.config.ApplicationCts;
 import cts.app.domain.ResponseData;
-import cts.app.domain.TransitFeedView;
+import cts.app.domain.GtfsFeedView;
 import cts.app.service.FeedService;
 import cts.app.ui.MainLayout;
 import cts.app.ui.utils.CtsNotification;
@@ -63,7 +63,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	private TextField search;
 	private DatePicker date;
 	private Checkbox isRegistered;
-	private Grid<TransitFeedView> transitFeedGrid;
+	private Grid<GtfsFeedView> transitFeedGrid;
 	
 	@PostConstruct
 	public void init() {
@@ -93,8 +93,8 @@ public class ServiceConfigPage extends VerticalLayout {
 		return searchLay;
 	}
 	
-	private Grid<TransitFeedView> initGrid(){
-		Grid<TransitFeedView> grid = new Grid<>(TransitFeedView.class, false);
+	private Grid<GtfsFeedView> initGrid(){
+		Grid<GtfsFeedView> grid = new Grid<>(GtfsFeedView.class, false);
 		
 		grid.addComponentColumn(r -> {
 			if(r.isEnabled()) {
@@ -155,16 +155,16 @@ public class ServiceConfigPage extends VerticalLayout {
 	}
 	
 	private void filterGrid() {
-		ListDataProvider<TransitFeedView> listDataProvider = (ListDataProvider<TransitFeedView>)transitFeedGrid.getDataProvider();
+		ListDataProvider<GtfsFeedView> listDataProvider = (ListDataProvider<GtfsFeedView>)transitFeedGrid.getDataProvider();
 		listDataProvider.setFilter(getFilter());
 	}
 	
-	public void refreshGrid(List<TransitFeedView> data) {
+	public void refreshGrid(List<GtfsFeedView> data) {
 		transitFeedGrid.setItems(data);
 		filterGrid();
 	}
 	
-	public List<TransitFeedView> getFeedViews(){
+	public List<GtfsFeedView> getFeedViews(){
 		try {
 			return feedSource.getTransitFeeds();
 		} catch (RestClientException e) {
@@ -173,7 +173,7 @@ public class ServiceConfigPage extends VerticalLayout {
 		}
 	}
 	
-	private SerializablePredicate<TransitFeedView> getFilter(){
+	private SerializablePredicate<GtfsFeedView> getFilter(){
 		return item -> {
 			boolean match = true;
 			String sVal = search.getValue();

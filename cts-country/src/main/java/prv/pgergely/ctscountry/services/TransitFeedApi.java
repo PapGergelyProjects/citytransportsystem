@@ -18,6 +18,7 @@ import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedLocationJson;
 import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @Component
+@Deprecated
 public class TransitFeedApi {
 	
 	@Autowired
@@ -31,6 +32,7 @@ public class TransitFeedApi {
 	@Autowired
 	private CtsConfig config;
 	
+	@Deprecated
 	public ResponseEntity<TransitFeedJson> getFeed(int page) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -41,6 +43,7 @@ public class TransitFeedApi {
 		return template.exchange(url, HttpMethod.GET, entity, TransitFeedJson.class);
 	}
 	
+	@Deprecated
 	public ResponseEntity<TransitFeedJson> getFeeds(long feedId){
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -51,6 +54,7 @@ public class TransitFeedApi {
 		return template.exchange(url, HttpMethod.GET, entity, TransitFeedJson.class);
 	}
 	
+	@Deprecated
 	public ResponseEntity<TransitFeedLocationJson> getLocations(){
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);

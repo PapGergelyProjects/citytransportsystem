@@ -52,6 +52,7 @@ INVALIDINPUT - A request parameter was invalid.
  * @author Pap Gergely
  *
  */
+@Deprecated
 public class TransitFeedJson implements Serializable {
 
     public String status;
@@ -70,7 +71,7 @@ public class TransitFeedJson implements Serializable {
             return "{" + "total:" + total + ", limit:" + limit + ", page:" + page + ", numPages:" + numPages + ", feeds:" + feeds + '}';
         }
     }
-
+    
     public static class Feeds{
         public String id;
         
