@@ -7,7 +7,7 @@ import elemental.json.Json;
 import elemental.json.JsonObject;
 
 /*
- * Representation of coordinates
+ * Representation of a coordinate.
  */
 public class Coordinate implements Serializable {
 	
@@ -31,6 +31,14 @@ public class Coordinate implements Serializable {
 	
 	public double getLongitude() {
 		return longitude;
+	}
+	
+	public double getLatitudeAsRadian() {
+		return Math.toRadians(latitude);
+	}
+	
+	public double getLongitudeAsRadian() {
+		return Math.toRadians(longitude);
 	}
 	
 	public void setRadius(Integer radius) {
