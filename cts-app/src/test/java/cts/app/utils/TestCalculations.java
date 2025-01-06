@@ -24,13 +24,12 @@ public class TestCalculations {
 	@Test
 	@DisplayName("Test distance between bound coordinates")
 	public void testDistance() {
-		double dist1 = Calculations.getDistanceBetweenToCoords(45.994538, 18.131841, 46.153928, 18.344572);
-		double dist2 = Calculations.getDistanceBetweenToCoords(47.435411, 18.918696, 47.467701, 18.980891);
-		double dist3 = Calculations.getDistanceBetweenToCoords(47.174786, 18.719305, 47.661056, 19.357892);
+		double dist1 = Calculations.getDistanceBetweenTwoCoords(45.994538, 18.131841, 46.153928, 18.344572);
+		double dist2 = Calculations.getDistanceBetweenTwoCoords(47.435411, 18.918696, 47.467701, 18.980891);
+		double dist3 = Calculations.getDistanceBetweenTwoCoords(47.174786, 18.719305, 47.661056, 19.357892);
 		System.out.println("pécs: "+(dist1/1000));
 		System.out.println("budaörs: "+(dist2/1000));
 		System.out.println("budapest: "+(dist3/1000));
-		
 		assertTrue(true);
 	}
 }

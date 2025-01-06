@@ -2,8 +2,10 @@ package prv.pgergely.ctscountry.services;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,8 +63,9 @@ public class FeedVersionHandler implements VersionHandlerThread {
 			Location location = allFeed.location;
 			FeedURL feedLink = allFeed.feedUrl;
 			Latest latest = allFeed.latest;
-			LocalDate verDate = Instant.ofEpochMilli(latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate();
-			if(feedVersion.getFeedId() == allFeed.location.id && (feedVersion.getLatestVersion().isBefore(verDate) || feedVersion.isRecent())){ // FIXME: Handle new_version
+			LocalDateTime verDate = Instant.ofEpochMilli(latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDateTime();
+			OffsetDateTime versionDateTime = OffsetDateTime.of(verDate, ZoneOffset.UTC); 
+			if(feedVersion.getFeedId() == allFeed.location.id && (feedVersion.getLatestVersion().isBefore(versionDateTime) || feedVersion.isRecent())){ // FIXME: Handle new_version
 				long feedId = location.id;
 				String title = allFeed.feedTitle;
 				String link = feedLink.urlDirectLink;
@@ -72,7 +75,7 @@ public class FeedVersionHandler implements VersionHandlerThread {
 				newVersion.setId(feedVersion.getId());
 				newVersion.setFeedId(feedId);
 				newVersion.setTitle(title);
-				newVersion.setLatestVersion(verDate);
+				newVersion.setLatestVersion(versionDateTime);
 				newVersion.setRecent(false);
 				feedVsSrv.update(newVersion);
 				logger.info("New version founded.");

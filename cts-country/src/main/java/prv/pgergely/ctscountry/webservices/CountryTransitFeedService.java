@@ -20,9 +20,10 @@ import prv.pgergely.ctscountry.services.DatasourceService;
 import prv.pgergely.ctscountry.services.FeedSource;
 import prv.pgergely.ctscountry.services.TransitFeedLocationSource;
 
+@Deprecated
 @RestController
 @RequestMapping(path="/transit-feed")
-public class CountryFeedService {
+public class CountryTransitFeedService {
 
 	@Autowired
 	private FeedSource src;

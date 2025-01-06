@@ -6,21 +6,19 @@ import prv.pgergely.cts.common.domain.CommonFeedData;
 
 public class GtfsFeedData extends CommonFeedData implements Serializable {
 	
-	private String id;
-
-	public String getId() {
-		return id;
+	private BoundingCoordinates boundingCoord;
+	
+	public BoundingCoordinates getBoundingCoord() {
+		return boundingCoord;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setBoundingCoord(BoundingCoordinates boundingCoord) {
+		this.boundingCoord = boundingCoord;
 	}
 
 	@Override
 	public String toString() {
-		return "GtfsFeedData {\n    id:" + id + ", \n    getTitle():" + getTitle() + ", \n    getFeedTitle():"
-				+ getFeedTitle() + ", \n    getLatestVersion():" + getLatestVersion() + ", \n    getDsUrl():"
-				+ getDsUrl() + ", \n    isEnabled():" + isEnabled() + ", \n    isActive():" + isActive()
-				+ ", \n    getSchemaName():" + getSchemaName() + ", \n    getState():" + getState() + "\n}";
+		return "GtfsFeedData {\n    boundingCoord:" + boundingCoord + ", \n    toString():" + super.toString() + "\n}";
 	}
+	
 }

@@ -7,6 +7,8 @@ public class Location {
 	@JsonProperty("country_code")
 	private String countryCode;
 	
+	private String country;
+	
 	@JsonProperty("subdivision_name")
 	private String subDivName;
 	
@@ -14,6 +16,14 @@ public class Location {
 
 	public String getCountryCode() {
 		return countryCode;
+	}
+	
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public void setCountryCode(String countryCode) {

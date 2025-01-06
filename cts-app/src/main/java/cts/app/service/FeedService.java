@@ -60,6 +60,7 @@ public class FeedService {
 		template.delete(config.getServiceUrl()+"/feed/delete/"+id);
 	}
 	
+	@Deprecated
 	public List<GtfsFeedView> getTransitFeeds() throws RestClientException {
 		ResponseEntity<FeedLocationList> resp = template.getForEntity(config.getServiceUrl()+"/transit-feed/feeds/all", FeedLocationList.class);
 		FeedLocationList res =  resp.getBody();
@@ -77,6 +78,7 @@ public class FeedService {
 		}).collect(Collectors.toList());
 	}
 	
+	@Deprecated
 	public List<AvailableLocation> getRegisteredLocations() throws RestClientException{
 		ResponseEntity<FeedLocationList> resp = template.getForEntity(config.getServiceUrl()+"/transit-feed/feeds/registered", FeedLocationList.class);
 		return resp.getBody().getFeeds().stream().filter(p -> p.isActive()).map(m -> {

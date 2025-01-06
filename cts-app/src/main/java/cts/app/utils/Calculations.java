@@ -79,14 +79,14 @@ public class Calculations {
 	 * @param lonMax The higher longitude of the bound
 	 * @return The distance between two coordinates in meters.
 	 */
-	public static double getDistanceBetweenToCoords(double latMin, double lonMin, double latMax, double lonMax) {
+	public static double getDistanceBetweenTwoCoords(double latMin, double lonMin, double latMax, double lonMax) {
 		final double radMinLat = toRadians(latMin); 
 		final double radMinLon = toRadians(lonMin); 
 		final double radMaxLat = toRadians(latMax); 
 		final double radMaxLon = toRadians(lonMax); 
 		final double phi = radMaxLat-radMinLat;
 		final double lambda = radMaxLon-radMinLon;
-		final double angle = hav(phi) + cos(radMinLat)*cos(radMaxLat)*hav(lambda);
+		final double angle = hav(phi) + cos(radMinLat) * cos(radMaxLat) * hav(lambda);
 		final double haversineResult = 2.D * EARTH_RADIUS * asin(sqrt(angle)); 
 		
 		return haversineResult;

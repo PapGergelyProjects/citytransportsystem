@@ -3,6 +3,7 @@ package prv.pgergely.ctscountry.webservices;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -48,7 +49,7 @@ public class CountryServiceTest {
 		SelectedFeed feed = new SelectedFeed();
 		feed.setId(-42L);
 		feed.setTitle("Test feed");
-		feed.setLatest(LocalDate.now());
+		feed.setLatest(OffsetDateTime.now());
 		
 		ResponseEntity<ResponseData> resp = temp.postForEntity("feed/register", feed, ResponseData.class);
 		//assertEquals(201, resp.getBody().);
@@ -66,7 +67,7 @@ public class CountryServiceTest {
 		SelectedFeed vers = new SelectedFeed();
 		vers.setId(-42L);
 		vers.setTitle("Test feed updated");
-		vers.setLatest(LocalDate.now());
+		vers.setLatest(OffsetDateTime.now());
 		
 		HttpHeaders head = new HttpHeaders();
 		head.setContentType(MediaType.APPLICATION_JSON);

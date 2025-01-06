@@ -2,6 +2,7 @@ package prv.pgergely.cts.common.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 /**
  * 
@@ -14,11 +15,11 @@ public class SelectedFeed implements Serializable{
 	private String title;
 	private String technicalTitle;
 	private DataSourceState state;
-	private LocalDate latest;
+	private OffsetDateTime latest;
 	
 	public SelectedFeed() {}
 	
-	public SelectedFeed(Long id, String title, String technicalTitle, DataSourceState state, LocalDate latest) {
+	public SelectedFeed(Long id, String title, String technicalTitle, DataSourceState state, OffsetDateTime latest) {
 		this.id = id;
 		this.title = title;
 		this.technicalTitle = technicalTitle;
@@ -58,11 +59,11 @@ public class SelectedFeed implements Serializable{
 		this.state = state;
 	}
 
-	public LocalDate getLatest() {
+	public OffsetDateTime getLatest() {
 		return latest;
 	}
 
-	public void setLatest(LocalDate latest) {
+	public void setLatest(OffsetDateTime latest) {
 		this.latest = latest;
 	}
 

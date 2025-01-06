@@ -2,6 +2,7 @@ package prv.pgergely.ctscountry.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SelectedFeed;
@@ -14,7 +15,7 @@ public class FeedVersion extends DatasourceInfo implements Serializable{
 	private long feedId;
 	private String title;
 	private String technicalTitle;
-	private LocalDate latestVersion;
+	private OffsetDateTime latestVersion;
 	private boolean recent;
 	private boolean newVersion;
 	
@@ -56,10 +57,10 @@ public class FeedVersion extends DatasourceInfo implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public LocalDate getLatestVersion() {
+	public OffsetDateTime getLatestVersion() {
 		return latestVersion;
 	}
-	public void setLatestVersion(LocalDate latestVersion) {
+	public void setLatestVersion(OffsetDateTime latestVersion) {
 		this.latestVersion = latestVersion;
 	}
 	public boolean isRecent() {

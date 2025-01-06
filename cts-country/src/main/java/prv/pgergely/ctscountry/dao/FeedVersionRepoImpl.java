@@ -1,8 +1,6 @@
 package prv.pgergely.ctscountry.dao;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +33,7 @@ public class FeedVersionRepoImpl extends NamedParameterJdbcTemplate implements F
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("feedId", value.getFeedId());
 		params.addValue("tit", value.getTitle());
-		params.addValue("latestVersion", Date.from(value.getLatestVersion().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		params.addValue("latestVersion", Date.from(value.getLatestVersion().toInstant()));
 		params.addValue("rc", true);
 		params.addValue("isNew", true);
 		this.update(insert, params);
@@ -47,7 +45,7 @@ public class FeedVersionRepoImpl extends NamedParameterJdbcTemplate implements F
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("feedId", value.getFeedId());
 		params.addValue("tit", value.getTitle());
-		params.addValue("latestVersion", Date.from(value.getLatestVersion().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		params.addValue("latestVersion", Date.from(value.getLatestVersion().toInstant()));
 		params.addValue("rc", value.isRecent());
 		params.addValue("isNew", value.isNewVersion());
 		this.update(update, params);
@@ -64,7 +62,7 @@ public class FeedVersionRepoImpl extends NamedParameterJdbcTemplate implements F
 			vers.setId(Long.valueOf(feed.get("id").toString()));
 			vers.setFeedId(id);
 			vers.setTitle(feed.get("title").toString());
-			vers.setLatestVersion(LocalDate.parse(feed.get("latest_version").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			vers.setLatestVersion(OffsetDateTime.parse(feed.get("latest_version").toString()));
 			vers.setRecent((boolean)feed.get("recent"));
 			vers.setNewVersion((boolean)feed.get("new_version"));
 			return vers;
@@ -87,7 +85,7 @@ public class FeedVersionRepoImpl extends NamedParameterJdbcTemplate implements F
 			vers.setId(Long.valueOf(feed.get("id").toString()));
 			vers.setFeedId(Long.valueOf(feed.get("feed_id").toString()));
 			vers.setTitle(feed.get("title").toString());
-			vers.setLatestVersion(LocalDate.parse(feed.get("latest_version").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			vers.setLatestVersion(OffsetDateTime.parse(feed.get("latest_version").toString()));
 			vers.setRecent(Boolean.valueOf(feed.get("recent").toString()));
 			vers.setNewVersion(Boolean.valueOf(feed.get("new_version").toString()));
 			return vers;

@@ -2,9 +2,9 @@ package cts.app.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import prv.pgergely.cts.common.domain.DataSourceState;
-import prv.pgergely.cts.common.domain.SourceState;
 
 public class GtfsFeedView implements Serializable {
 	
@@ -14,7 +14,7 @@ public class GtfsFeedView implements Serializable {
 	private String title;
 	private boolean isEnabled;
 	private String feedTitle;
-	private LocalDate latest;
+	private OffsetDateTime latest;
 	private boolean isActive;
 	private DataSourceState state;
 	
@@ -42,10 +42,10 @@ public class GtfsFeedView implements Serializable {
 	public void setFeedTitle(String feedTitle) {
 		this.feedTitle = feedTitle;
 	}
-	public LocalDate getLatest() {
+	public OffsetDateTime getLatest() {
 		return latest;
 	}
-	public void setLatest(LocalDate latest) {
+	public void setLatest(OffsetDateTime latest) {
 		this.latest = latest;
 	}
 	public boolean isActive() {

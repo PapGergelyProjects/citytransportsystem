@@ -6,17 +6,8 @@ import prv.pgergely.cts.common.domain.CommonFeedData;
 
 public class FeedLocationsJson extends CommonFeedData implements Serializable {
 	
-	private Long id;
 	private double lat;
 	private double lon;
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public double getLat() {
 		return lat;
@@ -36,7 +27,7 @@ public class FeedLocationsJson extends CommonFeedData implements Serializable {
 
 	@Override
 	public String toString() {
-		return "FeedLocationsJson {\n    id:" + id + ", \n    lat:" + lat + ", \n    lon:" + lon + ", \n    getTitle():"
+		return "FeedLocationsJson {\n    id:" + getId() + ", \n    lat:" + lat + ", \n    lon:" + lon + ", \n    getTitle():"
 				+ getTitle() + ", \n    getFeedTitle():" + getFeedTitle() + ", \n    getLatestVersion():"
 				+ getLatestVersion() + ", \n    getDsUrl():" + getDsUrl() + ", \n    isEnabled():" + isEnabled()
 				+ ", \n    isActive():" + isActive() + ", \n    getSchemaName():" + getSchemaName()

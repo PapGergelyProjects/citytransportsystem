@@ -2,7 +2,11 @@ package prv.pgergely.ctscountry.services;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,7 +71,8 @@ public class TransitFeedLocationSource {
 			json.setSchemaName(vers.getSchemaName());
 			json.setState(vers.getState());
 			json.setFeedTitle(actFeed.feedTitle);
-			json.setLatestVersion(Instant.ofEpochMilli(actFeed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDate());
+			LocalDateTime lastVers = Instant.ofEpochMilli(actFeed.latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDateTime();
+			json.setLatestVersion(OffsetDateTime.of(lastVers, ZoneOffset.UTC));
 			locationList.add(json);
 		}
 		
