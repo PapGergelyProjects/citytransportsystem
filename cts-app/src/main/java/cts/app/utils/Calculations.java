@@ -3,14 +3,15 @@ import static java.lang.Math.asin;
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
-import static java.lang.Math.sqrt;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import prv.pgergely.cts.common.domain.Coordinate;
+import prv.pgergely.cts.common.domain.mobility.BoundingCoordinates;
 
 /**
  * Contains calculations which are necessary for map visualization. 

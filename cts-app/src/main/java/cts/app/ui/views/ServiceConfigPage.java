@@ -166,7 +166,7 @@ public class ServiceConfigPage extends VerticalLayout {
 	
 	public List<GtfsFeedView> getFeedViews(){
 		try {
-			return feedSource.getTransitFeeds();
+			return feedSource.getGtfsFeedsByCountry("");// TODO country code selector
 		} catch (RestClientException e) {
 			noti.showNotification(NotificationVariant.LUMO_ERROR, "No feed available.");
 			return new ArrayList<>();

@@ -17,9 +17,13 @@ import org.springframework.web.client.RestTemplate;
 import cts.app.config.CtsConfig;
 import cts.app.config.SourceTemplateConfig;
 import cts.app.domain.AvailableLocation;
-import cts.app.domain.ResponseData;
 import cts.app.domain.GtfsFeedView;
+import cts.app.domain.ResponseData;
+import cts.app.utils.Calculations;
+import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SelectedFeed;
+import prv.pgergely.cts.common.domain.mobility.BoundingCoordinates;
+import prv.pgergely.cts.common.domain.mobility.GftsFeedDataList;
 import prv.pgergely.cts.common.domain.transitfeed.FeedLocationList;
 
 @Service
@@ -58,6 +62,40 @@ public class FeedService {
 	
 	public void deleteFeed(Long id) {
 		template.delete(config.getServiceUrl()+"/feed/delete/"+id);
+	}
+	
+	public List<GtfsFeedView> getGtfsFeedsByCountry(String countryCode) throws RestClientException {
+		ResponseEntity<GftsFeedDataList> resp = template.getForEntity(config.getServiceUrl()+"/gtfs-content/feeds/"+countryCode, GftsFeedDataList.class);
+		GftsFeedDataList res =  resp.getBody();
+		return res.getData().stream().map(m -> {
+			GtfsFeedView view = new GtfsFeedView();
+			view.setId(m.getId());
+			view.setTitle(m.getTitle());
+			view.setFeedTitle(m.getFeedTitle());
+			view.setLatest(m.getLatestVersion());
+			view.setEnabled(m.isEnabled());
+			view.setActive(m.isActive());
+			view.setState(m.getState());
+			
+			return view;
+		}).collect(Collectors.toList());
+	}
+	
+	public List<AvailableLocation> getRegisteredGtfsLocations(String countryCode) throws RestClientException {
+		ResponseEntity<GftsFeedDataList> resp = template.getForEntity(config.getServiceUrl()+"/gtfs-content/feeds/"+countryCode, GftsFeedDataList.class);
+		GftsFeedDataList res =  resp.getBody();
+		return res.getData().stream().filter(p -> p.isActive() && p.isEnabled()).map(m -> {
+			AvailableLocation loc = new AvailableLocation();
+			loc.setId(m.getId());
+			loc.setLocationName(m.getTitle());
+			loc.setDsUrl(m.getDsUrl());
+			BoundingCoordinates coords = m.getBoundingCoord();
+			Coordinate centerCoords = Calculations.getCenterOfBoundingCoords(coords.getMinBound().getLatitude(), coords.getMinBound().getLongitude(), coords.getMaxBound().getLatitude(), coords.getMaxBound().getLongitude());
+			loc.setLat(centerCoords.getLatitude());
+			loc.setLon(centerCoords.getLongitude());
+			
+			return loc;
+		}).collect(Collectors.toList());
 	}
 	
 	@Deprecated
