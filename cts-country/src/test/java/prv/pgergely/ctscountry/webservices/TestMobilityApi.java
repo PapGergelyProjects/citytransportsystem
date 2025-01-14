@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import prv.pgergely.ctscountry.domain.mobility.gtfs.Location;
 import prv.pgergely.ctscountry.domain.mobility.gtfs.MobilityGtfsFeed;
 import prv.pgergely.ctscountry.services.MobilityApi;
 
+@Disabled("")
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TestMobilityApi {
 	

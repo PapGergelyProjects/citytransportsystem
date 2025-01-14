@@ -22,6 +22,9 @@ public class CtsConfig {
 	private Datasource datasource;
 	private DockerCommands dockerCommands;
 	
+	//Test
+	private String fixedToken;
+	
 	@Deprecated
 	public String getTransitFeedSource() {
 		return transitFeedSource;
@@ -77,5 +80,11 @@ public class CtsConfig {
 	}
 	public void setDockerCommands(DockerCommands dockerCommands) {
 		this.dockerCommands = dockerCommands;
+	}
+	public String getFixedToken() {
+		return fixedToken;
+	}
+	public void setFixedToken(String fixedToken) {
+		this.fixedToken = fixedToken;
 	}
 }

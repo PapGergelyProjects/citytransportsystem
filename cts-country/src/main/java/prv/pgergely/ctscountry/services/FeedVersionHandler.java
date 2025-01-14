@@ -21,11 +21,10 @@ import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.FeedURL;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Latest;
 import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Location;
-import prv.pgergely.ctscountry.interfaces.VersionHandlerThread;
 import prv.pgergely.ctscountry.model.FeedVersion;
 
 @Service
-public class FeedVersionHandler implements VersionHandlerThread {
+public class FeedVersionHandler implements Runnable {
 	
 	@Autowired
 	private FeedVersionServiceImpl feedVsSrv;
@@ -50,10 +49,11 @@ public class FeedVersionHandler implements VersionHandlerThread {
 				store.add(request);
 			}
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
+	@Deprecated
 	private Map<String, FeedVersion> checkSelectedFeed() throws IOException{
 		Map<String, FeedVersion> downloadLinks = new HashMap<>();
 		List<FeedVersion> feedVers = feedVsSrv.getFeedVersions();

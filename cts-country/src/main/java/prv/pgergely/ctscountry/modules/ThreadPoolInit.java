@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 import prv.pgergely.cts.common.interfaces.ScheduledThreadEngine;
 import prv.pgergely.ctscountry.configurations.CtsConfig;
-import prv.pgergely.ctscountry.interfaces.ContentSenderThread;
-import prv.pgergely.ctscountry.interfaces.VersionHandlerThread;
+import prv.pgergely.ctscountry.services.FeedVersionHandler;
+import prv.pgergely.ctscountry.services.ZipContentSender;
 
 @Order(2)
 @Component
@@ -21,10 +21,10 @@ public class ThreadPoolInit implements ApplicationRunner {
 	private ScheduledThreadEngine threadEng;
 	
 	@Autowired
-	private VersionHandlerThread versionHandler;
+	private FeedVersionHandler version;
 	
 	@Autowired
-	private ContentSenderThread zipSender;
+	private ZipContentSender zip;
 	
 	@Autowired
 	private CtsConfig config;
@@ -34,8 +34,8 @@ public class ThreadPoolInit implements ApplicationRunner {
 		long initDelay = config.getThreadParams().getInitDelayed();
 		long delayBetween = config.getThreadParams().getDelayBetween();
 		long offset = config.getThreadParams().getOffset();
-		threadEng.process(initDelay, delayBetween, TimeUnit.SECONDS, "VersionHandler", versionHandler);
-		threadEng.process(initDelay, delayBetween+offset, TimeUnit.SECONDS, "ZipSender", zipSender);
+		threadEng.process(initDelay, delayBetween, TimeUnit.SECONDS, "VersionHandler", version);
+		threadEng.process(initDelay, delayBetween+offset, TimeUnit.SECONDS, "ZipSender", zip);
 	}
 
 }

@@ -2,7 +2,9 @@ package cts.app.ui.views;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +14,7 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -28,8 +31,8 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
 import cts.app.config.ApplicationCts;
-import cts.app.domain.ResponseData;
 import cts.app.domain.GtfsFeedView;
+import cts.app.domain.ResponseData;
 import cts.app.service.FeedService;
 import cts.app.ui.MainLayout;
 import cts.app.ui.utils.CtsNotification;
@@ -63,16 +66,17 @@ public class ServiceConfigPage extends VerticalLayout {
 	private TextField search;
 	private DatePicker date;
 	private Checkbox isRegistered;
+	private ComboBox<String> countryCodes;
 	private Grid<GtfsFeedView> transitFeedGrid;
 	
 	@PostConstruct
 	public void init() {
 		this.setSizeFull();
 		this.setSpacing(false);
-		transitFeedGrid = initGrid();
-		transitFeedGrid.setItems(getFeedViews());
 		//transitFeedGrid.setDataProvider(new ListDataProvider<>(getFeedViews()));
 		this.add(initSearchBar());
+		transitFeedGrid = initGrid();
+		transitFeedGrid.setItems(getFeedViews());
 		this.add(transitFeedGrid);
 	}
 	
@@ -87,7 +91,8 @@ public class ServiceConfigPage extends VerticalLayout {
 		date.addValueChangeListener(event -> filterGrid());
 		isRegistered = new Checkbox("Only Registered");
 		isRegistered.addValueChangeListener(event -> filterGrid());
-		FlexSearchLayout searchLay = new FlexSearchLayout(search, date, isRegistered);
+		countryCodes = new ComboBox<String>("Country Codes", Arrays.asList(Locale.getISOCountries()));
+		FlexSearchLayout searchLay = new FlexSearchLayout(search, date, isRegistered, countryCodes);
 		searchLay.setGap("10px");
 		
 		return searchLay;
@@ -95,7 +100,6 @@ public class ServiceConfigPage extends VerticalLayout {
 	
 	private Grid<GtfsFeedView> initGrid(){
 		Grid<GtfsFeedView> grid = new Grid<>(GtfsFeedView.class, false);
-		
 		grid.addComponentColumn(r -> {
 			if(r.isEnabled()) {
 				if(r.isActive()) {
@@ -124,6 +128,7 @@ public class ServiceConfigPage extends VerticalLayout {
 			return newBtn;
 		}).setWidth("100px").setFlexGrow(0);
 		grid.addColumn("title").setResizable(true).setHeader("Location Name");
+		grid.addColumn("countryCode").setResizable(true).setHeader("Country code");
 		grid.addColumn("feedTitle").setResizable(true).setHeader("Feed Name");
 		grid.addColumn("latest").setResizable(true).setWidth("150px").setFlexGrow(0).setHeader("Latest Update");
 		grid.addComponentColumn(r -> {
@@ -166,7 +171,8 @@ public class ServiceConfigPage extends VerticalLayout {
 	
 	public List<GtfsFeedView> getFeedViews(){
 		try {
-			return feedSource.getGtfsFeedsByCountry("");// TODO country code selector
+			final String countryCode = countryCodes.getValue() == null ? "HU" : countryCodes.getValue(); // TODO: Add default country
+			return feedSource.getGtfsFeedsByCountry(countryCode);
 		} catch (RestClientException e) {
 			noti.showNotification(NotificationVariant.LUMO_ERROR, "No feed available.");
 			return new ArrayList<>();
@@ -185,7 +191,7 @@ public class ServiceConfigPage extends VerticalLayout {
 				}
 			}
 			if(sDate != null) {
-				match = sDate.equals(item.getLatest());
+				match = sDate.equals(item.getLatest().toLocalDate());
 				if(!match) {
 					return match;
 				}

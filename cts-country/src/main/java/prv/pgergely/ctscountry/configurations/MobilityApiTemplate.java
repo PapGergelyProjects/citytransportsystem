@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -19,6 +20,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import prv.pgergely.ctscountry.domain.mobility.token.AuthToken;
 import prv.pgergely.ctscountry.utils.TemplateQualifier;
+import prv.pgergely.ctscountry.utils.UnauthorizedException;
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -32,9 +34,16 @@ public class MobilityApiTemplate {
 	
 	private Logger logger = LogManager.getLogger(MobilityApiTemplate.class);
 	
+	@Profile("main")
 	@Bean(TemplateQualifier.MOBILITY_API)
 	public WebClient getWebClientTemplate() {
 		return WebClient.builder().filter(retryOn401Filter()).baseUrl(config.getMobilityApiUrl()).build();
+	}
+	
+	@Profile("test")
+	@Bean(TemplateQualifier.MOBILITY_API)
+	public WebClient getWebClientTemplateTest() {
+		return WebClient.builder().filter(debugFilter()).baseUrl(config.getMobilityApiUrl()).build();
 	}
 	
 	private AuthToken getAuthToken() {
@@ -61,6 +70,23 @@ public class MobilityApiTemplate {
 					case UNAUTHORIZED:{
 						logger.info("unauth. retry...");
 						return next.exchange(applyAuth(req));
+					}
+					default: {
+						return Mono.just(resp);
+					}
+				}
+			});
+		};
+	}
+	
+	private ExchangeFilterFunction debugFilter() {
+		return (req, next) -> {
+			return next.exchange(req).flatMap(resp -> {
+				HttpStatus status = HttpStatus.valueOf(resp.statusCode().value());
+				logger.info("status: "+status);
+				switch (status) {
+					case UNAUTHORIZED:{
+						return Mono.error(new UnauthorizedException("Test access token expired, renew another one."));
 					}
 					default: {
 						return Mono.just(resp);

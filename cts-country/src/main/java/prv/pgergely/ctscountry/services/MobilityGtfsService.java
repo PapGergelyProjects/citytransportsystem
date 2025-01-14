@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.cts.common.domain.mobility.BoundingCoordinates;
@@ -33,25 +35,29 @@ public class MobilityGtfsService {
 			final Long externalId = Long.valueOf(extIds.getExternalId());
 			final FeedVersion vers = allRegisteredVersion.get(externalId);
 			final BoundingBox bb = feed.getLatestData().getBoundinBox();
+			final List<Location> locs = feed.getLocations();
 			GtfsFeedData json = new GtfsFeedData();
 			json.setId(externalId);
 			json.setTitle(feed.getProvider());
+			json.setCountryCode(refinedCountry(locs));
 			json.setDsUrl(vers.getSourceUrl());
 			json.setBoundingCoord(new BoundingCoordinates(bb.getMinLat(), bb.getMinLng(), bb.getMaxLat(), bb.getMaxLng()));
 			json.setEnabled(allRegisteredVersion.containsKey(json.getId()));
 			json.setActive(vers.isActive());
 			json.setSchemaName(vers.getSchemaName());
 			json.setState(vers.getState());
-			json.setFeedTitle(refineLocationData(feed.getLocations()));
+			json.setFeedTitle(refineLocationData(locs));
 			json.setLatestVersion(OffsetDateTime.parse(feed.getLatestData().getDownloadAt()));
 			
 			return json;
 		}).collect(Collectors.toList());
 	}
 	
+	private String refinedCountry(List<Location> locations) {
+		return locations.stream().map(m -> m.getCountry()).collect(Collectors.joining(" | "));
+	}
+	
 	private String refineLocationData(List<Location> locations) {
-		return locations.stream().map(m -> {
-			return m.getCountry()+" "+m.getSubDivName();
-		}).collect(Collectors.joining(" | "));
+		return locations.stream().map(m -> m.getCountry()+" "+m.getSubDivName()).collect(Collectors.joining(" | "));
 	}
 }

@@ -5,6 +5,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,6 +17,7 @@ import prv.pgergely.ctscountry.domain.mobility.token.AuthToken;
 import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
 @Service
+@CacheConfig(cacheNames="static-feeds")
 public class MobilityApi {
 	
 	@Autowired
@@ -39,6 +43,7 @@ public class MobilityApi {
 		return getAllGtfsFeeds(null);
 	}
 	
+	@Cacheable(value="gtfs-feeds", key="{#countryCode}")
 	public List<MobilityGtfsFeed> getAllGtfsFeeds(String countryCode){
 		final AuthToken token = tokenHolder.get();
 		final String countryQueryParam = countryCode == null ? "" : "?country_code="+countryCode;
@@ -49,4 +54,5 @@ public class MobilityApi {
 		
 		return feeds;
 	}
+	
 }

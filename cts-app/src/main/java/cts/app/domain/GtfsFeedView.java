@@ -12,6 +12,7 @@ public class GtfsFeedView implements Serializable {
 	
 	private Long id;
 	private String title;
+	private String countryCode;
 	private boolean isEnabled;
 	private String feedTitle;
 	private OffsetDateTime latest;
@@ -29,6 +30,12 @@ public class GtfsFeedView implements Serializable {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getCountryCode() {
+		return countryCode;
+	}
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 	public boolean isEnabled() {
 		return isEnabled;

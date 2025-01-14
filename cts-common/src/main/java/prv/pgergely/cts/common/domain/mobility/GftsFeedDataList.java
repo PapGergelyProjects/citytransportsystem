@@ -1,9 +1,10 @@
 package prv.pgergely.cts.common.domain.mobility;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GftsFeedDataList {
+public class GftsFeedDataList implements Serializable {
 	
 	private List<GtfsFeedData> data = new ArrayList<>();
 	

@@ -14,13 +14,11 @@ import org.springframework.web.client.RestTemplate;
 
 import prv.pgergely.cts.common.domain.DefaultResponse;
 import prv.pgergely.cts.common.domain.DownloadRequest;
-import prv.pgergely.ctscountry.configurations.CtsConfig;
-import prv.pgergely.ctscountry.interfaces.ContentSenderThread;
 import prv.pgergely.ctscountry.model.DatasourceInfo;
 import prv.pgergely.ctscountry.utils.TemplateQualifier;
 
-@Service	
-public class ZipContentSender implements ContentSenderThread {
+@Service
+public class ZipContentSender implements Runnable {
 	
 	@Autowired
 	@Qualifier(TemplateQualifier.ZIPFILE_TEMPLATE)
@@ -32,14 +30,11 @@ public class ZipContentSender implements ContentSenderThread {
 	@Autowired
 	private DatasourceService dsService;
 	
-	@Autowired
-	private CtsConfig config;
-	
 	private Logger logger = LogManager.getLogger(ZipContentSender.class);
 	
 	@Override
 	public void run() {
-		logger.info("Prepare to send download requests");
+		logger.info("Preparing to send download requests");
 		while(store.size()>0) {
 			DownloadRequest request = store.poll();
 			DatasourceInfo info = dsService.getByFeedId(request.getFeedId());
