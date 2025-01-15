@@ -1,0 +1,40 @@
+# you need to create application-main.yaml based on these configs
+
+spring:
+  datasource:
+     primary:
+       driver-class-name: org.postgresql.Driver 
+       jdbcUrl: jdbc:postgresql://localhost:5432/sandbox #postgres-cts
+       schema: cts_transit_feed
+       username:
+       password:
+       separator: ^;
+  application:
+    name: cts-country
+  cache:
+    type: redis
+    host: localhost
+    port: 6379
+---
+config:
+  transitFeedSource: https://api.transitfeeds.com/v1
+  transitFeedKey:
+  mobilityApiUrl: https://api.mobilitydatabase.org/v1
+  mobilityApiTokenUrl: https://api.mobilitydatabase.org/v1/tokens
+  mobilityApiRefreshToken:
+  tempDirectory: /tmp/cts
+  threadParams:
+     initDelayed: 20
+     delayBetween: 20
+     offset: 10
+  datasource:
+     url: http://localhost
+     port: 6
+  dockerCommands:
+   imageName: cts-datasource-1
+   listImages: 'docker images'
+   listContainer: 'docker container ps -a --format "{{.ID}};{{.Image}};{{.CreatedAt}};{{.Ports}};{{.Status}};{{.Size}};{{.Names}};{{.Networks}}" --filter status=<status>'
+   createContainer: 'docker run --name <cont_name> --add-host internal-network:host-gateway -p <access_port>:8080 --network cts-network <image_name> "<scheam_name>"'
+   startContainer: 'docker container start <cont_name>'
+   stopContainer: 'docker container stop <cont_name>'
+   pauseContainer: 'docker pause <cont_name>'

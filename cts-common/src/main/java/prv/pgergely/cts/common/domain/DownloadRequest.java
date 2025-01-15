@@ -1,6 +1,7 @@
 package prv.pgergely.cts.common.domain;
 
 import java.io.Serializable;
+import java.net.URI;
 
 /**
  * This class represents a download request for each ds service.
@@ -10,31 +11,31 @@ import java.io.Serializable;
  */
 public class DownloadRequest implements Serializable {
 
-	private long feedId;
-	private String fileName;
-	private String urlAddress;
+	private final long feedId;
+	private final String fileName;
+	private final URI uriAddress;
 
-	public DownloadRequest() {}
-	
-	public DownloadRequest(long feedId, String fileName, String urlAddress) {
+	public DownloadRequest(long feedId, String fileName, URI uriAddress) {
 		this.feedId = feedId;
 		this.fileName = fileName;
-		this.urlAddress = urlAddress;
+		this.uriAddress = uriAddress;
 	}
 	
 	public long getFeedId() {
 		return feedId;
 	}
+	
 	public String getFileName() {
 		return fileName;
 	}
-	public String getUrlAddress() {
-		return urlAddress;
+
+	public URI getUriAddress() {
+		return uriAddress;
 	}
 
 	@Override
 	public String toString() {
-		return "DownloadRequest {\n feedId: " + feedId + ",\n fileName: " + fileName + ",\n urlAddress: " + urlAddress + "\n}";
+		return "DownloadRequest {\n    feedId:" + feedId + ", \n    fileName:" + fileName + ", \n    uriAddress:" + uriAddress + "\n}";
 	}
 	
 }

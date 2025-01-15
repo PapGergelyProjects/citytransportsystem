@@ -1,11 +1,8 @@
 package prv.pgergely.ctscountry.services;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.net.URI;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.cts.common.domain.DownloadRequest;
-import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.FeedURL;
-import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Feeds;
-import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Latest;
-import prv.pgergely.ctscountry.domain.transitfeed.TransitFeedJson.Location;
+import prv.pgergely.ctscountry.domain.mobility.gtfs.LatestDataset;
+import prv.pgergely.ctscountry.domain.mobility.gtfs.MobilityGtfsFeed;
 import prv.pgergely.ctscountry.model.FeedVersion;
+import prv.pgergely.ctscountry.utils.CountryUtils;
 
 @Service
 public class FeedVersionHandler implements Runnable {
@@ -30,7 +26,7 @@ public class FeedVersionHandler implements Runnable {
 	private FeedVersionServiceImpl feedVsSrv;
 	
 	@Autowired
-	private FeedSource feed;
+	private MobilityApi api;
 	
 	@Autowired
 	private Queue<DownloadRequest> store;
@@ -41,11 +37,12 @@ public class FeedVersionHandler implements Runnable {
 	public void run() {
 		logger.info("Starting version handler process...");
 		try {
-			Map<String, FeedVersion> links = checkSelectedFeed();
-			for (Map.Entry<String, FeedVersion> pair : links.entrySet()) {
-				String[] fileUrl = pair.getKey().split("/");
+			Map<URI, FeedVersion> links = checkSelectedFeed();
+			for (Map.Entry<URI, FeedVersion> pair : links.entrySet()) {
+				URI downLoadUri = pair.getKey();
+				String[] fileUrl = downLoadUri.getPath().split("/");
 				String fileName = fileUrl[fileUrl.length-1];
-				DownloadRequest request = new DownloadRequest(pair.getValue().getFeedId(), fileName, pair.getKey());
+				DownloadRequest request = new DownloadRequest(pair.getValue().getFeedId(), fileName, downLoadUri);
 				store.add(request);
 			}
 		} catch (Exception e) {
@@ -53,31 +50,20 @@ public class FeedVersionHandler implements Runnable {
 		}
 	}
 	
-	@Deprecated
-	private Map<String, FeedVersion> checkSelectedFeed() throws IOException{
-		Map<String, FeedVersion> downloadLinks = new HashMap<>();
+	private Map<URI, FeedVersion> checkSelectedFeed() throws IOException{
+		Map<URI, FeedVersion> downloadLinks = new HashMap<>();
 		List<FeedVersion> feedVers = feedVsSrv.getFeedVersions();
 		logger.info("Check feed versions...");
 		for (FeedVersion feedVersion : feedVers) {
-			Feeds allFeed = feed.getFeed(feedVersion.getFeedId());
-			Location location = allFeed.location;
-			FeedURL feedLink = allFeed.feedUrl;
-			Latest latest = allFeed.latest;
-			LocalDateTime verDate = Instant.ofEpochMilli(latest.timestamp*1000).atZone(ZoneId.systemDefault()).toLocalDateTime();
-			OffsetDateTime versionDateTime = OffsetDateTime.of(verDate, ZoneOffset.UTC); 
-			if(feedVersion.getFeedId() == allFeed.location.id && (feedVersion.getLatestVersion().isBefore(versionDateTime) || feedVersion.isRecent())){ // FIXME: Handle new_version
-				long feedId = location.id;
-				String title = allFeed.feedTitle;
-				String link = feedLink.urlDirectLink;
-				downloadLinks.put(link, feedVersion);
-				
-				FeedVersion newVersion = new FeedVersion();
-				newVersion.setId(feedVersion.getId());
-				newVersion.setFeedId(feedId);
-				newVersion.setTitle(title);
-				newVersion.setLatestVersion(versionDateTime);
-				newVersion.setRecent(false);
-				feedVsSrv.update(newVersion);
+			final String feedId = CountryUtils.convertRawIdToApiId(feedVersion.getFeedId());
+			final MobilityGtfsFeed feed = api.getGtfsFeed(feedId);
+			final LatestDataset data = feed.getLatestData();
+			final OffsetDateTime versionDateTime = OffsetDateTime.parse(data.getDownloadAt()); 
+			if(feedVersion.getLatestVersion().isBefore(versionDateTime) || feedVersion.isRecent()){ // FIXME: Handle new_version
+				downloadLinks.put(URI.create(data.getHostedUrl()), feedVersion);
+				feedVersion.setLatestVersion(versionDateTime);
+				feedVersion.setRecent(false);
+				feedVsSrv.update(feedVersion);
 				logger.info("New version founded.");
 			}
 		}

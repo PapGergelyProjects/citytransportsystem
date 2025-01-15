@@ -38,7 +38,7 @@ public class CacheConfig implements CacheManagerCustomizer<ConcurrentMapCacheMan
 	@Bean
 	public RedisCacheManagerBuilderCustomizer custom() {
 		redisTmp.getRequiredConnectionFactory().getConnection().commands().flushDb();
-		return builder -> builder.withCacheConfiguration("gtfs-feeds", gtfsListCacheConfig());
+		return builder -> builder.withCacheConfiguration("gtfs-feeds", gtfsListCacheConfig()).withCacheConfiguration("gtfs-feed", gtfsFeedCacheConfig());
 	}
 	
 	private RedisCacheConfiguration gtfsListCacheConfig() {
@@ -48,10 +48,16 @@ public class CacheConfig implements CacheManagerCustomizer<ConcurrentMapCacheMan
 		);
 	}
 	
+	private RedisCacheConfiguration gtfsFeedCacheConfig() {
+		return RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1L)).serializeValuesWith(
+				RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer<>(MobilityGtfsFeed.class))
+		);
+	}
+	
 	private RedisCacheConfiguration authTokenCacheConfig() { // For future use
 		return RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1L)).serializeValuesWith(
 				RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer<>(AuthToken.class))
-		);
+				);
 	}
 	
 }

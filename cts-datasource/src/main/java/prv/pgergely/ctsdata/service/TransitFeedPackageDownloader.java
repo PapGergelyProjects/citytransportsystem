@@ -31,7 +31,7 @@ public class TransitFeedPackageDownloader {
 	
 	private Logger logger = LogManager.getLogger(TransitFeedPackageDownloader.class);
 	
-	public ResponseEntity<byte[]> getZipFile(String urlAddress){
+	public ResponseEntity<byte[]> getZipFile(URI urlAddress){
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Content-Encoding", "gzip");
 		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -42,7 +42,7 @@ public class TransitFeedPackageDownloader {
 		return template.exchange(urlAddress, HttpMethod.GET, entity, byte[].class);
 	}
 	
-	public URI getLinkFromLocation(String urlAddress){
+	public URI getLinkFromLocation(URI urlAddress){
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 		headers.set("Content-Encoding", "UTF-8");

@@ -26,17 +26,17 @@ public class ZipHandlerService {
 	
 	public void proceedZipFile(final DownloadRequest zip) {// TODO: save the download event...
 		try {
-			byte[] downloadedStream = downloadZipFile(zip.getUrlAddress(), zip.getFileName(), zip.getFeedId());
+			byte[] downloadedStream = downloadZipFile(zip.getUriAddress(), zip.getFileName(), zip.getFeedId());
 			dataPrep.extractZipFile(downloadedStream);
 		} catch (IOException | CannotGetJdbcConnectionException | SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-    private byte[] downloadZipFile(String urlAddress, String archiveName, long feedId) throws IOException{
+    private byte[] downloadZipFile(URI urlAddress, String archiveName, long feedId) throws IOException{
     	logger.info("Download file from: "+urlAddress);
     	URI getZipUrl = zipContent.getLinkFromLocation(urlAddress);
-    	String zipUrl = getZipUrl==null ? urlAddress : getZipUrl.toString();
+    	URI zipUrl = getZipUrl==null ? urlAddress : getZipUrl;
     	ResponseEntity<byte[]> entity = zipContent.getZipFile(zipUrl);
     	byte[] zipFile = entity.getBody();
     	logger.info("Download finished!");

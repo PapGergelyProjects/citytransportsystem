@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,6 +26,7 @@ import prv.pgergely.ctscountry.configurations.RedisConfig;
 import prv.pgergely.ctscountry.domain.mobility.gtfs.MobilityGtfsFeed;
 import prv.pgergely.ctscountry.services.MobilityApi;
 
+@ActiveProfiles("test")
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RedisTest {
 	

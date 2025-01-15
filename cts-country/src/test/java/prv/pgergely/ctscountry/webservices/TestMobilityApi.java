@@ -14,13 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 
 import prv.pgergely.ctscountry.configurations.ApplicationCtsCountry;
 import prv.pgergely.ctscountry.domain.mobility.gtfs.Location;
 import prv.pgergely.ctscountry.domain.mobility.gtfs.MobilityGtfsFeed;
 import prv.pgergely.ctscountry.services.MobilityApi;
 
-@Disabled("")
+@ActiveProfiles("test")
 @SpringBootTest(classes = ApplicationCtsCountry.class,  webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TestMobilityApi {
 	
