@@ -8,6 +8,8 @@ public class GftsFeedDataList implements Serializable {
 	
 	private List<GtfsFeedData> data = new ArrayList<>();
 	
+	public GftsFeedDataList() {}
+	
 	public GftsFeedDataList(List<GtfsFeedData> data) {
 		this.data.addAll(data);
 	}

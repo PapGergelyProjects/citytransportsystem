@@ -4,8 +4,10 @@ import prv.pgergely.cts.common.domain.Coordinate;
 
 public class BoundingCoordinates {
 	
-	private final Coordinate minBound;
-	private final Coordinate maxBound;
+	private Coordinate minBound;
+	private Coordinate maxBound;
+	
+	public BoundingCoordinates() {}
 	
 	public BoundingCoordinates(double latMin, double lonMin, double latMax, double lonMax) {
 		this.minBound = new Coordinate(latMin, lonMin);

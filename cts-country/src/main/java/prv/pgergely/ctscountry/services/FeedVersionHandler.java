@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import prv.pgergely.cts.common.domain.DownloadRequest;
+import prv.pgergely.ctscountry.domain.mobility.feeds.SourceInfo;
 import prv.pgergely.ctscountry.domain.mobility.gtfs.LatestDataset;
 import prv.pgergely.ctscountry.domain.mobility.gtfs.MobilityGtfsFeed;
 import prv.pgergely.ctscountry.model.FeedVersion;
@@ -58,9 +59,10 @@ public class FeedVersionHandler implements Runnable {
 			final String feedId = CountryUtils.convertRawIdToApiId(feedVersion.getFeedId());
 			final MobilityGtfsFeed feed = api.getGtfsFeed(feedId);
 			final LatestDataset data = feed.getLatestData();
+			final SourceInfo source = feed.getSourceInfo();
 			final OffsetDateTime versionDateTime = OffsetDateTime.parse(data.getDownloadAt()); 
 			if(feedVersion.getLatestVersion().isBefore(versionDateTime) || feedVersion.isRecent()){ // FIXME: Handle new_version
-				downloadLinks.put(URI.create(data.getHostedUrl()), feedVersion);
+				downloadLinks.put(URI.create(source.getProducerUrl()), feedVersion);
 				feedVersion.setLatestVersion(versionDateTime);
 				feedVersion.setRecent(false);
 				feedVsSrv.update(feedVersion);

@@ -70,6 +70,7 @@ public class FeedService {
 		return res.getData().stream().map(m -> {
 			GtfsFeedView view = new GtfsFeedView();
 			view.setId(m.getId());
+			view.setCountryCode(m.getCountryCode());
 			view.setTitle(m.getTitle());
 			view.setFeedTitle(m.getFeedTitle());
 			view.setLatest(m.getLatestVersion());
