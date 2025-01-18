@@ -46,7 +46,7 @@ public class MobilityApi {
 	@Cacheable(value="gtfs-feeds", key="{#countryCode}")
 	public List<MobilityGtfsFeed> getAllGtfsFeeds(String countryCode){
 		final AuthToken token = tokenHolder.get();
-		final String countryQueryParam = countryCode == null ? "" : "?country_code="+countryCode;
+		final String countryQueryParam = countryCode == null ? "" : "?country_code="+countryCode+"&bounding_filter_method=completely_enclosed&is_official=true";
 		List<MobilityGtfsFeed> feeds = mobilityTempalte.get().uri("/gtfs_feeds"+countryQueryParam).headers(header -> {
 			header.add("Accept", "application/json");
 			header.add("Authorization", "Bearer "+token.getAccessToken());

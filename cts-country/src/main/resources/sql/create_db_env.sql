@@ -9,7 +9,7 @@ BEGIN
 		    id SERIAL PRIMARY KEY,
 		    feed_id INT,
 		    title TEXT,
-		    latest_version DATE,
+		    latest_version TIMESTAMP,
 		    recent BOOLEAN,
 		    new_version BOOLEAN DEFAULT FALSE
 		);

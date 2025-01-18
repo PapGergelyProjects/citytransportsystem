@@ -36,7 +36,7 @@ public class MobilityFeed implements Serializable {
 	@JsonProperty("source_info")
 	private SourceInfo sourceInfo;
 	
-	private List<String> redirects = new ArrayList<>();
+	private List<Redirects> redirects = new ArrayList<>();
 
 	public String getId() {
 		return id;
@@ -126,11 +126,11 @@ public class MobilityFeed implements Serializable {
 		this.sourceInfo = sourceInfo;
 	}
 
-	public List<String> getRedirects() {
+	public List<Redirects> getRedirects() {
 		return redirects;
 	}
 
-	public void setRedirects(List<String> redirects) {
+	public void setRedirects(List<Redirects> redirects) {
 		this.redirects = redirects;
 	}
 

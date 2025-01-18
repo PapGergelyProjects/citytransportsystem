@@ -92,6 +92,10 @@ public class ServiceConfigPage extends VerticalLayout {
 		isRegistered = new Checkbox("Only Registered");
 		isRegistered.addValueChangeListener(event -> filterGrid());
 		countryCodes = new ComboBox<String>("Country Codes", Arrays.asList(Locale.getISOCountries()));
+		countryCodes.addValueChangeListener(event -> {
+			refresh();
+			filterGrid();
+		});
 		FlexSearchLayout searchLay = new FlexSearchLayout(search, date, isRegistered, countryCodes);
 		searchLay.setGap("10px");
 		
@@ -192,6 +196,12 @@ public class ServiceConfigPage extends VerticalLayout {
 			}
 			if(sDate != null) {
 				match = sDate.equals(item.getLatest().toLocalDate());
+				if(!match) {
+					return match;
+				}
+			}
+			if(countryCodes.getValue() != null) {
+				match = item.getCountryCode().equals(countryCodes.getValue());
 				if(!match) {
 					return match;
 				}

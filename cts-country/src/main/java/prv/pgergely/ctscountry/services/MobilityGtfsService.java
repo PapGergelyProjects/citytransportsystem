@@ -29,7 +29,10 @@ public class MobilityGtfsService {
 	private FeedVersionServiceImpl feedVersion;
 	
 	public List<GtfsFeedData> getFeedsByCountry(String country) {
-		List<MobilityGtfsFeed> feeds = api.getAllGtfsFeeds(country).stream().filter(p -> p.getLatestData()!=null).filter(p -> !"tld".equals(p.getExternalId().getFirst().getSource())).collect(Collectors.toList());
+		List<MobilityGtfsFeed> feeds = api.getAllGtfsFeeds(country).stream()
+																	.filter(p -> p.getLatestData()!=null && p.getLatestData().getBoundinBox() != null)
+																	.filter(p -> !"tld".equals(p.getExternalId().getFirst().getSource()))
+																	.collect(Collectors.toList());
 		Map<Long, FeedVersion> allRegisteredVersion = feedVersion.getFeedVersions().stream().collect(Collectors.toMap(k -> k.getFeedId(), v -> v));
 		return feeds.stream().map(feed -> {
 			final ExternalIds extIds = feed.getExternalId().getFirst();

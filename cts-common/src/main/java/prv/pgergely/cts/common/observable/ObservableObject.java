@@ -18,13 +18,13 @@ public class ObservableObject<T> {
 	
 	public void fetch() throws MissingObservedElement {
 		if(observedObj == null) {
-			throw new MissingObservedElement("No element currently observing");
+			throw new MissingObservedElement("No element currently observed");
 		}
 		observers.values().forEach(observerFunct -> observerFunct.accept(observedObj));
 	}
 	
 	public void subscribe(Consumer<T> funct) {
-		// First stack the threadStack call, second stack is this method itself, third stack is the real caller method which contains the declaring class what we need
+		// First stack the threadStack call, second stack is the method itself, third stack is the real caller method which contains the declaring class what we need
 		StackTraceElement type = Thread.currentThread().getStackTrace()[2];
 		String typeName = type.getClassName();
 		if(!observers.containsKey(typeName)) {

@@ -11,6 +11,7 @@ public class CtsConfig {
 	private String googleMapLang;
 	private String googleMapId;
 	private String serviceUrl;
+	private String defaultCountry;
 	
 	public String getGoogleApiKey() {
 		return googleApiKey;
@@ -42,6 +43,14 @@ public class CtsConfig {
 
 	public void setServiceUrl(String serviceUrl) {
 		this.serviceUrl = serviceUrl;
+	}
+
+	public String getDefaultCountry() {
+		return defaultCountry;
+	}
+
+	public void setDefaultCountry(String defaultCountry) {
+		this.defaultCountry = defaultCountry;
 	}
 	
 }

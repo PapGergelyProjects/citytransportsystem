@@ -1,6 +1,9 @@
 package prv.pgergely.ctscountry.dao;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -79,13 +82,15 @@ public class FeedVersionRepoImpl extends NamedParameterJdbcTemplate implements F
 							  SELECT v.id, v.feed_id, v.title, v.latest_version, v.recent, v.new_version, d.state, d.active, d.source_url, d.schema_name 
 							  FROM feed_version v  
 							  INNER JOIN datasource_info d USING(feed_id) """;
+		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 		List<Map<String, Object>> allFeed = this.queryForList(select, new MapSqlParameterSource());
 		List<FeedVersion> res = allFeed.stream().map(feed -> {
 			FeedVersion vers = new FeedVersion(feed.get("source_url").toString(), feed.get("schema_name").toString(), DataSourceState.valueOf(String.valueOf(feed.get("state"))), Boolean.valueOf(feed.get("active").toString()));
 			vers.setId(Long.valueOf(feed.get("id").toString()));
 			vers.setFeedId(Long.valueOf(feed.get("feed_id").toString()));
 			vers.setTitle(feed.get("title").toString());
-			vers.setLatestVersion(OffsetDateTime.parse(feed.get("latest_version").toString()));
+			LocalDateTime locTime = LocalDateTime.parse(feed.get("latest_version").toString(), formatter);
+			vers.setLatestVersion(locTime.atOffset(ZoneOffset.UTC));
 			vers.setRecent(Boolean.valueOf(feed.get("recent").toString()));
 			vers.setNewVersion(Boolean.valueOf(feed.get("new_version").toString()));
 			return vers;
