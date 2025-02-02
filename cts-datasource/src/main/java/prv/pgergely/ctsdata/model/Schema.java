@@ -1,4 +1,4 @@
-package prv.pgergely.ctsdata.utility;
+package prv.pgergely.ctsdata.model;
 
 public class Schema {
 	

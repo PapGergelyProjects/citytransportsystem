@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.ctsdata.config.CtsDataConfig;
+import prv.pgergely.ctsdata.model.Schema;
 import prv.pgergely.ctsdata.utility.CsvRefiner;
-import prv.pgergely.ctsdata.utility.Schema;
 import prv.pgergely.ctsdata.utility.TableInsertValues;
 
 @Service
@@ -44,7 +44,7 @@ public class DataPreparation {
 	private MessagePublisher sender;
 	
     public void extractZipFile(byte[] zipStream) throws IOException, CannotGetJdbcConnectionException, SQLException{
-    	sender.publish(new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.UPDATING));
+    	//sender.publish(new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.UPDATING));
     	logger.info("Clear tables");
     	srvc.clearTables();
     	logger.info("Starting extracting files from zip...");
@@ -62,7 +62,7 @@ public class DataPreparation {
         logger.info("Materalization complete.");
         zis.closeEntry();
         zis.close();
-        sender.publish(new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.ONLINE));
+        //sender.publish(new SourceState(schema.getFeedId(), schema.getSchemaName().toUpperCase(), DataSourceState.ONLINE));
     }
 	
 	private void copyCsvContent(String fileName, InputStream stream) throws CannotGetJdbcConnectionException, SQLException, IOException {

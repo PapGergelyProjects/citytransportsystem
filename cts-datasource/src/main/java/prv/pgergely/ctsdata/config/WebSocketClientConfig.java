@@ -37,12 +37,12 @@ import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 
-import prv.pgergely.ctsdata.utility.Schema;
+import prv.pgergely.ctsdata.model.Schema;
 import prv.pgergely.ctsdata.utility.WebSocketSessionHandler;
 
-@Configuration
-@EnableWebSocket
-@EnableWebSocketMessageBroker
+//@Configuration
+//@EnableWebSocket
+//@EnableWebSocketMessageBroker
 public class WebSocketClientConfig implements WebSocketMessageBrokerConfigurer  {
 	
 	private Logger logger = LogManager.getLogger(WebSocketClientConfig.class);

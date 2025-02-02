@@ -32,10 +32,20 @@ public class ObservableObject<T> {
 		}
 	}
 	
+	public void subscribe(String name, Consumer<T> funct) {
+		if(!observers.containsKey(name)) {
+			observers.put(name, funct);
+		}
+	}
+	
 	public void unsubscribe() {
 		StackTraceElement type = Thread.currentThread().getStackTrace()[2];
 		String typeName = type.getClassName();
 		observers.remove(typeName);
+	}
+	
+	public void unsubscribe(String name) {
+		observers.remove(name);
 	}
 	
 }

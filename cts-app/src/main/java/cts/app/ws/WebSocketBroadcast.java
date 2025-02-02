@@ -12,7 +12,7 @@ import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.cts.common.observable.ObservableObject;
 
-@Controller
+//@Controller
 public class WebSocketBroadcast{
 	
 	private Logger logger = LogManager.getLogger(WebSocketBroadcast.class);

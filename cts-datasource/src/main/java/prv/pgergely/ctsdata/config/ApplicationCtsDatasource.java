@@ -6,9 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import prv.pgergely.cts.common.CommonComponents;
+import prv.pgergely.cts.common.domain.SourceState;
+import prv.pgergely.cts.common.observable.ObservableObject;
 import prv.pgergely.ctsdata.CtsDsComponents;
-import prv.pgergely.ctsdata.utility.Schema;
+import prv.pgergely.ctsdata.model.Schema;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses= {CommonComponents.class, CtsDsComponents.class})
@@ -49,4 +53,14 @@ public class ApplicationCtsDatasource {
 		return actSchema;
 	}
 
+	@Bean
+	public Vertx createVertx() {
+		VertxOptions opts = new VertxOptions().setWorkerPoolSize(10);
+		return Vertx.vertx(opts);
+	}
+	
+	@Bean
+	public ObservableObject<SourceState> getObsObj(){
+		return new ObservableObject<>();
+	}
 }

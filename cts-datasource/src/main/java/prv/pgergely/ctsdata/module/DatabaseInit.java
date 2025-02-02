@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
 
-import prv.pgergely.ctsdata.utility.Schema;
+import prv.pgergely.ctsdata.model.Schema;
 
 @Order(1)
 @Component

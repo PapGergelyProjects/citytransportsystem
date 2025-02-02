@@ -10,7 +10,7 @@ import prv.pgergely.ctsdata.interfaces.UtilityRepo;
 @Service
 public class MessagePublisher {
 	
-	@Autowired
+	//@Autowired
 	private StompSession session;
 	
 	@Autowired

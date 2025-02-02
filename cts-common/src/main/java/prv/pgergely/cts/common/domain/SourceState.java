@@ -2,6 +2,9 @@ package prv.pgergely.cts.common.domain;
 
 import java.io.Serializable;
 
+import elemental.json.Json;
+import elemental.json.JsonObject;
+
 public class SourceState implements Serializable {
 	
 	private Long feedId;
@@ -38,6 +41,15 @@ public class SourceState implements Serializable {
 	@Override
 	public String toString() {
 		return "SourceState {\nfeedId:" + feedId + ", \nfrom:" + from + ", \nstate:" + state + "\n}";
+	}
+	
+	public JsonObject toJsonObj() {
+		JsonObject obj = Json.createObject();
+		obj.put("feedId", feedId);
+		obj.put("from", from);
+		obj.put("state", state.name());
+		
+		return obj;
 	}
 	
 }

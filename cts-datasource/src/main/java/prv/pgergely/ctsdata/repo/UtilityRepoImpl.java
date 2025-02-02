@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import prv.pgergely.cts.common.domain.DataSourceState;
 import prv.pgergely.ctsdata.interfaces.UtilityRepo;
-import prv.pgergely.ctsdata.utility.Schema;
+import prv.pgergely.ctsdata.model.Schema;
 
 @Repository
 public class UtilityRepoImpl extends NamedParameterJdbcTemplate implements UtilityRepo {

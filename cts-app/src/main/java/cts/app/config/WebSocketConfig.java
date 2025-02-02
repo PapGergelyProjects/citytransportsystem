@@ -14,9 +14,9 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import cts.app.service.MessageHandler;
 
-@Configuration
-@EnableWebSocket
-@EnableWebSocketMessageBroker
+//@Configuration
+//@EnableWebSocket
+//@EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	
 	@Autowired

@@ -1,8 +1,5 @@
 package cts.app.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,11 +19,11 @@ import com.vaadin.flow.theme.Theme;
 import cts.app.CtsAppComponent;
 import cts.app.domain.ClickOnMapEvent;
 import cts.app.ui.components.map.CtsGoogleMap;
-import cts.app.ui.components.map.InitMapData;
+import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import prv.pgergely.cts.common.CommonComponents;
-import prv.pgergely.cts.common.domain.Coordinate;
 import prv.pgergely.cts.common.domain.SourceState;
 import prv.pgergely.cts.common.observable.ObservableObject;
 
@@ -75,6 +72,12 @@ public class ApplicationCts extends SpringBootServletInitializer implements AppS
 	@Bean(CLICK_ON_MAP_OBSERVABLE)
 	public ObservableObject<ClickOnMapEvent> getEventObj(){
 		return new ObservableObject<>();
+	}
+	
+	@Bean
+	public Vertx createVertx() {
+		VertxOptions opts = new VertxOptions().setWorkerPoolSize(10);
+		return Vertx.vertx(opts);
 	}
 	
 	@Override
