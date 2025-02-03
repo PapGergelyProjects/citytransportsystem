@@ -1,5 +1,6 @@
 package prv.pgergely.ctsdata.config;
 
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.WebSocket;
 import io.vertx.core.http.WebSocketClient;
 import io.vertx.core.http.WebSocketClientOptions;
@@ -36,20 +38,25 @@ public class WebsocketClientVerticle extends AbstractVerticle {
 	
 	private void startClient() {
 		WebSocketClientOptions opts = new WebSocketClientOptions();
+		URI socketServer = URI.create(config.getWebsocketServer());
 		WebSocketClient client = vertx.createWebSocketClient(opts);
-		client.connect(743, "localhost", "/cts-app/channel", handler -> {
+		client.webSocket()
+		.handler(msg -> {
+			SourceState stateFromServer = msg.toJsonObject().mapTo(SourceState.class);
+			logger.info("From server: "+stateFromServer.toString());
+		})
+		.connect(socketServer.getPort(), socketServer.getHost(), socketServer.getPath())
+		.onComplete(handler -> {
 			if(handler.failed()) {
 				logger.error(handler.cause().getMessage(), handler.cause());
-				retry(client);
+				client.close();
+				retry();
 			} else {
 				final WebSocket socket = handler.result();
-				socket.handler(data -> {
-					SourceState stateFromServer = data.toJsonObject().mapTo(SourceState.class);
-					logger.info("From server: "+stateFromServer.toString());
-				}).exceptionHandler(excp -> {
-					logger.error(excp.getMessage(), excp);
-				}).closeHandler(cls -> {
-					retry(client);
+				socket.exceptionHandler(excp -> logger.error(excp.getMessage(), excp))
+				.closeHandler(cls -> {
+					client.close();
+					retry();
 				});
 				observed.subscribe("socket-client", event -> {
 					socket.writeTextMessage(event.toJsonObj().toJson());
@@ -59,9 +66,8 @@ public class WebsocketClientVerticle extends AbstractVerticle {
 		});
 	}
 	
-	private void retry(WebSocketClient client) {
+	private void retry() {
 		logger.info("Retry connecting to the server: ");
-		client.close();
 		observed.unsubscribe("socket-client");
 		vertx.setTimer(TimeUnit.SECONDS.toMillis(10), retry -> startClient());
 	}
